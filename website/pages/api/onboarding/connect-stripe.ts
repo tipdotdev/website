@@ -9,18 +9,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   
-    const user: any = getAuth(req)
+    const auth: any = getAuth(req)
+    const user = await clerkClient.users.getUser(auth.userId)
 
-    if (!user) {
+    if (!auth) {
         return res.status(401).json({ message: 'unauthorized' })
     }
 
     const stripeAccount = await stripe.accounts.create({
-        type: 'standard',
-        email: user.email_addresses[0].email_address,
+        type: 'express',
     });
 
-    const update = await clerkClient.users.updateUser(user.userId, {
+    const update = await clerkClient.users.updateUser(user.id, {
         privateMetadata: {
             stripeAccountId: stripeAccount.id
         }
@@ -28,8 +28,8 @@ export default async function handler(
 
     const accountLink = await stripe.accountLinks.create({
         account: stripeAccount.id,
-        refresh_url: 'https://www.tip.dev/auth/stripe/refresh',
-        return_url: 'https://www.tip.dev/onboarding/payout',
+        refresh_url: 'https://tip.dev/auth/stripe/refresh',
+        return_url: 'https://tip.dev/onboarding/complete',
         type: 'account_onboarding',
     });
 

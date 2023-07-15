@@ -33,7 +33,8 @@ export default function page() {
     
         const data = await res.json()
 
-        console.log(data)
+        // redirect to stripe connect
+        window.location.href = data.stripe.url
 
         setIsLoading(false)
     }
@@ -95,9 +96,16 @@ export default function page() {
 
                         {payoutMethod == "stripe" ? (
                             <div className="flex flex-row mt-5">
-                                <button className="btn btn-neutral w-full">
-                                    <FaPlus className="text-xl mr-2" />
-                                    Connect Stripe</button>
+                                <button disabled={isLoading} className="btn btn-neutral w-full"
+                                    onClick={() => connectStripe()}
+                                >
+                                    {isLoading ? (
+                                        <span className="loading loading-spinner"></span>
+                                    ) : (
+                                        <FaPlus className="text-xl mr-2" />
+                                    )}
+                                    Connect Stripe
+                                </button>
                             </div>
                         ) : (
                             null
