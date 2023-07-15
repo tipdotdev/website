@@ -36,11 +36,11 @@ export default async function handler(
                 
                 // create a new user in the database
                 db.promise().execute(`INSERT INTO users (
-                    id, email, username, pfp, bio, website, socials, first_name, last_name, created_at, updated_at
+                    id, email, username, pfp, bio, website, socials, first_name, last_name, created_at, updated_at, stripe_account_id
                     ) VALUES (
                         '${event.data.id}', '${event.data.email_addresses[0].email_address}', '${event.data.username}', '${event.data.profile_image_url}',
                         '${event.data.public_metadata.about}', '${event.data.public_metadata.website}', '${event.data.public_metadata.socials}',
-                        '${event.data.first_name}', '${event.data.last_name}', '${event.data.created_at}', '${event.data.updated_at}'
+                        '${event.data.first_name}', '${event.data.last_name}', '${event.data.created_at}', '${event.data.updated_at}', '${event.data.private_metadata.stripeAccountId}'
                 )`).then(() => {
                     return res.status(200).json({ message: 'created user' })
                 })
