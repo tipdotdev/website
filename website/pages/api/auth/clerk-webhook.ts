@@ -42,8 +42,9 @@ export default async function handler(
                         '${event.data.public_metadata.about}', '${event.data.public_metadata.website}', '${event.data.public_metadata.socials}',
                         '${event.data.first_name}', '${event.data.last_name}', '${event.data.created_at}', '${event.data.updated_at}', '${event.data.private_metadata.stripeAccountId}'
                 )`).then(() => {
-                    return res.status(200).json({ message: 'created user' })
+                    return res.status(200).send('created user')
                 })
+                return
 
             case 'user.updated':
                 // update the user in the database
@@ -60,14 +61,18 @@ export default async function handler(
                     updated_at = '${event.data.updated_at}'
                     WHERE id = '${event.data.id}'
                 `).then(() => {
-                    return res.status(200).json({ message: 'updated user' })
+                    return res.status(200).send('updated user')
                 })
+                return
             
             case 'user.deleted':
                 // delete the user from the database
                 db.promise().execute(`DELETE FROM users WHERE id = '${event.data.id}'`).then(() => {
-                    return res.status(200).json({ message: 'deleted user' })
+                    return res.status(200).send('deleted user')
                 })
+                return
+            
+            break;
         }
     } else {
         return res.status(400).json({ message: 'no event' })
