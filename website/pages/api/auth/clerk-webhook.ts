@@ -61,6 +61,12 @@ export default async function handler(
                 `).then(() => {
                     return res.status(200).json({ message: 'updated user' })
                 })
+            
+            case 'user.deleted':
+                // delete the user from the database
+                db.promise().execute(`DELETE FROM users WHERE id = '${event.data.id}'`).then(() => {
+                    return res.status(200).json({ message: 'deleted user' })
+                })
         }
     } else {
         return res.status(400).json({ message: 'no event' })
