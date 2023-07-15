@@ -6,35 +6,27 @@ import mysql from 'mysql2'
 
 const dbUrl = process.env.DATABASE_URL as string
 
-export const config = {
-    api: {
-        bodyParser: false,
-    }
-}
+// export const config = {
+//     api: {
+//         bodyParser: false,
+//     }
+// }
 
-const secret = process.env.CLERK_WEBHOOK_SECRET as string;
+// const secret = process.env.CLERK_WEBHOOK_SECRET as string;
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
 
-    const payload = (await buffer(req)).toString();
-    const headers = req.headers as Record<string, string>;
+    // const payload = (await buffer(req)).toString();
+    // const headers = req.headers as Record<string, string>;
 
-    const wh = new Webhook(secret)
-    let msg: any;
-
-    // verify the webhook
-    try {
-        msg = wh.verify(payload, headers)
-    } catch (err) {
-        console.log(err)
-        return res.status(401).json({ message: 'unauthorized' })
-    }
+    // const wh = new Webhook(secret)
+    let msg = req.body.evt as WebhookEvent
 
     // set the webhook event
-    const event = msg as WebhookEvent
+    const event = msg
 
     if (event) {
         // connect to the database
