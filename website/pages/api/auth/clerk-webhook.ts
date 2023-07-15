@@ -53,7 +53,7 @@ export default async function handler(
                     pfp = '${event.data.profile_image_url}',
                     bio = '${event.data.public_metadata.about}',
                     website = '${event.data.public_metadata.website}',
-                    socials = '${event.data.public_metadata.socials}',
+                    socials = '${JSON.stringify(event.data.public_metadata.socials)}',
                     first_name = '${event.data.first_name}',
                     last_name = '${event.data.last_name}',
                     updated_at = '${event.data.updated_at}'
