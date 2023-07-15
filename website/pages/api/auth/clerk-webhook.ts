@@ -56,6 +56,7 @@ export default async function handler(
                     socials = '${JSON.stringify(event.data.public_metadata.socials)}',
                     first_name = '${event.data.first_name}',
                     last_name = '${event.data.last_name}',
+                    stripe_account_id = '${event.data.private_metadata.stripeAccountId}',
                     updated_at = '${event.data.updated_at}'
                     WHERE id = '${event.data.id}'
                 `).then(() => {
