@@ -57,7 +57,7 @@ export default function Home() {
 
 			<div className="form-control mt-10 min-w-fit">
 				<div className="input-group border-2 rounded-lg border-zinc-500 w-full">
-					<input type="text" placeholder="sign up for our newsletter" className="input w-full mr-5" value={email} onChange={(e) => {
+					<input type="text" placeholder="sign up for our newsletter" className="input w-full pr-5" value={email} onChange={(e) => {
 						setEmail(e.target.value)
 					}} />
 					<button className="btn btn-ghost border" onClick={() => submitEmail()}>
