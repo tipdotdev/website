@@ -5,7 +5,7 @@ import { Knock } from '@knocklabs/node'
 
 const dbUrl = process.env.DATABASE_URL as string
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as string
-const knock: any = new Knock(process.env.KNOCK_SECRET_KEY as string)
+const knock = new Knock(process.env.KNOCK_SECRET_KEY as string)
 
 // export const config = {
 //     api: {
@@ -47,7 +47,7 @@ export default async function handler(
                 )`).then(() => {
 
                     // identify user in Knock
-                    knock.identify(event.data.id, {
+                    knock.users.identify(event.data.id, {
                         email: event.data.email_addresses[0].email_address,
                         username: event.data.username,
                     }).then((response: any) => {
@@ -107,7 +107,7 @@ export default async function handler(
             case 'user.deleted':
                 // delete the user from the database
                 db.promise().execute(`DELETE FROM users WHERE id = '${event.data.id}'`).then(() => {
-                    knock.users.delete(event.data.id).then((response: any) => {
+                    knock.users.delete(event.data.id || "").then((response: any) => {
                         return res.status(200).send('deleted user')
                     })
                 })
