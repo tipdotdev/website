@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { FaCaretRight, FaCheck } from 'react-icons/fa'
 import { useState } from 'react'
 import Toast from '@/comps/toast'
+import DashboardFooter from '@/comps/dashboardFooter'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -68,6 +69,8 @@ export default function Home() {
 				</div>
 
 			</div>
+
+			<DashboardFooter />
 			
 			{showToast && (
 				<>
