@@ -18,3 +18,34 @@ body {
     rgb(var(--background-start-rgb));
   overflow-x: wrap;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #272935;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1f2029;
+  border-radius: 18px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #191a20;
+}
+
+::-moz-selection { /* Code for Firefox */
+  color: #303030;
+  background: #fe7ac6;
+}
+
+::selection {
+  color: #303030;
+  background: #fe7ac6;
+}
