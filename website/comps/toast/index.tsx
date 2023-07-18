@@ -5,36 +5,36 @@ export default function Toast(props: any) {
     
     if (props.type === "success") {
         return (
-            <div className="toast toast-center">
-                <div className="alert bg-success/20 text-success border-none">
-                    <FaCheck className="w-5 h-5 mr-2" />
+            <div className="toast toast-center flex sm:w-fit w-full">
+                <div className="alert bg-success/20 text-success border-none ">
+                    <FaCheck className="w-5 h-5 mr-2 sm:flex hidden" />
                     <span>{props.text}</span>
                 </div>
             </div>
         )
     } else if (props.type === "error") {
         return (
-            <div className="toast toast-center">
+            <div className="toast toast-center flex sm:w-fit w-full">
                 <div className="alert bg-error/20 text-error border-none">
-                    <FaSkull className="w-5 h-5 mr-2" />
+                    <FaSkull className="w-5 h-5 mr-2 sm:flex hidden" />
                     <span>{props.text}</span>
                 </div>
             </div>
         )
     } else if (props.type === "warning") {
         return (
-            <div className="toast toast-center">
-                <div className="alert bg-warning/20 text-warning border-none">
-                    <FaExclamationTriangle className="w-5 h-5 mr-2" />
+            <div className="toast toast-center flex sm:w-fit w-full">
+                <div className="alert bg-warning/20 text-warning border-none ">
+                    <FaExclamationTriangle className="w-5 h-5 mr-2 sm:flex hidden" />
                     <span>{props.text}</span>
                 </div>
             </div>
         )
     } else if (props.type === "info") {
         return (
-            <div className="toast toast-center">
+            <div className="toast toast-center flex sm:w-fit w-full">
                 <div className="alert bg-info/20 text-info border-none">
-                    <FaInfoCircle className="w-5 h-5 mr-2" />
+                    <FaInfoCircle className="w-5 h-5 mr-2 sm:flex hidden" />
                     <span>{props.text}</span>
                 </div>
             </div>
