@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { WebhookEvent } from '@clerk/clerk-sdk-node'
 import mysql from 'mysql2'
+import { Knock } from '@knocklabs/node'
 
 const dbUrl = process.env.DATABASE_URL as string
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as string
+const knock: any = new Knock(process.env.KNOCK_SECRET_KEY as string)
 
 // export const config = {
 //     api: {
@@ -44,32 +46,38 @@ export default async function handler(
                         '${event.data.first_name}', '${event.data.last_name}', '${event.data.created_at}', '${event.data.updated_at}', '${event.data.private_metadata.stripeAccountId}'
                 )`).then(() => {
 
-                    let sentEmail = false
+                    // identify user in Knock
+                    knock.identify(event.data.id, {
+                        email: event.data.email_addresses[0].email_address,
+                        username: event.data.username,
+                    }).then((response: any) => {
 
-                    // make a request to our api to send a welcome email
-                    let sendEmail = fetch(`${apiUrl}/mail/send-welcome`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            email: event.data.email_addresses[0].email_address,
-                            username: event.data.username,
-                            firstName: event.data.first_name,
-                            lastName: event.data.last_name
+                        let sentEmail = false
+                        // make a request to our api to send a welcome email
+                        let sendEmail = fetch(`${apiUrl}/mail/send-welcome`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: event.data.email_addresses[0].email_address,
+                                username: event.data.username,
+                                firstName: event.data.first_name,
+                                lastName: event.data.last_name
+                            })
                         })
-                    })
 
-                    // check if the request was successful
-                    sendEmail.then((response) => {
-                        response.json().then((data) => {
-                            if (data.success) {
-                                sentEmail = true
-                            }
+                        // check if the request was successful
+                        sendEmail.then((response) => {
+                            response.json().then((data) => {
+                                if (data.success) {
+                                    sentEmail = true
+                                }
 
-                            return res.status(200).json({
-                                message: 'created user',
-                                sentEmail: sentEmail
+                                return res.status(200).json({
+                                    message: 'created user',
+                                    sentEmail: sentEmail
+                                })
                             })
                         })
                     })
@@ -99,7 +107,9 @@ export default async function handler(
             case 'user.deleted':
                 // delete the user from the database
                 db.promise().execute(`DELETE FROM users WHERE id = '${event.data.id}'`).then(() => {
-                    return res.status(200).send('deleted user')
+                    knock.users.delete(event.data.id).then((response: any) => {
+                        return res.status(200).send('deleted user')
+                    })
                 })
                 return
             

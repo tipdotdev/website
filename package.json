@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "@knocklabs/node": "^0.4.22"
+  }
+}
