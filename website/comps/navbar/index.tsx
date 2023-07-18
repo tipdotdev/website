@@ -63,17 +63,19 @@ export default function Navbar() {
                             <p className="text-lg mb-2">Hey, <span className="text-lg font-bold text-primary">{user.username}</span></p>
                             <ul tabIndex={0} className="">
                                 <li>
-                                    <a className="justify-start" href='/account'>
-                                        <FaUserCircle className="mr-2" />
-                                        Account
-                                    </a>
-                                </li>
-                                <li>
                                     <a className="justify-start" href='/dashboard'>
                                         <FaGripVertical className="mr-2" />
                                         Dashboard
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a className="justify-start" href='/account'>
+                                        <FaUserCircle className="mr-2" />
+                                        Account
+                                    </a>
+                                </li>
+                                
                                 <li>
                                     <a className="justify-start">
                                         <FaArrowCircleLeft className="mr-2" />

@@ -17,7 +17,7 @@ export default function page() {
     if (!isLoaded) {
         return (
             <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
-                <h1 className="text-4xl font-bold mt-12">Loading...</h1>
+                <span className="loading loading-spinner"></span>
             </main>
         )
     }

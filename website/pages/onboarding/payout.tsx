@@ -1,7 +1,7 @@
 import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { useState } from "react";
-import { FaPaypal, FaPlus, FaStripeS } from "react-icons/fa";
+import { FaPaypal, FaPiggyBank, FaPlus, FaStripeS } from "react-icons/fa";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +16,7 @@ export default function page() {
     if (!isLoaded) {
         return (
             <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
-                <h1 className="text-4xl font-bold mt-12">Loading...</h1>
+                <span className="loading loading-spinner"></span>
             </main>
         )
     }
@@ -67,11 +67,11 @@ export default function page() {
 
                 <div className="mt-10 w-full">
 
-                    <div className={`w-full h-fit border-2 rounded-xl p-5 hover:border-primary transition-all ease-in-out duration-150 cursor-pointer
+                    <div className={`w-full h-fit rounded-xl p-5 hover:border-primary bg-base-200 transition-all ease-in-out duration-150 cursor-pointer
                         ${payoutMethod == "stripe" ? (
-                            "border-primary"
+                            "border-2 border-primary"
                         ) : (
-                            "border-zinc-600"
+                            ""
                         )}
                     `}
                         onClick={() => setPayoutMethod("stripe")}
@@ -86,7 +86,7 @@ export default function page() {
                                 )}
                                 <h1 className="text-2xl font-bold ml-5">Stripe
                                     <span className="text-sm font-normal ml-2 text-zinc-300">
-                                        (recommended)
+                                        <div className="badge badge-primary badge-outline">Recommended</div>
                                     </span>
                                 </h1>
                             </div>
@@ -121,47 +121,47 @@ export default function page() {
 
                     </div>
 
-                    <div className={`w-full h-fit border-2 mt-5 rounded-xl p-5 hover:border-primary transition-all ease-in-out duration-150 cursor-pointer
-                        ${payoutMethod == "paypal" ? (
-                            "border-primary"
+                    {/* <div className={`w-full h-fit bg-base-200 mt-5 rounded-xl p-5 hover:border-primary transition-all ease-in-out duration-150 cursor-pointer
+                        ${payoutMethod == "standard" ? (
+                            "border-2 border-primary"
                         ) : (
-                            "border-zinc-600"
+                            ""
                         )}
                     `}
-                        onClick={() => setPayoutMethod("paypal")}
+                        onClick={() => setPayoutMethod("standard")}
                     >
 
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-row justify-center items-center">
-                                {payoutMethod == "paypal" ? (
+                                {payoutMethod == "standard" ? (
                                     <input type="radio" className="radio radio-primary" checked />
                                 ) : (
                                     <input type="radio" className="radio radio-primary" />
                                 )}
-                                <h1 className="text-2xl font-bold ml-5">PayPal</h1>
+                                <h1 className="text-2xl font-bold ml-5">Standard Payout</h1>
                             </div>
-                            <FaPaypal className="text-3xl" />
+                            <FaPiggyBank className="text-3xl" />
                         </div>
 
                         <div className="flex flex-col mt-5 px-10">
                             <ul className="list-disc text-md font-code text-zinc-300">
-                                <li>Instant payout to your PayPal account</li>
-                                <li>0% fee on tips</li>
-                                <li>Tippers can only pay with PayPal or Venmo</li>
+                                <li>Link your local bank</li>
+                                <li>5% fee on tips</li>
+                                <li>$20 withdraw minimum</li>
                             </ul>
                         </div>
                         
-                        {payoutMethod == "paypal" ? (
+                        {payoutMethod == "standard" ? (
                             <div className="flex flex-row mt-5">
                                 <button className="btn btn-neutral w-full">
                                     <FaPlus className="text-xl mr-2" />
-                                    Connect PayPal</button>
+                                    Connect Bank</button>
                             </div>
                         ) : (
                             null
                         )}
 
-                    </div>
+                    </div> */}
 
 
                 </div>

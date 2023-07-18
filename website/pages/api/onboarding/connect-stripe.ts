@@ -29,7 +29,7 @@ export default async function handler(
     const accountLink = await stripe.accountLinks.create({
         account: stripeAccount.id,
         refresh_url: 'https://tip.dev/auth/stripe/refresh',
-        return_url: 'https://tip.dev/onboarding/complete',
+        return_url: 'https://tip.dev/dashboard',
         type: 'account_onboarding',
     });
 
