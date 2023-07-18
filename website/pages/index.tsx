@@ -55,15 +55,18 @@ export default function Home() {
 
 			<h1 className="text-xl font-code mt-5 text-zinc-300">coming soon</h1>
 
-			<div className="form-control mt-10 min-w-fit">
-				<div className="input-group border-2 rounded-lg border-zinc-500 w-full">
-					<input type="text" placeholder="sign up for our newsletter" className="input w-full pr-5" value={email} onChange={(e) => {
-						setEmail(e.target.value)
-					}} />
-					<button className="btn btn-ghost border" onClick={() => submitEmail()}>
-						<FaCaretRight className="w-5 h-5" />
-					</button>
+			<div className="form-control mt-10">
+				<div className='tooltip' data-tip="Enter your email">
+					<div className="input-group border-2 rounded-lg border-zinc-500 w-full">
+						<input type="text" placeholder="Get updates" className="input w-full pr-5" value={email} onChange={(e) => {
+							setEmail(e.target.value)
+						}} />
+						<button className="btn btn-ghost border" onClick={() => submitEmail()}>
+							<FaCaretRight className="w-5 h-5" />
+						</button>
+					</div>
 				</div>
+
 			</div>
 			
 			{showToast && (
