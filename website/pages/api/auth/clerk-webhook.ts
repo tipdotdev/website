@@ -2,10 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import type { WebhookEvent } from '@clerk/clerk-sdk-node'
 import mysql from 'mysql2'
 import { Knock } from '@knocklabs/node'
+import { Novu } from '@novu/node'
 
 const dbUrl = process.env.DATABASE_URL as string
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as string
 const knock = new Knock(process.env.KNOCK_SECRET_KEY as string)
+const novu = new Novu(process.env.NOVU_SECRET_KEY as string)
 
 // export const config = {
 //     api: {
@@ -47,9 +49,9 @@ export default async function handler(
                 )`).then(() => {
 
                     // identify user in Knock
-                    knock.users.identify(event.data.id, {
+                    novu.subscribers.identify(event.data.id, {
                         email: event.data.email_addresses[0].email_address,
-                        username: event.data.username,
+                        username: event.data.username as string,
                     }).then((response: any) => {
 
                         let sentEmail = false

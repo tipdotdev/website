@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import NavNotif from "./notification";
 import { KnockFeedProvider, useKnockFeed } from "@knocklabs/react-notification-feed";
 import { NotificationCenter } from "./notificationCenter";
+import { NotificationBell, NovuProvider, PopoverNotificationCenter } from "@novu/notification-center";
 
 export default function DashboardTopNav() {
     const { isLoaded, isSignedIn, user } = useUser()
@@ -18,13 +19,19 @@ export default function DashboardTopNav() {
             
             {isSignedIn ? ( 
                 <div className="navbar-end">
-                    <KnockFeedProvider
-                        apiKey={process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY as string}
-                        feedId={process.env.NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID as string}
-                        userId={user?.id || ""}
+                    <NovuProvider
+                        applicationIdentifier={process.env.NEXT_PUBLIC_NOVU_APP_ID as string}
+                        subscriberId={user.id}
+                        initialFetchingStrategy={{ fetchNotifications: true, fetchUserPreferences: true, fetchUnseenCount: true }}
                     >
                         <>
                             <NotificationCenter />
+
+                            {/* <PopoverNotificationCenter
+                                colorScheme="dark"
+                            >
+                                {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
+                            </PopoverNotificationCenter> */}
                             
                             <div className="dropdown dropdown-end">
                                 <label tabIndex={0}>
@@ -80,7 +87,7 @@ export default function DashboardTopNav() {
                                 </div>
                             </div>
                         </>
-                    </KnockFeedProvider>
+                    </NovuProvider>
                 </div>
             ) : (
                 <div className="navbar-end">

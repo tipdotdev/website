@@ -1,28 +1,39 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import mysql from 'mysql2'
+import { Novu } from '@novu/node'
 
 const dbUrl = process.env.DATABASE_URL as string
+const novu = new Novu(process.env.NOVU_SECRET_KEY as string)
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
 
-    // connect to the database
-    const db = mysql.createConnection(dbUrl)
+    // // connect to the database
+    // const db = mysql.createConnection(dbUrl)
 
-    db.promise().execute(`
-        SELECT u.*, p.*, t.*
-        FROM users u
-        LEFT JOIN pages p ON u.id = p.user_id
-        LEFT JOIN tips t ON u.id = t.user_id
-        WHERE u.username = 'dickey';
-    `).then(([rows, fields]) => {
-        res.status(200).json(rows)
-    }
-    ).catch((err) => {
-        console.log(err)
-        res.status(500).json({ message: 'Internal server error' })
+    // db.promise().execute(`
+    //     SELECT u.*, p.*, t.*
+    //     FROM users u
+    //     LEFT JOIN pages p ON u.id = p.user_id
+    //     LEFT JOIN tips t ON u.id = t.user_id
+    //     WHERE u.username = 'dickey';
+    // `).then(([rows, fields]) => {
+    //     res.status(200).json(rows)
+    // }
+    // ).catch((err) => {
+    //     console.log(err)
+    //     res.status(500).json({ message: 'Internal server error' })
+    // })
+
+    novu.subscribers.identify("user_2Slds0sBX3cETmka4trjZ8o7SBI", {
+        email: "kyle@dickey.gg",
+        username: "dickey",
+    }).then((response: any) => {
+        return res.status(200).json(response)
+    }).catch((err: any) => {
+        return res.status(500).json(err)
     })
 }
 

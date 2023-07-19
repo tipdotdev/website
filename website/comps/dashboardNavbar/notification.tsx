@@ -1,26 +1,17 @@
 import { useMemo } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { useKnockFeed } from "@knocklabs/react-notification-feed";
-import { useEffect, useState } from "react";
-import Knock from "@knocklabs/client"
+import { useNotifications } from "@novu/notification-center"
+import { useEffect, useRef } from "react";
+import { useIsVisible } from "@/hooks/useIsVisible";
+// import Knock from "@knocklabs/client"
 
-const knock = new Knock(process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY as string);
+// const knock = new Knock(process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY as string);
 
 export default function NavNotif(props:any) {
-    // Group the content blocks by the name for easy lookup
-    const blocksByName = useMemo(() => {
-        return props.notif.blocks.reduce((acc:any, block:any) => {
-        return { ...acc, [block.name]: block };
-        }, {});
-    }, [props.notif]);
-
-    const maybeActor = props.notif.actors[0];
-
-    knock.authenticate(props.user.id)
 
     const timeSince = () => {
         // get the time since the notification was created
-        const time = new Date(props.notif.inserted_at).getTime();
+        const time = new Date(props.notif.createdAt).getTime();
         const now = new Date().getTime();
 
         const diff = now - time;
@@ -46,25 +37,31 @@ export default function NavNotif(props:any) {
 
     };
 
-    const knockFeed = knock.feeds.initialize(process.env.NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID as string);
+    // const knockFeed = knock.feeds.initialize(process.env.NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID as string);
 
-    knockFeed.on("items.read", (notification:any) => {
-        console.log("notification:read", notification);
-    });
+    // knockFeed.on("items.read", (notification:any) => {
+    //     console.log("notification:read", notification);
+    // });
 
     return (
-        <div className="bg-base-200 p-5 rounded-xl mb-2 mt-2 w-full cursor-pointer hover:bg-opacity-75" onClick={() => {
-            window.location.href = props.notif.blocks[1].rendered
-        }}>
-            <div className="indicator">
+        <div
+            className="bg-base-200 p-5 rounded-xl mb-2 mt-2 w-full cursor-pointer hover:bg-opacity-75" onClick={() => {
+            // window.location.href = props.notif.blocks[1].rendered
+        }}
+            id={props.notif.id}
+        >
+            <div>
 
-                <span className="indicator-item badge indicator-start badge-primary"></span> 
+                {!props.notif.seen && (
+                    <span className="badge badge-primary mb-2">New</span>
+                )}
     
-                {blocksByName.body && (
-                    <div
-                        className="text-lg text-zinc-300 font-bold"
-                        dangerouslySetInnerHTML={{ __html: blocksByName.body.rendered }}
-                    />
+                {props.notif.content && (
+                    <h1
+                        className="text-lg text-zinc-300 font-bold flex flex-col justify-center items-start"
+                    >
+                        {props.notif.content}
+                    </h1>
                 )}
                 
             </div>

@@ -13,6 +13,8 @@
     "@clerk/themes": "^1.7.5",
     "@knocklabs/node": "^0.4.22",
     "@knocklabs/react-notification-feed": "^0.8.6",
+    "@novu/node": "^0.16.4",
+    "@novu/notification-center": "^0.16.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.7",
