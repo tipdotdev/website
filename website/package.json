@@ -12,10 +12,12 @@
     "@clerk/nextjs": "^4.21.15",
     "@clerk/themes": "^1.7.5",
     "@knocklabs/node": "^0.4.22",
+    "@knocklabs/react-notification-feed": "^0.8.6",
     "@types/node": "20.4.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "chart.js": "^4.3.0",
     "dotenv": "^16.3.1",
     "micro": "^10.0.1",
     "mysql2": "^3.5.1",
@@ -23,8 +25,10 @@
     "nextjs-google-analytics": "^2.3.3",
     "postcss": "8.4.25",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-markdown": "^8.0.7",
     "resend": "^0.17.1",
     "stripe": "^12.13.0",
     "svix": "^1.6.0",
@@ -32,6 +36,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "daisyui": "^3.2.1"
   }
 }
