@@ -2,7 +2,7 @@ import { FaDiscord, FaTwitter } from "react-icons/fa";
 
 export default function DashboardFooter() {
     return (
-        <footer className="md:footer hidden p-4 bg-base-100 text-base-content absolute bottom-0 z-[99] px-20">
+        <footer className="md:footer hidden p-4 bg-transparent text-base-content absolute bottom-0 z-[99] px-20">
 
             <div className="items-center grid-flow-col text-zinc-200/50 font-bold text-sm">
                 <p>{"{$}"} ©️ 2023 TIP.DEV</p>
