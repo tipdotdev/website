@@ -3,7 +3,7 @@ import { FaEnvelope, FaExternalLinkAlt, FaHeart, FaSquare } from "react-icons/fa
 export default function IncomeEventDashboard(props:any) {
     const event = props.event
     return (
-        <div className="text-center flex flex-row p-5 bg-base-200 rounded-xl items-center justify-between">
+        <div className="text-center flex flex-row p-5 bg-base-300/50 rounded-xl items-center justify-between">
 
             <div className="flex flex-row items-center">
                 <img src={event.from.imageUrl} className="mask mask-circle w-24 mr-5" />
