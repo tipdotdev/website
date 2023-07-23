@@ -1,4 +1,4 @@
-package handlers
+package routes
 
 import (
 	"net/http"
@@ -10,6 +10,31 @@ import (
 )
 
 type createUserRequest models.User
+
+func GetUser(c *fiber.Ctx) error {
+	var user models.User
+
+	if err := services.DB.First(&user, "id = ?", c.Params("id")).Error; err != nil {
+		return c.Status(http.StatusNotFound).JSON(&fiber.Map{
+			"message": "User not found!",
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(&fiber.Map{
+		"user": user,
+	})
+}
+
+func GetAllUsers(c *fiber.Ctx) error {
+
+	var users []models.User
+
+	services.DB.Find(&users)
+
+	return c.Status(http.StatusOK).JSON(&fiber.Map{
+		"users": users,
+	})
+}
 
 func CreateUser(c *fiber.Ctx) error {
 	req := &createUserRequest{}

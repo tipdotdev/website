@@ -1,17 +1,18 @@
 package main
 
 import (
-	"github.com/dickeyy/tip-dev/api/handlers"
+	"github.com/dickeyy/tip-dev/api/routes"
 	"github.com/dickeyy/tip-dev/api/services"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
 
 	// make a new fiber instance
-	app := fiber.New(fiber.Config{
+	api := fiber.New(fiber.Config{
 		AppName:      "tip.dev-api",
 		ServerHeader: "Fiber",
 	})
@@ -20,19 +21,27 @@ func main() {
 	services.ConnectDatabase()
 
 	// setup middleware
-	app.Use(logger.New())
+	api.Use(logger.New())
+	api.Use(cors.New())
 
 	// setup routes
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+	api.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(200).JSON(&fiber.Map{
+			"message": "Hello, World!",
+		})
 	})
 
 	// users routes
-	app.Post("/users", handlers.CreateUser)
-	app.Get("/users", handlers.GetAllUsers)
-	app.Get("/users/:id", handlers.GetUser)
+	api.Post("/users", routes.CreateUser)
+	api.Get("/users", routes.GetAllUsers)
+	api.Get("/users/:id", routes.GetUser)
+
+	// newsletter routes
+	api.Post("/newsletter/enter", routes.EnterNewsletter)
+	api.Get("/newsletter", routes.GetNewsletter)
+	api.Delete("/newsletter/delete", routes.DeleteNewsletter)
 
 	// listen on port 8080
-	app.Listen(":8080")
+	api.Listen(":8080")
 
 }
