@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { FaSquare } from "react-icons/fa"
+import { FaHeartBroken, FaSquare } from "react-icons/fa"
 import IncomeEventDashboard from "../incomeEventDashboard"
 import Chart from "../chart"
 
@@ -280,7 +280,8 @@ export default function DashboardHome(props:any) {
                         <div className="flex flex-col justify-between w-full gap-2 mt-5">
                             
                             {recentEvents.length == 0 ? (
-                                <div className="flex flex-col justify-center items-center text-center bg-base-200 rounded-xl w-full">
+                                <div className="flex flex-row justify-center items-center text-center bg-base-200 rounded-xl w-full border-1 border-zinc-700 border py-10">
+                                    <FaHeartBroken className="text-xl font-nomal font-code text-zinc-400 mr-2" /> 
                                     <h1 className="text-xl font-nomal font-code text-zinc-400">No Recent Events</h1>
                                 </div>
                             ) : (
@@ -292,6 +293,8 @@ export default function DashboardHome(props:any) {
                                     })}
                                 </>
                             )}
+
+                            <a href="/dashboard/history" className="btn btn-ghost mt-2">View More</a>
                             
                         </div>
                     </div>

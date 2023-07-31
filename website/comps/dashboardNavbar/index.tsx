@@ -10,7 +10,7 @@ export default function DashboardTopNav() {
     const { isLoaded, isSignedIn, user } = useUser()
 
     return (
-        <div className="navbar w-full bg-base-100 mb-5 top-0 fixed px-32 py-5 z-[100]">
+        <div className="navbar w-full bg-base-100 mb-5 top-0 absolute px-32 py-5 z-[100]">
             <div className="navbar-start">
                 <a className="btn btn-ghost normal-case text-xl" href="/">
                     <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />

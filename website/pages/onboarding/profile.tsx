@@ -3,6 +3,8 @@ import { FaCamera, FaDiscord, FaGithub, FaInstagram, FaLinkedin, FaTwitter } fro
 import { TbDiscountCheckFilled } from "react-icons/tb"
 import { Inter } from "next/font/google";
 import { RedirectToSignIn, useUser } from "@clerk/nextjs";
+import OnboardingNav from "@/comps/onboardingNavbar";
+import SEOHead from "@/comps/seohead";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -71,6 +73,10 @@ export default function page() {
 
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
+            <SEOHead title="{$} | Onboarding" />
+
+            <OnboardingNav step={2} />
+
             <h1 className="text-4xl font-bold mt-12">Complete your profile</h1>
 
             <div className="form-control w-full max-w-xs">

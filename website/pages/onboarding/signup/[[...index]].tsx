@@ -1,3 +1,4 @@
+import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
 import { SignUp } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
@@ -11,7 +12,8 @@ export default function page() {
 	  		data-theme="dracula"
   		>	
 	  		<SEOHead title="Signup for tip.dev" />
-	  
+
+			<OnboardingNav step={1} />
 
             <SignUp path="/onboarding/signup" routing="path" afterSignUpUrl={"/onboarding/profile"}  />
 

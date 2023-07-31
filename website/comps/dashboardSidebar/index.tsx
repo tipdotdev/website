@@ -2,13 +2,13 @@ import { useRouter } from "next/router"
 import { FaBullseye, FaCoins, FaDollarSign, FaExternalLinkAlt, FaHistory, FaHome, FaUsers, FaBolt, FaUser, FaCode } from "react-icons/fa"
 import { IoSettingsSharp } from "react-icons/io5"
 
-export default function DashboardSidebar({content} : {content: any}) {
+export default function DashboardSidebar({content, user} : {content: any, user:any}) {
 
     let activePage = ""
 
     // get the current page
     const router = useRouter()
-    activePage = router.pathname.split("/")[1]
+    activePage = router.pathname.split("/")[2]
 
     return (
 
@@ -28,13 +28,13 @@ export default function DashboardSidebar({content} : {content: any}) {
                 {/* Sidebar content here */}
                     <li
                         className={`rounded-lg transition-all ease-in-out duration-150 cursor-pointer w-full
-                            ${activePage == "dashboard" ? (
+                            ${activePage == undefined ? (
                                 "bg-primary/20"
                             ) : (
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard">
                         <FaHome className="mr-2" />
                         Home
                     </a></li>
@@ -47,7 +47,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href={`/${user.username}`}>
                         <FaExternalLinkAlt className="mr-2" />
                         Your Page
                     </a></li>
@@ -64,20 +64,20 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/tips">
                         <FaCoins className="mr-2" />
                         Tips
                     </a></li>
 
                     <li
                         className={`mt-1 rounded-lg transition-all ease-in-out duration-150 cursor-pointer w-full
-                            ${activePage == "subscriptions" ? (
+                            ${activePage == "subscribers" ? (
                                 "bg-primary/20"
                             ) : (
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/subscribers">
                         <FaUsers className="mr-2" />
                         Subscribers
                     </a></li>
@@ -90,7 +90,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/goals">
                         <FaBullseye className="mr-2" />
                         Goals
                     </a></li>
@@ -103,7 +103,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/history">
                         <FaHistory className="mr-2" />
                         History
                     </a></li>
@@ -120,7 +120,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/payout">
                         <FaDollarSign className="mr-2" />
                         Payout
                     </a></li>
@@ -133,7 +133,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/integrations">
                         <FaBolt className="mr-2" />
                         Integrations
                     </a></li>
@@ -146,7 +146,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/buttons">
                         <FaCode className="mr-2" />
                         Buttons
                     </a></li>
@@ -159,7 +159,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/account">
                         <FaUser className="mr-2" />
                         Account
                     </a></li>
@@ -172,7 +172,7 @@ export default function DashboardSidebar({content} : {content: any}) {
                                 ""
                             )}
                         `}
-                    ><a>
+                    ><a href="/dashboard/settings">
                         <IoSettingsSharp className="mr-2" />
                         Settings
                     </a></li>

@@ -1,3 +1,5 @@
+import OnboardingNav from "@/comps/onboardingNavbar";
+import SEOHead from "@/comps/seohead";
 import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { useState } from "react";
@@ -49,6 +51,10 @@ export default function page() {
 
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
+	  		<SEOHead title="{$} | Onboarding" />
+
+            <OnboardingNav step={3} />
+
             <h1 className="text-4xl font-bold mt-12">Select your payout preference</h1>
 
             <div className="form-control w-full max-w-lg mb-12">
