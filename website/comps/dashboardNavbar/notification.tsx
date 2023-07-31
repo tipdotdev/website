@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useNotifications } from "@novu/notification-center"
 import { useEffect, useRef } from "react";
-import { useIsVisible } from "@/hooks/useIsVisible";
 // import Knock from "@knocklabs/client"
 
 // const knock = new Knock(process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY as string);
