@@ -42,6 +42,6 @@ func main() {
 	api.Delete("/newsletter/delete", routes.DeleteNewsletter)
 
 	// listen on port 8080
-	api.Listen(":8080")
+	api.Listen(":80")
 
 }
