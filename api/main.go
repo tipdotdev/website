@@ -13,7 +13,7 @@ func main() {
 
 	// make a new fiber instance
 	api := fiber.New(fiber.Config{
-		AppName:      "tip.dev-api",
+		AppName:      "tipdev-api",
 		ServerHeader: "Fiber",
 	})
 
