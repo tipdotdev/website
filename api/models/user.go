@@ -21,3 +21,19 @@ type User struct {
 	ClerkUpdatedAt  string `json:"clerk_updated_at"`
 	StripeAccountID string `json:"stripe_account_id"`
 }
+
+type NewUser struct {
+	gorm.Model
+
+	FirstName       string `json:"first_name"`
+	Email           string `json:"email"`
+	Password        string `json:"password"`
+	Website         string `json:"website"`
+	Username        string `json:"username"`
+	ID              string `json:"id"`
+	Pfp             string `json:"pfp"`
+	Bio             string `json:"bio"`
+	Socials         string `json:"socials"`
+	LastName        string `json:"last_name"`
+	StripeAccountID string `json:"stripe_account_id"`
+}

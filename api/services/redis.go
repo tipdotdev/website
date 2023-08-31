@@ -19,6 +19,7 @@ func init() {
 
 	err := client.Ping(context.Background()).Err()
 	if err != nil {
+		print(err)
 		panic(err)
 	}
 

@@ -1,0 +1,27 @@
+{
+  "name": "tip.dev-js-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:push": "drizzle-kit push:mysql --config ./drizzle.config.ts",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@planetscale/database": "^1.11.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.0.0",
+    "redis": "^4.6.8",
+    "resend": "^1.0.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.19.13"
+  }
+}
