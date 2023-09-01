@@ -61,7 +61,9 @@ export default function Home() {
 
 			<h1 className="text-xl font-code mt-5 text-zinc-300">coming soon</h1>
 
-			<div className="form-control mt-10">
+			<form className="form-control mt-10" onSubmit={(e) => {
+				e.preventDefault()
+			}}>
 				<div className='tooltip' data-tip="Enter your email">
 					<div className="input-group border-2 rounded-lg border-zinc-500 w-full">
 						<input type="text" placeholder="Get updates" className="input w-full pr-5" value={email} onChange={(e) => {
@@ -73,7 +75,7 @@ export default function Home() {
 					</div>
 				</div>
 
-			</div>
+			</form>
 
 			<DashboardFooter />
 			

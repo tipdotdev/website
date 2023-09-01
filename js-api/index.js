@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+var morgan = require('morgan')
 
 // create express app
 const api = express();
@@ -14,8 +15,8 @@ api.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "*");
     next();
 });
-// handle json parsing body
 api.use(bodyParser.json());
+api.use(morgan('short'))
 
 // import routers
 const authRouter = require('./routes/auth')

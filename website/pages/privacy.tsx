@@ -18,7 +18,6 @@ export async function getStaticProps() {
 }
 
 export default function page(postData: any) {
-    console.log(postData)
     return (
         <main
 			className={`flex min-h-screen flex-col justify-center items-center py-10 sm:px-[10vw] px-5 ${inter.className} overflow-x-hidden`}
