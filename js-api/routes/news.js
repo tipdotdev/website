@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const client = require('../utils/db');
 const dotenv = require('dotenv');
-const { generateAccessToken } = require('../utils/jwt');
-const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
 const { redis } = require('../utils/redis');
 
 dotenv.config();

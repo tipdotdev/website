@@ -5,6 +5,7 @@ import { FaCaretRight, FaCheck } from 'react-icons/fa'
 import { useState } from 'react'
 import Toast from '@/comps/toast'
 import DashboardFooter from '@/comps/dashboardFooter'
+import axios from 'axios';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,24 +17,28 @@ export default function Home() {
 	const [ errorText, setErrorText ] = useState("")
 
 	const submitEmail = async () => {
-		console.log(email)
-		let req = await fetch("/api/newsletter/enter", {
+		let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/news/enter`, {
 			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
 			body: JSON.stringify({
 				email: email
 			})
 		})
-		console.log(req.status)
 		if (req.status === 200) {
 			setEmail("")
 			setShowToast(true)
+			setError(false)
+			setErrorText("Successfully signed up")
 
 			setTimeout(() => {
 				setShowToast(false)
 			}, 5000)
 		} else {
+			const data = await req.json()
 			setError(true)
-			setErrorText("Error signing up")
+			setErrorText(data.error.message)
 			setShowToast(true)
 
 			setTimeout(() => {

@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 // create express app
 const api = express();
@@ -7,9 +8,14 @@ const api = express();
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    // allow all origins
+    res.header("Access-Control-Allow-Origin", "*");
+    // allow all headers
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
+// handle json parsing body
+api.use(bodyParser.json());
 
 // import routers
 const authRouter = require('./routes/auth')
