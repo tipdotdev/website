@@ -23,7 +23,7 @@ api.use('/v1/user', userRouter)
 api.use('/v1/news', newsRouter)
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 api.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
