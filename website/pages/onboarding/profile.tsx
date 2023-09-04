@@ -1,33 +1,29 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaCamera, FaDiscord, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { TbDiscountCheckFilled } from "react-icons/tb"
 import { Inter } from "next/font/google";
-import { RedirectToSignIn, useUser } from "@clerk/nextjs";
+import { RedirectToSignIn } from "@clerk/nextjs";
 import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
+import useUser from "@/hooks/useUser";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function page() {
 
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { token, isAuthLoading, isSignedIn } = useUser()
 
-    if (!isSignedIn) {
-        <RedirectToSignIn />
-    }
-
-    if (!isLoaded) {
-        return (
-            <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
-                <span className="loading loading-spinner"></span>
-            </main>
-        )
-    }
+    useEffect(() => {
+        if (isSignedIn == false && isAuthLoading == false) {
+            window.location.href = "/signin"
+        }
+    }, [isSignedIn])
 
     const [name, setName] = useState("")
     const [about, setAbout] = useState("")
     const [website, setWebsite] = useState("")
     const [socials, setSocials] = useState({} as any)
+    const [avatar, setAvatar] = useState(null as any)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -52,21 +48,40 @@ export default function page() {
         setIsLoading(true)
 
         // post to the api
-        const res = await fetch("/api/onboarding/profile", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/update/me`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify({
-                name: name,
-                about: about,
-                website: website,
-                socials: socials,
+                data: {
+                    name: name,
+                    bio: about,
+                    website: website,
+                    socials: socials,
+                }
             })
         })
 
-        if (res.status == 200) {
+        // upload the avatar
+        const formData = new FormData()
+        formData.append('file', avatar)
+
+        const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/upload/avatar`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        if (res.status == 200 && res2.status == 200) {
+            setIsLoading(false)
             window.location.href = "/onboarding/payout"
+        } else {
+            setIsLoading(false)
+            alert('error')
         }
 
     }
@@ -77,11 +92,11 @@ export default function page() {
 
             <OnboardingNav step={2} />
 
-            <h1 className="text-4xl font-bold mt-12">Complete your profile</h1>
+            <h1 className="text-4xl font-bold mt-20">Complete your profile</h1>
 
-            <div className="form-control w-full max-w-xs">
+            <div className="form-control w-full max-w-sm">
 
-                {/* <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col justify-center items-center">
                     <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-primary border-dashed rounded-full cursor-pointer
                             hover:bg-base-200 mt-10
                         ">
@@ -105,13 +120,13 @@ export default function page() {
                     </label>
 
                     <p className="mt-5 font-code text-zinc-300">Add Avatar</p>
-                </div> */}
+                </div>
                                 
                 <div className="mt-10">
                     <label className="label">
                         <span className="label-text text-md font-code">What's your name?</span>
                     </label>
-                    <input type="text" placeholder="Name" className="input input-bordered w-full max-w-xs"
+                    <input type="text" placeholder="Name" className="input input-bordered w-full max-w-sm"
                         onChange={(e) => {
                             if (e.target.value.length > 0) {
                                 setName(e.target.value)
@@ -124,7 +139,7 @@ export default function page() {
                     <label className="label">
                         <span className="label-text text-md font-code">About you ({about.length}/100)</span>
                     </label>
-                    <textarea maxLength={100} className="textarea textarea-bordered h-24 w-full max-w-xs" placeholder="Hey, welcome to my tip.dev page! Tips help me continue to make cool stuff!"
+                    <textarea maxLength={100} className="textarea textarea-bordered h-24 w-full max-w-sm" placeholder="Hey, welcome to my tip.dev page! Tips help me continue to make cool stuff!"
                         onChange={(e) => {
                             if (e.target.value.length > 0) {
                                 setAbout(e.target.value)
@@ -137,7 +152,7 @@ export default function page() {
                     <label className="label">
                         <span className="label-text text-md font-code">Website link</span>
                     </label>
-                    <input type="text" placeholder="https://tip.dev" className="input input-bordered w-full max-w-xs"
+                    <input type="text" placeholder="https://tip.dev" className="input input-bordered w-full max-w-sm"
                         onChange={(e) => {
                             if (e.target.value.length > 0) {
                                 setWebsite(e.target.value)

@@ -1,13 +1,14 @@
 import { FaArrowCircleLeft, FaBars, FaBell, FaDollarSign, FaEnvelope, FaGripVertical, FaUserCircle } from "react-icons/fa";
-import { SignOutButton, useUser } from "@clerk/nextjs"
+import useUser from "../../hooks/useUser"
 import { useState, useEffect } from "react";
 import NavNotif from "./notification";
 import { KnockFeedProvider, useKnockFeed } from "@knocklabs/react-notification-feed";
 import { NotificationCenter } from "./notificationCenter";
 import { NotificationBell, NovuProvider, PopoverNotificationCenter } from "@novu/notification-center";
+import Avatar from "../avatar";
 
 export default function DashboardTopNav() {
-    const { isLoaded, isSignedIn, user } = useUser()
+    const { isAuthLoading, isSignedIn, user, logout } = useUser()
 
     return (
         <div className="navbar w-full bg-base-100 mb-5 top-0 absolute px-32 py-5 z-[100]">
@@ -17,11 +18,11 @@ export default function DashboardTopNav() {
                 </a>
             </div>
             
-            {isSignedIn ? ( 
+            {isSignedIn && !isAuthLoading && user ? ( 
                 <div className="navbar-end">
                     <NovuProvider
                         applicationIdentifier={process.env.NEXT_PUBLIC_NOVU_APP_ID as string}
-                        subscriberId={user.id}
+                        subscriberId={user.user_id}
                         initialFetchingStrategy={{ fetchNotifications: true, fetchUserPreferences: true, fetchUnseenCount: true }}
                     >
                         <>
@@ -38,7 +39,9 @@ export default function DashboardTopNav() {
                                     <div className="flex flex-row items-center justify-center border-1 border-zinc-500 border p-1 rounded-full 
                                         hover:bg-neutral transition-all ease-in-out duration-150 cursor-pointer
                                     ">
-                                        <img src={user.imageUrl} className="mask mask-circle w-8" />
+                                        <div className="w-8 flex">
+                                            <Avatar user={user} />
+                                        </div>
                                         <FaBars className="w-6 h-6 text-zinc-300 ml-2 mr-2" />
                                     </div>
                                 </label>
@@ -77,10 +80,12 @@ export default function DashboardTopNav() {
 
                                         <div className="divider"></div>
                                         
-                                        <li>
+                                        <li onClick={(e) => {
+                                            logout()
+                                        }}>
                                             <a className="justify-start text-red-400">
                                                 <FaArrowCircleLeft className="mr-2" />
-                                                <SignOutButton/>
+                                                Sign Out
                                             </a>
                                         </li>
                                     </ul>

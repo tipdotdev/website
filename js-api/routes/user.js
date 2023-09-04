@@ -4,6 +4,7 @@ const client = require('../utils/db');
 const dotenv = require('dotenv');
 const { authToken } = require('../utils/jwt');
 const { encrypt, decrypt, encryptObj } = require('../utils/crypto');
+const { redis } = require('../utils/redis');
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ router.get("/me", authToken, (req, res) => {
 
     const user = req.user;
 
-    db.collection('users').findOne({ username: user }).then((result) => {
+    db.collection('users').findOne({ user_id: user }).then((result) => {
         if (result) {
             // remove sensitive data
             delete result.password;
@@ -38,8 +39,8 @@ router.get("/me", authToken, (req, res) => {
 
 });
 
-// get user by username, protected
-router.get("/:username", authToken, (req, res) => {
+// get user by username, unprotected
+router.get("/:username", (req, res) => {
 
     const { username } = req.params;
 
@@ -78,19 +79,29 @@ router.get("/:username", authToken, (req, res) => {
 });
 
 // update me, protected
-router.put("/update/me", authToken, (req, res) => {
+router.post("/update/me", authToken, (req, res) => {
     
     const user = req.user;
     const { data } = req.body
 
+    console.log(data)
+
     // update the user
-    db.collection('users').updateOne({ username: user}, { $set: data }).then(() => {
-        return res.json({
-            message: "success",
-        });
-    }).catch((err) => {
-        console.log('error')
-        return res.status(400).json({ error: err });
+    db.collection('users').updateOne({ user_id: user}, { $set: data }).then(() => {
+        // refetch the user
+        db.collection('users').findOne({ user_id: user }).then((result) => {
+            // delete the old user from redis
+            redis.hDel('td:users', user).then(() => {
+                // add the new user to redis
+                redis.hSet('td:users', user, JSON.stringify(result)).then(() => {
+                    return res.json({ message: "success" });
+                }).catch((err) => {
+                    return res.status(500).json({ error: { message: "internal server error" } });
+                })
+            }).catch((err) => {
+                return res.status(500).json({ error: { message: "internal server error" } });
+            })
+        })
     })
     
 })

@@ -1,4 +1,5 @@
 import { FaEnvelope, FaExternalLinkAlt, FaHeart, FaSquare } from "react-icons/fa"
+import Avatar from "../avatar"
 
 export default function IncomeEventDashboard(props:any) {
     const event = props.event
@@ -6,7 +7,9 @@ export default function IncomeEventDashboard(props:any) {
         <div className="text-center flex flex-row p-5 bg-base-300/50 rounded-xl items-center justify-between">
 
             <div className="flex flex-row items-center">
-                <img src={event.from.imageUrl} className="mask mask-circle w-24 mr-5" />
+                <div className="w-24 mr-4">
+                    <Avatar user={event.from} />
+                </div>
 
                 <div className="flex flex-col justify-start items-start"> 
                     <p className="text-xl font-code text-zinc-400">{event.from.username} gave you</p>

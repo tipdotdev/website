@@ -1,0 +1,13 @@
+{
+    "id": "uid",
+    "type": "string",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "status": "string",
+    "amount": "number",
+    "currency": "string",
+    "receiver": "user object",
+    "sender": "user object",
+    "is_public": "boolean",
+    "is_completed": "boolean"
+}

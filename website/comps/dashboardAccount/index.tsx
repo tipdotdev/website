@@ -13,13 +13,7 @@ export default function DashboardAccount(props:any) {
                 <div className="grid grid-cols-4 gap-2">
 
                     <div className="col-span-4 flex flex-row justify-between items-center rounded-xl">
-                        <UserProfile
-                            appearance={{
-                                elements: {
-                                    card: "w-[165%] rounded-xl bg-base-200 p-5"
-                                }
-                            }}
-                        />
+                        
                     </div>
                     
                 </div>

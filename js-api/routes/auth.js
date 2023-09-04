@@ -12,22 +12,22 @@ const db = client.db(process.env.DATABASE_NAME);
 
 // signin, unprotected
 router.post("/signin", (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     
-    if (!username && !password) {
+    if (!email && !password) {
         return res.status(400).json({ message: "missing username and password" });
-    } else if (!username && password) {
+    } else if (!email && password) {
         return res.status(400).json({ message: "missing username" });
-    } else if (username && !password) {
+    } else if (email && !password) {
         return res.status(400).json({ message: "missing password" });
     }
 
     // get the user
-    db.collection('users').findOne({username: username}).then((result) => {
+    db.collection('users').findOne({email: email}).then((result) => {
         if (result) {
             // check if password is correct
             if (decrypt(result.password, process.env.MASTER_ENCRYPT_KEY) == password) {
-                let token = generateAccessToken(username);
+                let token = generateAccessToken(result.user_id);
                 return res.json({
                     message: "success",
                     token: token,
@@ -96,53 +96,45 @@ router.post("/signup", (req, res) => {
         return res.status(400).json({ error: err });
     })
 
-    let token = generateAccessToken(username);
+    let uuID = generateUUID();
+    let token = generateAccessToken(uuID);
 
     // gather data
     const data = {
-        user_id: generateUUID(),
+        user_id: uuID,
         created_at: new Date(),
         updated_at: new Date(),
         username: username,
         email: email,
         password: encrypt(password, process.env.MASTER_ENCRYPT_KEY),
-        website: null,
-        bio: null,
-        socials: [],
-        name: {
-            first: null,
-            last: null
-        },
         pictures: {
-            avatar: null,
-            banner: null
+            avatar: 'https://cdn.tip.dev/tipdev/avatars/default.jpeg',
         },
-        stripe: {
-            id: null,
-        },
-        tips: [],
-        posts: [],
-        comments: [],
-        likes: [],
-        followers: [],
-        following: [],
-        subscribers: [],
-        subscriptions: [],
-        followerCount: 0,
-        followingCount: 0,
-        subscriberCount: 0,
-        subscriptionCount: 0,
-        postCount: 0,
-        commentCount: 0,
-        likeCount: 0,
-        tipCount: 0,
     }
 
-    // insert into db
+    // save data to db and redis
     db.collection("users").insertOne(data).then((result) => {
 
-        redis.hSet('td:users', username, JSON.stringify(data)).then((result) => {
-            return res.json({ message: "success", token: token });
+        redis.hSet('td:users', uuID, JSON.stringify(data)).then((result) => {
+            
+            redis.sAdd(`td-usernames`, username).then((result) => {
+                
+                redis.hSet('td:analytics', uuID, JSON.stringify({ pageviews: 0 })).then((result) => {
+
+                    return res.json({
+                        message: "success",
+                        token: token,
+                        expires_in: "730h"
+                    });
+
+                }).catch((err) => {
+                    return res.status(400).json({ error: err });
+                })
+
+            }).catch((err) => {
+                return res.status(400).json({ error: err });
+            })
+
         }).catch((err) => { 
             return res.status(400).json({ error: err });
         })
@@ -156,10 +148,15 @@ router.post("/signup", (req, res) => {
 // check if username is available, unprotected
 router.get("/check/:username", (req, res) => {
 
-    redis.hExists('td:users', req.params.username).then((result) => {
+    console.log(req.params.username)
+
+    redis.sIsMember('td-usernames', req.params.username).then((result) => {
+        console.log(result)
         if (result) {
-            return res.status(403).json({ message: "username unavailable" });
+            console.log(`username ${req.params.username} is unavailable`)
+            return res.status(401).json({ message: "username unavailable" });
         } else {
+            console.log(`username ${req.params.username} is available`)
             return res.json({ message: "username available" });
         }
     })
@@ -182,7 +179,18 @@ router.put("/forgot-password", (req, res) => {
             if (decrypt(result.password, process.env.MASTER_ENCRYPT_KEY) == oldPassword) {
                 // update password
                 db.collection("users").updateOne({username: username}, { $set: { password: encrypt(newPassword, process.env.MASTER_ENCRYPT_KEY) } }).then((result) => {
-                    return res.json({ message: "success" });
+                    // update redis
+                    redis.hGet('td:users', username).then((result) => {
+                        let user = JSON.parse(result);
+                        user.password = encrypt(newPassword, process.env.MASTER_ENCRYPT_KEY);
+                        redis.hSet('td:users', username, JSON.stringify(user)).then((result) => {
+                            return res.json({ message: "success" });
+                        }).catch((err) => {
+                            return res.status(400).json({ error: err });
+                        })
+                    }).catch((err) => {
+                        return res.status(400).json({ error: err });
+                    })
                 }).catch((err) => {
                     return res.status(400).json({ error: err });
                 })

@@ -4,6 +4,11 @@ function generateKey() {
     return CryptoJS.lib.WordArray.random(256/8).toString();
 }
 
+function generateUploadKey() {
+    // return a base64 key that is 128 characters long
+    return CryptoJS.lib.WordArray.random(16).toString();
+}
+
 function generateUUID() {
     let uuid = `user_${crypto.randomUUID()}`
     return uuid
@@ -31,6 +36,7 @@ function decryptObj(data, key) {
 
 module.exports = {
     generateKey,
+    generateUploadKey,
     generateUUID,
     encrypt,
     decrypt,
