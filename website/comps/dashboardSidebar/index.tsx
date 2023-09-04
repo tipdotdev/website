@@ -12,7 +12,7 @@ export default function DashboardSidebar({content, user} : {content: any, user:a
 
     return (
 
-        <div className="col-span-1 drawer lg:drawer-open mt-32 z-10 w-[80vw] h-fit top-0">
+        <div className="col-span-1 drawer lg:drawer-open mt-32 z-10 w-[80vw] h-fit top-0 mb-20">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col items-center justify-start">
                 

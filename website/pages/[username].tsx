@@ -61,7 +61,7 @@ export default function Page() {
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center pb-10 ${inter.className}`} data-theme="dracula">
 
-            <SEOHead title="{$} | Dashboard Tips" />  
+            <SEOHead title={`{$} ${username}`} />  
 
             <UserTipPage pageUser={pageUser} />
 

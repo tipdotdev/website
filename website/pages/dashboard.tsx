@@ -12,18 +12,19 @@ export default function Page() {
 
     const { token, isAuthLoading, isSignedIn, user } = useUser()
 
-    useEffect(() => {
-        if (!isSignedIn && !isAuthLoading) {
-            window.location.href = "/signin"
-        }
-    }, [isSignedIn])
+    // useEffect(() => {
+    //     if (isSignedIn == false && user == null) {
+    //         window.location.href = "/signin"
+    //     }
+    // }, [isSignedIn])
+
 
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
 
-            {isAuthLoading ? (
+            {isAuthLoading || !user ? (
                 <div className="flex flex-col justify-center items-center w-full h-full">
-                    <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-64 w-64"></div>
+                    <span className="loading loading-spinner loading-md"></span>
                 </div>
             ) :
                 <>
