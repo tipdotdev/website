@@ -7,7 +7,7 @@ import { TbDiscountCheckFilled } from "react-icons/tb";
 import useUser from "../../hooks/useUser";
 
 
-export default function SignupForm() {
+export default function SignupForm(props:any) {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")

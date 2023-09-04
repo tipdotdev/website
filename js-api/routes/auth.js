@@ -112,6 +112,7 @@ router.post("/signup", (req, res) => {
         pictures: {
             avatar: 'https://cdn.tip.dev/tipdev/avatars/default.jpeg',
         },
+        emailVerified: false,
     }
 
     // save data to db and redis
@@ -130,7 +131,7 @@ router.post("/signup", (req, res) => {
 
                         return res.json({
                             message: "success",
-                            token: token,
+                            // token: token,
                             expires_in: "730h"
                         });
 

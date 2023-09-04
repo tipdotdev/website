@@ -179,4 +179,60 @@ router.post("/tip", (req,res) => {
 
 })
 
+// verify user email, protected
+router.post("/me/verify/email", authToken, (req,res) => {
+
+    const { code } = req.body;
+    const user = req.user;
+
+    // get the user
+    db.collection('users').findOne({ user_id: user }).then((result) => {
+        if (!result) {
+            return res.status(400).json({ error: { message: "user not found" } });
+        }
+
+        if (result.emailVerified) {
+            return res.json({ message: "success" });
+        }
+
+        // get the code from redis
+        redis.hGet('td:emailVerification', result.email).then((result) => {
+            if (!result) {
+                return res.status(400).json({ error: { message: "code not found" } });
+            }
+
+            const data = JSON.parse(result);
+
+            const decryptedCodeServer = decrypt(data.code, process.env.MASTER_ENCRYPT_KEY);
+
+            if (code != decryptedCodeServer) {
+                return res.status(400).json({ error: { message: "incorrect code" } });
+            }
+
+            // update the user
+            db.collection("users").updateOne({ email: result.email }, { $set: { emailVerified: true } }).then((result) => {
+                // delete user from redis
+                redis.hDel("td:users", result.user_id).then(() => {
+                    // add user to redis
+                    redis.hSet("td:users", result.user_id, JSON.stringify(result)).then(() => {
+                        // delete code from redis
+                        redis.hDel("td:emailVerification", result.email).then(() => {
+                            return res.json({ message: "success" });
+                        }).catch((err) => {
+                            return res.status(400).json({ error: err });
+                        })
+                    })
+                })
+            })
+
+        }).catch((err) => {
+            return res.status(400).json({ error: err });
+        })
+
+    }).catch((err) => {
+        return res.status(400).json({ error: err });
+    })
+
+})
+
 module.exports = router;
