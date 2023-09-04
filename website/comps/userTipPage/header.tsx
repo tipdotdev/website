@@ -10,13 +10,13 @@ export default function Header(props:any) {
     const user = props.user
 
     return (
-        <div className="flex flex-col w-full justify-center items-center">
+        <div className="flex flex-col w-full justify-center items-center mb-20">
             <div className="flex flex-col w-[99%] top-2 absolute">
 
                 {pageUser?.pictures?.banner == null ? (
                     <div className="w-full h-64 bg-base-200 rounded-xl"></div>
                 ) : (
-                    <img src={pageUser?.pictures?.banner} className="w-full h-64 object-cover rounded-xl" />
+                    <img src={pageUser?.pictures?.banner} className="w-full h-[20rem] object-cover object-center rounded-xl" />
                 )}
 
                 <img src={pageUser?.pictures?.avatar} className="w-36 h-36 object-cover rounded-full -mt-20 ml-5 border-[6px] border-base-100" />

@@ -14,7 +14,6 @@ export function NotificationCenter() {
         // find all the notifs.read_at values that are null
         const unread = notifications?.filter((notif) => !notif.seen);
         setUnreadCount(unread?.length);
-        console.log(unread?.length)
     }, [notifications]);
 
     // only show the 5 most recent notifications

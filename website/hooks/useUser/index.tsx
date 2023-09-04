@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 const useUser = () => {
 
     const [token, setToken] = useState("" as any)
-    const [user, setUser] = useState({} as any)
+    const [user, setUser] = useState(null as any)
     const [isAuthLoading, setIsLoading] = useState(true)
     const [isSignedIn, setIsSignedIn] = useState(false)
 
@@ -15,7 +15,7 @@ const useUser = () => {
 
             setToken(localStorage.getItem("token"))
 
-            if (token) {
+            if (token !== null && token !== undefined && token !== "") {
                 setIsSignedIn(true)
             } else {
                 setIsSignedIn(false)
@@ -39,7 +39,7 @@ const useUser = () => {
     }
 
     const getUser = async () => {
-        if (!isAuthLoading && isSignedIn) {
+        if (token !== null && token !== undefined && token !== "") {
             let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me`, {
                 method: "GET",
                 headers: {
@@ -58,8 +58,7 @@ const useUser = () => {
 
     useEffect(() => {
         getUser()
-    }, [isSignedIn])
-
+    }, [token])
 
     return { token, isAuthLoading, isSignedIn, saveToken, logout, user } as const
 }
