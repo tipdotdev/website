@@ -1,4 +1,5 @@
 var CryptoJS = require("crypto-js");
+var crypto = require('crypto');
 
 function generateKey() {
     return CryptoJS.lib.WordArray.random(256/8).toString();
@@ -11,6 +12,11 @@ function generateUploadKey() {
 
 function generateUUID() {
     let uuid = `user_${crypto.randomUUID()}`
+    return uuid
+}
+
+function generateUID() {
+    let uuid = `${crypto.randomUUID()}`
     return uuid
 }
 
@@ -41,5 +47,6 @@ module.exports = {
     encrypt,
     decrypt,
     encryptObj,
-    decryptObj
+    decryptObj,
+    generateUID
 }

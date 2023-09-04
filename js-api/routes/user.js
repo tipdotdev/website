@@ -3,7 +3,7 @@ const router = express.Router()
 const client = require('../utils/db');
 const dotenv = require('dotenv');
 const { authToken } = require('../utils/jwt');
-const { encrypt, decrypt, encryptObj } = require('../utils/crypto');
+const { encrypt, decrypt, encryptObj, generateUID } = require('../utils/crypto');
 const { redis } = require('../utils/redis');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
@@ -143,6 +143,39 @@ router.post("/connect/stripe", authToken, async (req, res) => {
     } else {
         return res.status(500).json({ error: { message: "internal server error" } });
     }
+
+})
+
+// tip user, unprotected
+router.post("/tip", (req,res) => {
+    
+    const { username, sender, tipData } = req.body;
+
+    // get the user 
+    db.collection('users').findOne({ username: username }).then((result) => {
+
+        if (!result) {
+            return res.status(400).json({ error: { message: "user not found" } });
+        }
+
+        const incomeEvent = {
+            id: `income_${generateUID()}`,
+            type: "tip",
+            created_at: new Date(),
+            updated_at: new Date(),
+            status: "pending",
+            amount: tipData.amount,
+            currency: "usd",
+            receiver: result.user_id,
+            sender: sender.user_id,
+            is_public: true,
+            is_completed: false
+        }
+
+
+    }).catch((err) => {
+        return res.status(400).json({ error: err });
+    })
 
 })
 
