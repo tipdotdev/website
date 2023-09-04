@@ -12,7 +12,7 @@ export default function Page() {
     // get the params
     const { username } = useRouter().query
 
-    const [pageUser, setPageUser] = useState(null)
+    const [pageUser, setPageUser] = useState(null as any)
 
     // get the page data
     const getData = async () => {
@@ -34,9 +34,29 @@ export default function Page() {
         }
     }
 
+    // add a page view
+    const addPageView = async () => {
+        if (!pageUser) return
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/analytics/pageviews/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user: pageUser.user_id,
+                page: "tip"
+            })
+        })
+    }
+
     useEffect(() => {
         getData()
     }, [username])
+
+    useEffect(() => {
+        addPageView()
+    }, [pageUser])
 
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center pb-10 ${inter.className}`} data-theme="dracula">

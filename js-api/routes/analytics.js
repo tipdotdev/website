@@ -28,5 +28,27 @@ router.get("/pageviews/me", authToken, (req,res) => {
 
 })
 
+// post page view, unprotected
+router.post("/pageviews/add", (req,res) => {
+    const { user } = req.body;
+
+    redis.hGet('td:analytics', user).then((result) => {
+        if (result) {
+            let data = JSON.parse(result);
+            data.pageviews = data.pageviews + 1;
+
+            redis.hSet('td:analytics', user, JSON.stringify(data)).then(() => {
+                return res.json({ message: "success" });
+            }).catch((err) => {
+                return res.status(400).json({ error: err });
+            })
+        } else {
+            return res.status(400).json({ error: { message: "user not found" } });
+        }
+    }).catch((err) => {
+        return res.status(400).json({ error: err });
+    })
+})
+
 // export router
 module.exports = router

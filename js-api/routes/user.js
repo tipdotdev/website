@@ -51,7 +51,6 @@ router.get("/:username", (req, res) => {
             delete result.password;
             delete result.stripe
             delete result.email
-            delete result.user_id
             delete result._id
             delete result.created_at
             delete result.updated_at
