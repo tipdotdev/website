@@ -5,10 +5,12 @@ const dotenv = require('dotenv');
 const { generateAccessToken } = require('../utils/jwt');
 const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
 const { redis } = require('../utils/redis');
+const { Novu } = require('@novu/node');
 
 dotenv.config();
 
 const db = client.db(process.env.DATABASE_NAME);
+const novu = new Novu(process.env.NOVU_SECRET_KEY)
 
 // signin, unprotected
 router.post("/signin", (req, res) => {
@@ -121,11 +123,20 @@ router.post("/signup", (req, res) => {
                 
                 redis.hSet('td:analytics', uuID, JSON.stringify({ pageviews: 0 })).then((result) => {
 
-                    return res.json({
-                        message: "success",
-                        token: token,
-                        expires_in: "730h"
-                    });
+                    novu.subscribers.identify(uuID, {
+                        email: email,
+                        username: username,
+                    }).then((result) => {
+
+                        return res.json({
+                            message: "success",
+                            token: token,
+                            expires_in: "730h"
+                        });
+
+                    }).catch((err) => {
+                        return res.status(400).json({ error: err });
+                    })
 
                 }).catch((err) => {
                     return res.status(400).json({ error: err });

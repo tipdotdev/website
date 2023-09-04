@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const { authToken } = require('../utils/jwt');
 const { encrypt, decrypt, encryptObj } = require('../utils/crypto');
 const { redis } = require('../utils/redis');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 dotenv.config();
 
@@ -104,6 +105,46 @@ router.post("/update/me", authToken, (req, res) => {
         })
     })
     
+})
+
+// connect stripe, protected
+router.post("/connect/stripe", authToken, async (req, res) => {
+
+    const user = req.user;
+
+    const stripeAccount = await stripe.accounts.create({
+        type: 'express',
+    });
+
+    const accountLink = await stripe.accountLinks.create({
+        account: stripeAccount.id,
+        refresh_url: 'https://tip.dev/auth/stripe/refresh',
+        return_url: 'https://tip.dev/dashboard',
+        type: 'account_onboarding',
+    });
+
+    if (accountLink) {
+        // save the stripe account id
+        db.collection('users').updateOne({ user_id: user }, { $set: { stripe: stripeAccount } }).then(() => {
+            // refetch the user
+            db.collection('users').findOne({ user_id: user }).then((result) => {
+                // delete the old user from redis
+                redis.hDel('td:users', user).then(() => {
+                    // add the new user to redis
+                    redis.hSet('td:users', user, JSON.stringify(result)).then(() => {
+                        return res.json({ message: "success", stripe: accountLink });
+                    }).catch((err) => {
+                        return res.status(500).json({ error: { message: "internal server error" } });
+                    })
+                }).catch((err) => {
+                    return res.status(500).json({ error: { message: "internal server error" } });
+                })
+            })
+        })
+    } else {
+        return res.status(500).json({ error: { message: "internal server error" } });
+    }
+
 })
 
 module.exports = router;

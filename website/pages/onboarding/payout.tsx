@@ -1,27 +1,21 @@
 import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
-import { RedirectToSignIn, useUser } from "@clerk/nextjs";
+import useUser from "@/hooks/useUser";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPaypal, FaPiggyBank, FaPlus, FaStripeS } from "react-icons/fa";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function page() {
 
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { token, isAuthLoading, isSignedIn } = useUser()
 
-    if (!isSignedIn) {
-        <RedirectToSignIn />
-    } 
-
-    if (!isLoaded) {
-        return (
-            <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
-                <span className="loading loading-spinner"></span>
-            </main>
-        )
-    }
+    useEffect(() => {
+        if (isSignedIn == false && isAuthLoading == false) {
+            window.location.href = "/signin"
+        }
+    }, [isSignedIn])
 
     const [ currency, setCurrency ] = useState("")
     const [ payoutMethod, setPayoutMethod ] = useState("")
@@ -31,14 +25,12 @@ export default function page() {
     const connectStripe = async () => {
         setIsLoading(true)
 
-        const res = await fetch("/api/onboarding/connect-stripe", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/connect/stripe`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                currency: currency
-            })
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
         })
     
         const data = await res.json()
