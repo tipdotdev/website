@@ -27,10 +27,10 @@ export default function Page() {
 
             {/* <DashboardFooter /> */}
 
-            <DashboardSidebar 
+            {/* <DashboardSidebar 
                 content={ <DashboardTips user={user} /> }
                 user={ user }
-            />
+            /> */}
 
         </main>
     )
