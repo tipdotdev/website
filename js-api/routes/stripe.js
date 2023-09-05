@@ -32,8 +32,9 @@ router.post("/create/payment-intent", async (req, res) => {
         currency: currency,
         automatic_payment_methods: {
             enabled: true,
-        }
-        
+        },
+        // add application_fee_amount to be 5 percent of the amount up to 10 dollars
+        application_fee_amount: Math.min(parseInt(amount) * 0.05, 1000),
     }, {
         stripeAccount: user.stripe.id
     });
