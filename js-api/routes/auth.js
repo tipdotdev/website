@@ -3,9 +3,10 @@ const router = express.Router()
 const client = require('../utils/db');
 const dotenv = require('dotenv');
 const { generateAccessToken } = require('../utils/jwt');
-const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
+const { generateKey, generateUUID, encrypt, decrypt, generateAuthCode } = require('../utils/crypto');
 const { redis } = require('../utils/redis');
 const { Novu } = require('@novu/node');
+const { sendAuthCode } = require('../utils/mail');
 
 dotenv.config();
 
@@ -129,9 +130,27 @@ router.post("/signup", (req, res) => {
                         username: username,
                     }).then((result) => {
 
+                        // send email verification code
+                        const code = generateAuthCode();
+
+                        // save the code
+                        redis.hSet('td:emailVerification', uuID, JSON.stringify({ code: encrypt(code, process.env.MASTER_ENCRYPT_KEY) })).then((result) => {
+                            if (!result) {
+                                return res.status(400).json({ error: { message: "code not found" } });
+                            }
+                        }).catch((err) => {
+                            return res.status(400).json({ error: err });
+                        })
+
+                        const sendEmail = sendAuthCode(code, email);
+
+                        if (sendEmail.error) {
+                            return res.status(400).json({ error: sendEmail.error });
+                        }
+
                         return res.json({
                             message: "success",
-                            // token: token,
+                            token: token,
                             expires_in: "730h"
                         });
 

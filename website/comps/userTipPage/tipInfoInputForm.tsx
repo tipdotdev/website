@@ -14,6 +14,7 @@ export default function TipBoxInfoForm(props:any) {
     const error = props.error
     const setError = props.setError
     const setStep = props.setStep
+    const continueFunc = props.continue
 
     return (
         <>
@@ -31,7 +32,7 @@ export default function TipBoxInfoForm(props:any) {
                     <p className="text-xl font-bold">One-Time</p>
                 </div>
 
-                <div className={`rounded-xl w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
+                {/* <div className={`rounded-xl w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
                     ${tipType === "Monthly" ? (
                         "border-2 border-primary bg-primary/20 text-primary"
                     ) : (
@@ -41,7 +42,7 @@ export default function TipBoxInfoForm(props:any) {
                     onClick={() => setTipType("Monthly")}
                 >
                     <p className="text-xl font-bold">Monthly</p>
-                </div>
+                </div> */}
 
             </div>
 
@@ -69,7 +70,7 @@ export default function TipBoxInfoForm(props:any) {
                 <input 
                     type="text" 
                     className="input input-lg w-full rounded-xl mt-5 font-bold placeholder:font-bold text-xl placeholder:text-xl"  
-                    placeholder="Enter your name or nickname"
+                    placeholder="Name or nickname"
                     onChange={(e) => setTipName(e.target.value)}
                 />
 
@@ -83,7 +84,7 @@ export default function TipBoxInfoForm(props:any) {
 
                 <button className="btn btn-primary btn-md  flex flex-row w-full mt-5 normal-case text-xl"
                     disabled={tipLoading || tipAmount < 5 } onClick={() => {
-                        setStep(2)
+                        continueFunc()
                     }}
                 >
                     Tip {tipAmount.toLocaleString('en-us', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'}) || 0} {tipType == "Monthly" ? "/mo" : ""}

@@ -40,6 +40,11 @@ function decryptObj(data, key) {
     return JSON.parse(originalText);
 }
 
+function generateAuthCode() {
+    // generate a 6 digit auth code
+    return Math.floor(100000 + Math.random() * 900000);
+}
+
 module.exports = {
     generateKey,
     generateUploadKey,
@@ -48,5 +53,6 @@ module.exports = {
     decrypt,
     encryptObj,
     decryptObj,
-    generateUID
+    generateUID,
+    generateAuthCode
 }

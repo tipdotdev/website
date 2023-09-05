@@ -49,7 +49,6 @@ router.get("/:username", (req, res) => {
         if (result) {
             // remove sensitive data
             delete result.password;
-            delete result.stripe
             delete result.email
             delete result._id
             delete result.created_at
@@ -113,6 +112,10 @@ router.post("/connect/stripe", authToken, async (req, res) => {
 
     const stripeAccount = await stripe.accounts.create({
         type: 'express',
+        capabilities: {
+            card_payments: { requested: true }, 
+            transfers: { requested: true },
+        }
     });
 
     const accountLink = await stripe.accountLinks.create({
@@ -196,33 +199,40 @@ router.post("/me/verify/email", authToken, (req,res) => {
         }
 
         // get the code from redis
-        redis.hGet('td:emailVerification', result.email).then((result) => {
-            if (!result) {
-                return res.status(400).json({ error: { message: "code not found" } });
-            }
+        redis.hGet('td:emailVerification', user).then((redisCode) => {
 
-            const data = JSON.parse(result);
+            // decrypt the code
+            const encryptedCode = JSON.parse(redisCode)
+            const decryptedCode = decrypt(encryptedCode.code, process.env.MASTER_ENCRYPT_KEY);
 
-            const decryptedCodeServer = decrypt(data.code, process.env.MASTER_ENCRYPT_KEY);
-
-            if (code != decryptedCodeServer) {
+            if (decryptedCode != code) {
                 return res.status(400).json({ error: { message: "incorrect code" } });
             }
 
-            // update the user
-            db.collection("users").updateOne({ email: result.email }, { $set: { emailVerified: true } }).then((result) => {
-                // delete user from redis
-                redis.hDel("td:users", result.user_id).then(() => {
-                    // add user to redis
-                    redis.hSet("td:users", result.user_id, JSON.stringify(result)).then(() => {
-                        // delete code from redis
-                        redis.hDel("td:emailVerification", result.email).then(() => {
-                            return res.json({ message: "success" });
+            // delete the code from redis
+            redis.hDel('td:emailVerification', user).then(() => {
+
+                // update the user
+                db.collection('users').updateOne({ user_id: user }, { $set: { emailVerified: true } }).then(() => {
+                    // refetch the user
+                    db.collection('users').findOne({ user_id: user }).then((result) => {
+                        // delete the old user from redis
+                        redis.hDel('td:users', user).then(() => {
+                            // add the new user to redis
+                            redis.hSet('td:users', user, JSON.stringify(result)).then(() => {
+                                return res.json({ message: "success" });
+                            }).catch((err) => {
+                                return res.status(500).json({ error: { message: "internal server error" } });
+                            })
                         }).catch((err) => {
-                            return res.status(400).json({ error: err });
+                            return res.status(500).json({ error: { message: "internal server error" } });
                         })
                     })
+                }).catch((err) => {
+                    return res.status(400).json({ error: err });
                 })
+            }).catch((err) => {
+                return res.status(400).json({ error: err });
             })
 
         }).catch((err) => {
@@ -231,6 +241,34 @@ router.post("/me/verify/email", authToken, (req,res) => {
 
     }).catch((err) => {
         return res.status(400).json({ error: err });
+    })
+
+})
+
+// delete user, protected
+router.post("/delete/me", authToken, (req,res) => {
+
+    const user = req.user;
+
+    // get the user
+    db.collection('users').findOne({ user_id: user }).then((result) => {
+        // delete the user from mongo
+        db.collection('users').deleteOne({ user_id: user }).then(() => {
+            // delete the user from redis 
+            redis.hDel('td:users', user).then(() => {
+                // delete the user analytics from redis
+                redis.hDel('td:analytics', user).then(() => {
+                    // delete the username from redis
+                    redis.sRem('td-usernames', result.username).then(() => {
+                        return res.json({ message: "success" });
+                    }).catch((err) => {
+                        return res.status(400).json({ error: err });
+                    })
+                })
+            }).catch((err) => {
+                return res.status(400).json({ error: err });
+            })
+        })
     })
 
 })

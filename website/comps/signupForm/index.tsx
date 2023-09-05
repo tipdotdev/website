@@ -51,7 +51,8 @@ export default function SignupForm(props:any) {
             saveToken(data.token)
 
             setIsLoading(false)
-            window.location.href = "/onboarding/profile"
+            props.setShowVerify(true)
+
         } else {
             const data = await req.json()
             setToastError(true)
@@ -204,7 +205,7 @@ export default function SignupForm(props:any) {
                     }}>
                         
                         <input type="checkbox" checked={agreeTerms} className="checkbox checkbox-primary" />
-                        <p className="label-text ml-2 text-[#949ca8]">I agree to the <a className="link-primary link-hover text-[#949ca8]">Terms</a> and <a className="link-primary link-hover text-[#949ca8]">Privacy Policy</a></p> 
+                        <p className="label-text ml-2 text-[#949ca8]">I agree to the <a href="/terms" target="_blank" className="link-primary link-hover text-[#949ca8]">Terms</a> and <a href="/privacy" target="_blank" className="link-primary link-hover text-[#949ca8]">Privacy Policy</a></p> 
 
                     </label>
                 </div>

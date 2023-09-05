@@ -10,7 +10,7 @@ import useUser from "@/hooks/useUser";
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Page() {
-    const { token, isAuthLoading, isSignedIn, user } = useUser()
+    const { token, isAuthLoading, isSignedIn, user, logout } = useUser()
 
     useEffect(() => {
         if (!isSignedIn && !isAuthLoading) {
@@ -33,7 +33,7 @@ export default function Page() {
                 </div>
             ) : 
                 <DashboardSidebar 
-                    content={ <DashboardAccount user={user} token={token} /> }
+                    content={ <DashboardAccount user={user} token={token} logout={logout} /> }
                     user={ user }
                 />
             }

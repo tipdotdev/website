@@ -11,15 +11,15 @@ export default function UserTipPage(props:any) {
     const user = props.user
 
     return (
-        <div className="flex flex-col h-full w-full">
+        <div className="flex flex-col h-full w-full items-center ">
 
             <Header pageUser={pageUser} user={user} />
 
-            <div className="grid grid-cols-4 gap-2 px-8 mt-[22rem]">
+            <div className="grid md:grid-cols-4 grid-cols-2 gap-2 xl:w-3/4 w-full sm:px-8 px-2">
 
                 <div className="col-span-2 row-span-2 flex flex-row justify-between bg-base-200 p-5 rounded-xl">
 
-                    <TipBox pageUser={pageUser} user={user} />
+                    <TipBox pageUser={pageUser} user={user} query={props.query} />
 
                 </div>
 

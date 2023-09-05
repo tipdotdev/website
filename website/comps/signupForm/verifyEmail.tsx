@@ -18,7 +18,7 @@ export default function VerifyEmail(props:any) {
     const verifyCode = async () => {
         setIsLoading(true) 
 
-        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify/email`, {
+        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/verify/email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -28,6 +28,19 @@ export default function VerifyEmail(props:any) {
                 code: code
             })
         })
+
+        if (req.status === 200) {
+            let data = await req.json()
+
+            // redirect
+            window.location.href = "/onboarding/profile"
+            
+        } else {
+            const data = await req.json()
+            console.log(data)
+            setError(data.error)
+            setIsLoading(false)
+        }
 
         
     }
@@ -41,6 +54,8 @@ export default function VerifyEmail(props:any) {
         const fourth:any  = document.getElementById("fourth")
         const fifth:any  = document.getElementById("fifth")
         const sixth:any  = document.getElementById("sixth")
+
+        first.focus()
 
         first.addEventListener("keyup", () => {
             if (first.value.length > 0) {

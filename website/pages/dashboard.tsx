@@ -17,6 +17,15 @@ export default function Page() {
     //         window.location.href = "/signin"
     //     }
     // }, [isSignedIn])
+    // useEffect(() => {
+    //     if (user) {
+    //         if (user.emailVerified == false) {
+    //             window.location.href = "/onboarding/signup?verify=true"
+    //         } else if (user.stripe == null) {
+    //             window.location.href = "/onboarding/payout"
+    //         }
+    //     }
+    // })
 
 
     return (

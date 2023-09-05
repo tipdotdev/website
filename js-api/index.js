@@ -24,6 +24,7 @@ const userRouter = require('./routes/user')
 const newsRouter = require('./routes/news')
 const uploadRouter = require('./routes/upload')
 const analyticsRouter = require('./routes/analytics')
+const stripeRouter = require('./routes/stripe')
 
 // base route
 api.get("/", (req, res) => {
@@ -36,6 +37,7 @@ api.use('/v1/user', userRouter)
 api.use('/v1/news', newsRouter)
 api.use('/v1/upload', uploadRouter)
 api.use('/v1/analytics', analyticsRouter)
+api.use('/v1/stripe', stripeRouter)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;

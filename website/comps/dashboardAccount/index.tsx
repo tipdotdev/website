@@ -9,6 +9,7 @@ export default function DashboardAccount(props:any) {
 
     const user = props.user
     const token = props.token
+    const logout = props.logout
 
     const [newAvatar, setNewAvatar] = useState(null as any)
     const [newBanner, setNewBanner] = useState(null as any)
@@ -25,6 +26,8 @@ export default function DashboardAccount(props:any) {
     const [socials, setSocials] = useState(user?.socials || {})
     const [website, setWebsite] = useState(user?.website || null as any)
 
+    const [confirmDeleteText, setConfirmDeleteText] = useState("")
+
     const openModal = (social: string) => {
         if (social == "twitter") {
             const modal = document.getElementById("twit_modal") as any
@@ -37,6 +40,9 @@ export default function DashboardAccount(props:any) {
             modal?.showModal()
         } else if (social == "linkedin") {
             const modal = document.getElementById("linkedin_modal") as any
+            modal?.showModal()
+        } else if (social == "delete") {
+            const modal = document.getElementById("delete_modal") as any
             modal?.showModal()
         }
     }
@@ -85,6 +91,22 @@ export default function DashboardAccount(props:any) {
             alert('error')
         }
 
+    }
+
+    const deleteAccount = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/delete/me`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        })
+
+        if (res.status == 200) {
+            logout()
+        } else {
+            alert('error')
+        }
     }
 
     return (
@@ -387,7 +409,9 @@ export default function DashboardAccount(props:any) {
                                 <p className="text-lg font-bold">Delete Account</p>
                                 <p className="text-zinc-400 font-semibold">Delete your account and all associated data. This action is irreversible.</p>
                             </div>
-                            <button className="btn btn-error w-1/2">Delete Account</button>
+                            <button className="btn btn-error w-1/2" onClick={() => {
+                                openModal("delete")
+                            }}>Delete Account</button>
                         </div>
 
                         
@@ -479,6 +503,33 @@ export default function DashboardAccount(props:any) {
                     />
 
                     <button className="btn btn-primary w-full mt-5">Save</button>
+
+                </form>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
+            {/* delete confirm modal */}
+            <dialog id="delete_modal" className="modal">
+                <form method="dialog" className="modal-box w-full">
+                    <h3 className="font-bold text-2xl">Confirm account deletion</h3>
+                    <p className="text-sm text-zinc-400 mt-2">This action is irreversible. All account data will be deleted permanatly. Some anonymous data will be persisted for buisness purposes.</p>
+                    
+                    <label className="label">
+                        <span className="label-text text-lg mt-10">Type "Delete my account" to continue</span>
+                    </label>
+                    <input type="text" placeholder="Delete my account" className="input input-bordered w-full"
+                        onChange={(e) => {
+                            if (e.target.value.length > 0) {
+                                setConfirmDeleteText(e.target.value)
+                            } 
+                        }}
+                    />
+
+                    <button className="btn btn-error w-full mt-10" disabled={confirmDeleteText !== "Delete my account"} onClick={() => {
+                        deleteAccount()
+                    }}>Delete Account</button>
 
                 </form>
                 <form method="dialog" className="modal-backdrop">

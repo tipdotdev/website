@@ -3,13 +3,22 @@ import { FaDollarSign } from "react-icons/fa"
 import ErrorText from "../input/errorText"
 import TipBoxInfoForm from "./tipInfoInputForm"
 import TipBoxCheckoutForm from "./tipCheckoutForm"
-import {Elements, useElements} from '@stripe/react-stripe-js';
+import {Elements, PaymentElement, useElements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { useEffect } from "react"
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string)
+import PaymentComplete from "./paymentComplete"
+import ReactConfetti from "react-confetti"
+import {
+    ConnectPayments,
+    ConnectComponentsProvider,
+} from "@stripe/react-connect-js";
+import { loadConnect } from "@stripe/connect-js";
 
 export default function TipBox(props:any) {
+
+    // get the page query
+    const query = props.query
+    const [status, setStatus] = useState(query?.split("&")[2].split("=")[1])
 
     const pageUser = props.pageUser
     const user = props.user
@@ -20,21 +29,36 @@ export default function TipBox(props:any) {
     const [tipMessage, setTipMessage] = useState("")
     const [tipLoading, setTipLoading] = useState(false)
     const [error, setError] = useState({} as any)
+    const [email, setEmail] = useState("" as any)
 
     const [step, setStep] = useState(1)
 
-    // const [stripePromise, setStripePromise] = useState(null as any)
+    const [clientSecret, setClientSecret] = useState("" as any)
 
-    // // load stripe
-    // useEffect(() => {
-    //     if (!user) return
+    const [windowWidth, setWindowWidth] = useState(0)
+    const [windowHeight, setWindowHeight] = useState(0)
 
-    //     let stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string, {
-    //         // stripeAccount: user?.stripe.id
-    //     });
+    const [stripePromise, setStripePromise] = useState(null as any)
 
-    //     setStripePromise(stripe)
-    // }, [user])
+    useEffect(() => {
+        if (!pageUser?.stripe?.id) return
+
+        console.log(pageUser.stripe.id)
+
+        const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string, {
+            stripeAccount: pageUser.stripe.id,
+        });
+        setStripePromise(stripePromise)
+    }, [pageUser])
+
+    console.log(stripePromise)
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setWindowWidth(window.innerWidth)
+            setWindowHeight(window.innerHeight)
+        }
+    }, [])
 
     // validate tip amount
     const validateTipAmount = () => {
@@ -78,6 +102,107 @@ export default function TipBox(props:any) {
         return true
     }
 
+    const createIntent = async () => {
+        if (!validateTipAmount()) return
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/stripe/create/payment-intent`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                amount: tipAmount * 100,
+                currency: "usd",
+                username: pageUser?.username
+            })
+        })
+
+        if (res.status == 200) {
+            const data = await res.json()
+
+            setClientSecret(data.client_secret)
+            setStep(2)
+        }
+
+
+    }
+
+    const openModal = (social: string) => {
+        if (social == "success") {
+            const modal = document.getElementById("success_modal") as any
+            modal?.showModal()
+        }
+    }
+
+    useEffect(() => {
+        if (status == "succeeded") {
+            setShowConfetti(true)
+            openModal('success')
+            
+            // clear the query
+            window.history.replaceState({}, document.title, "/" + pageUser?.username)
+            setStatus("")
+        }
+    })
+
+    // const [stripeConnectInstance, setStripeConnectInstance] = useState(null as any);
+
+    // useEffect(() => {
+    //     let stripeConnect;
+    //     (async () => {
+    //         try {
+    //             stripeConnect = await loadConnect()
+    //         } catch (error) {
+    //             console.log(error)
+    //             return
+    //         }
+
+    //         if (clientSecret) {
+    //             // initialize StripeConnect after window loads
+    //             const instance = stripeConnect.initialize({
+    //                 publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string,
+    //                 clientSecret: clientSecret,
+    //                 appearance: {
+    //                     // theme: "night",
+    //                     // labels: "floating",
+    //                     // variables: {
+    //                         colorBackground: "#272935",
+    //                         colorPrimary: "#ff7ac6",
+    //                     // }
+    //                 },
+    //                 uiConfig: {
+    //                     overlay: 'dialog'
+    //                 },
+    //                 refreshClientSecret: async () => {
+    //                     return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/stripe/create/payment-intent`, {
+    //                         method: "POST",
+    //                         headers: {
+    //                             "Content-Type": "application/json"
+    //                         },
+    //                         body: JSON.stringify({
+    //                             amount: tipAmount * 100,
+    //                             currency: "usd",
+    //                             username: pageUser?.username
+    //                         })
+    //                     })
+    //                     .then((res) => {
+    //                         return res.json()
+    //                     }
+    //                     )
+    //                     .then((data) => {
+    //                         return data.client_secret
+    //                     }
+    //                     )
+    //                 },
+    //             })
+
+    //             setStripeConnectInstance(instance)
+    //         }
+    //     })();
+    // }, [])
+
+    const [showConfetti, setShowConfetti] = useState(false as any)
+
     return (    
         <div className="flex flex-col w-full">
 
@@ -99,17 +224,73 @@ export default function TipBox(props:any) {
                     error={error}
                     setError={setError}
                     setStep={setStep}
+                    continue={createIntent}
                 />
-            ) : (
+            ) : step == 2 ? (
                 <Elements stripe={stripePromise} options={{
-                    clientSecret: "${id}_secret_${secret}",
-                    appearance: {
-                        theme: "night"
-                    }
+                    clientSecret: clientSecret,
+                    // appearance: {
+                    //     theme: "night",
+                    //     labels: "floating",
+                    //     variables: {
+                    //         colorBackground: "#272935",
+                    //         colorPrimary: "#ff7ac6",
+                    //     }
+                    // },
                 }}>
-                    <TipBoxCheckoutForm />
+                    <TipBoxCheckoutForm user={pageUser} amount={tipAmount} setEmail={setEmail} clientSecret={clientSecret} setStep={setStep} email={email} setShowConfetti={setShowConfetti} openModal={openModal} />
                 </Elements>
+                // <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+                //     <TipBoxCheckoutForm user={pageUser} amount={tipAmount} setEmail={setEmail} />
+                // </ConnectComponentsProvider>
+            ) : (
+                <TipBoxInfoForm
+                    tipType={tipType}
+                    setTipType={setTipType}
+                    tipAmount={tipAmount}
+                    setTipAmount={setTipAmount}
+                    tipName={tipName}
+                    setTipName={setTipName}
+                    tipMessage={tipMessage}
+                    setTipMessage={setTipMessage}
+                    tipLoading={tipLoading}
+                    error={error}
+                    setError={setError}
+                    setStep={setStep}
+                    continue={createIntent}
+                />
             )}
+
+                {showConfetti && 
+                <>
+                    
+                </>
+            
+            }
+
+            {/* success modal */}
+            <dialog id="success_modal" className="modal">
+                <ReactConfetti 
+                    width={windowWidth}
+                    height={windowHeight}
+                    numberOfPieces={200}
+
+
+                />
+                <form method="dialog" className="modal-box w-full">
+                
+                    <h3 className="font-bold text-3xl">Thank you for your support</h3>
+
+                    <p className="text-lg mt-2 text-zinc-400">Your tip has been sent to {pageUser?.username}</p>
+
+                    <p className="text-lg mt-5 font-semibold">People like you allow developers to keep creating amazing projects for the world to use!</p>
+
+
+                </form>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
             
         </div>
     )
