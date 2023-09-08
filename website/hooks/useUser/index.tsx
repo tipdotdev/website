@@ -13,7 +13,7 @@ const useUser = () => {
     useEffect(() => {
         if (typeof window !== "undefined") {
 
-            setToken(localStorage.getItem("token"))
+            setToken(localStorage.getItem("td:token"))
 
             if (token !== null && token !== undefined && token !== "") {
                 setIsSignedIn(true)
@@ -27,14 +27,17 @@ const useUser = () => {
     // make a function to save the token to local storage
     const saveToken = (token:string) => {
         if (typeof window !== "undefined") {
-            localStorage.setItem("token", token)
+            localStorage.setItem("td:token", token)
         }
     }
 
-    const logout = () => {
+    const logout = (redirect?:string) => {
         if (typeof window !== "undefined") {
-            localStorage.removeItem("token")
-            window.location.href = "/"
+            localStorage.removeItem("td:token")
+
+            if (redirect) {
+                window.location.href = redirect
+            }
         }
     }
 

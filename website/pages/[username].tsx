@@ -12,10 +12,16 @@ export default function Page() {
     // get the params
     const { username } = useRouter().query
 
+    // get the user
+    const { user } = useUser()
+
     // get the stuff after the ? in the url
     const query = useRouter().asPath.split("?")[1]
 
-    const [user, setUser] = useState(null as any)
+    const [viewer, setViewer] = useState(null as any)
+    useEffect(() => {
+        setViewer(user)
+    }, [user])
 
     const [pageUser, setPageUser] = useState(null as any)
 
@@ -68,7 +74,7 @@ export default function Page() {
 
             <SEOHead title={`{$} ${username}`} />  
 
-            <UserTipPage pageUser={pageUser} user={user} query={query} />
+            <UserTipPage pageUser={pageUser} user={viewer} query={query} />
 
         </main>
     )

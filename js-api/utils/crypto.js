@@ -1,5 +1,5 @@
-var CryptoJS = require("crypto-js");
-var crypto = require('crypto');
+import CryptoJS from 'crypto-js';
+import crypto from 'crypto';
 
 function generateKey() {
     return CryptoJS.lib.WordArray.random(256/8).toString();
@@ -45,14 +45,5 @@ function generateAuthCode() {
     return Math.floor(100000 + Math.random() * 900000);
 }
 
-module.exports = {
-    generateKey,
-    generateUploadKey,
-    generateUUID,
-    encrypt,
-    decrypt,
-    encryptObj,
-    decryptObj,
-    generateUID,
-    generateAuthCode
-}
+// export functions
+export { generateKey, generateUploadKey, generateUUID, generateUID, encrypt, encryptObj, decrypt, decryptObj, generateAuthCode };

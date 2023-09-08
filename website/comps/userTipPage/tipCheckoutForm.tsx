@@ -131,11 +131,11 @@ export default function TipBoxCheckoutForm(props:any) {
                     <p className="font-semibold text-zinc-400">Go Back</p>
                 </div>
 
-                <p className="text-sm font-semibold text-zinc-400 mt-5">By clicking Pay, you agree to the <a href="/terms" target="_blank" className="link-primary link-hover text-zinc-400">Terms</a> and <a href="/privacy" target="_blank" className="link-primary link-hover text-zinc-400">Privacy Policy</a></p>
+                <p className="text-sm font-semibold text-zinc-400 mt-5">By clicking Tip, you agree to the <a href="/terms" target="_blank" className="link-primary link-hover text-zinc-400">Terms</a> and <a href="/privacy" target="_blank" className="link-primary link-hover text-zinc-400">Privacy Policy</a></p>
 
-                <button className="btn btn-primary mt-2 btn-lg" disabled={
+                <button className="btn btn-primary mt-2 btn-lg normal-case" disabled={
                     props.email == "" || props.email == null || props.email == undefined
-                }>Pay {props.user?.username} ${props.amount}</button>
+                }>Tip ${props.amount}</button>
 
             </form>
         </>

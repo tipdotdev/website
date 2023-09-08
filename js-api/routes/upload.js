@@ -1,12 +1,21 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { authToken } = require('../utils/jwt');
-const { generateUploadKey } = require('../utils/crypto');
-const { redis } = require('../utils/redis');
-const multer = require('multer');
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+// const express = require('express')
+// const router = express.Router()
+// const client = require('../utils/db');
+// const dotenv = require('dotenv');
+// const { authToken } = require('../utils/jwt');
+// const { generateUploadKey } = require('../utils/crypto');
+// const { redis } = require('../utils/redis');
+// const multer = require('multer');
+// const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { authToken } from '../utils/jwt.js';
+import { generateUploadKey } from '../utils/crypto.js';
+import { redis } from '../utils/redis.js';
+import multer from 'multer';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 dotenv.config();
 
@@ -135,4 +144,4 @@ router.post("/banner", authToken, upload.single("file"), async (req,res) => {
 
 })
 
-module.exports = router
+export { router as uploadRouter }

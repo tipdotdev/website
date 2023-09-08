@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { FaCamera, FaDiscord, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa"
 import { TbDiscountCheckFilled } from "react-icons/tb"
 import { Inter } from "next/font/google";
-import { RedirectToSignIn } from "@clerk/nextjs";
 import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
 import useUser from "@/hooks/useUser";
@@ -47,6 +46,14 @@ export default function page() {
 
         setIsLoading(true)
 
+        // check if they entered any data
+        if (!name && !about && !website && !socials) {
+            // we do this to make sure we dont get an api error from sending an empty object
+            window.location.href = "/onboarding/payout"
+            setIsLoading(false)
+            return
+        }
+
         // post to the api
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/update/me`, {
             method: "POST",
@@ -62,26 +69,36 @@ export default function page() {
                     socials: socials,
                 }
             })
-        })
+        }) 
 
-        // upload the avatar
-        const formData = new FormData()
-        formData.append('file', avatar)
+        if (avatar) {
+            // upload the avatar
+            const formData = new FormData()
+            formData.append('file', avatar)
 
-        const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/upload/avatar`, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Authorization': `Bearer ${token}`
+            const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/upload/avatar`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (res.status == 200 && res2.status == 200) {
+                setIsLoading(false)
+                window.location.href = "/onboarding/payout"
+            } else {
+                setIsLoading(false)
+                alert('error')
             }
-        })
-
-        if (res.status == 200 && res2.status == 200) {
-            setIsLoading(false)
-            window.location.href = "/onboarding/payout"
         } else {
-            setIsLoading(false)
-            alert('error')
+            if (res.status == 200) {
+                setIsLoading(false)
+                window.location.href = "/onboarding/payout"
+            } else {
+                setIsLoading(false)
+                alert('error')
+            }
         }
 
     }

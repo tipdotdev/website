@@ -1,14 +1,24 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { authToken } = require('../utils/jwt');
-const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
-const { redis } = require('../utils/redis');
+// const express = require('express')
+// const router = express.Router()
+// const client = require('../utils/db');
+// const dotenv = require('dotenv');
+// const { authToken } = require('../utils/jwt');
+// const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
+// const { redis } = require('../utils/redis');
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { authToken } from '../utils/jwt.js';
+import { generateKey, generateUUID, encrypt, decrypt } from '../utils/crypto.js';
+import { redis } from '../utils/redis.js';
 
 dotenv.config();
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+import stripe from 'stripe';
+
+new stripe(process.env.STRIPE_SECRET_KEY);
 
 const db = client.db(process.env.DATABASE_NAME);
 
@@ -74,5 +84,5 @@ router.post("/create/account-session", async (req, res) => {
 
 })
 
-// export router
-module.exports = router;
+// export router as module
+export { router as stripeRouter }

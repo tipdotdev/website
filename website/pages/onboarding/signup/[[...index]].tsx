@@ -26,9 +26,21 @@ export default function page() {
     //     }
     // }, )
 
+    const [userID, setUserID] = useState(null as any)
+
+    useEffect(() => {
+    
+        if (typeof window !== "undefined") {
+            const userID = localStorage.getItem("td:userID")
+            console.log(userID)
+            setUserID(userID)
+        }
+
+    }, [userID])
+
     useEffect(() => {
         setTimeout(() => {
-            if (isSignedIn && !showVerify ) {
+            if (isSignedIn) {
                 window.location.href = "/dashboard"
             }
         }, 1000)
@@ -45,7 +57,7 @@ export default function page() {
             {showVerify ? (
                 <VerifyEmail setShowVerify={setShowVerify} token={token} />
             ) : 
-			    <SignupForm showVerify={showVerify} setShowVerify={setShowVerify} />
+			    <SignupForm showVerify={showVerify} setShowVerify={setShowVerify} userID={userID} />
             }
 
   		</main>

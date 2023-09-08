@@ -6,8 +6,9 @@ import { TbDiscountCheckFilled } from "react-icons/tb"
 export default function Header(props:any) {
 
     const pageUser = props.pageUser
-    const isOwner = props.isOwner
     const user = props.user
+
+    const isOwner = user?.user_id == pageUser?.user_id
 
     return (
         <div className="flex flex-col w-full justify-center items-center sm:mb-[25rem] mb-[15rem]">
@@ -22,7 +23,7 @@ export default function Header(props:any) {
                 <img src={pageUser?.pictures?.avatar} className="sm:w-36 w-20 sm:h-36 h-20 object-cover rounded-full sm:-mt-20 -mt-10 ml-5 border-[6px] border-base-100" />
                 
                 {isOwner ? (
-                    <div className="flex flex-col w-full items-end object-cover -mt-[5.8rem] pr-10 ">
+                    <div className="flex flex-col w-full items-start object-cover -mt-[5.8rem] pl-48 ">
                         <button className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Edit Profile</button>
                     </div>
                 ) : (

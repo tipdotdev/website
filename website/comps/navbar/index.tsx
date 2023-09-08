@@ -1,8 +1,10 @@
-import { SignOutButton, useUser } from "@clerk/nextjs";
 import { FaArrowCircleLeft, FaBars, FaGripVertical, FaUserCircle } from "react-icons/fa";
+import useUser from "@/hooks/useUser";
+import UserMenu from "./userMenu";
 
 export default function Navbar() {
-    const { isLoaded, isSignedIn, user } = useUser()
+    const { user, isSignedIn, logout } = useUser()
+
     return (
         <div className="navbar w-[93%] bg-base-200 mb-5 top-3 fixed rounded-xl">
             <div className="navbar-start">
@@ -25,6 +27,11 @@ export default function Navbar() {
                         href={`/blog`}
                     >
                         Blog
+                    </a></li>
+                    <li><a
+                        href={`https://docs.tip.dev`}
+                    >
+                        Docs
                     </a></li>
                 </ul>
                 </div>
@@ -49,42 +56,16 @@ export default function Navbar() {
                     >
                         Blog
                     </a></li>
+                    <li><a
+                        href={`https://docs.tip.dev`}
+                    >
+                        Docs
+                    </a></li>
                 </ul>
             </div>
             {isSignedIn ? ( 
                 <div className="navbar-end">
-                    <div className="dropdown dropdown-end">
-                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
-                            <img src={user.imageUrl} />
-                            </div>
-                        </label>
-                        <div className="menu menu-sm dropdown-content mt-3 z-[1] p-4 shadow bg-base-200 rounded-box w-52">
-                            <p className="text-lg mb-2">Hey, <span className="text-lg font-bold text-primary">{user.username}</span></p>
-                            <ul tabIndex={0} className="">
-                                <li>
-                                    <a className="justify-start" href='/dashboard'>
-                                        <FaGripVertical className="mr-2" />
-                                        Dashboard
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a className="justify-start" href='/account'>
-                                        <FaUserCircle className="mr-2" />
-                                        Account
-                                    </a>
-                                </li>
-                                
-                                <li>
-                                    <a className="justify-start">
-                                        <FaArrowCircleLeft className="mr-2" />
-                                        <SignOutButton/>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <UserMenu user={user} logout={logout} />
                 </div>
             ) : (
                 <div className="navbar-end">

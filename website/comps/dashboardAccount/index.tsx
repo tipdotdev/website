@@ -103,7 +103,7 @@ export default function DashboardAccount(props:any) {
         })
 
         if (res.status == 200) {
-            logout()
+            logout('/signin')
         } else {
             alert('error')
         }

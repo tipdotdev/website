@@ -1,10 +1,11 @@
-import { FaCaretRight, FaDiscord, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaCaretRight, FaDiscord, FaEye, FaEyeSlash, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Toast from "../toast";
 import FomikTextInput from "../input/formikTextInput";
 import ErrorText from "../input/errorText";
 import { TbDiscountCheckFilled } from "react-icons/tb";
 import useUser from "../../hooks/useUser";
+import Turnstile from "../turnstile";
 
 
 export default function SigninForm() {
@@ -18,9 +19,26 @@ export default function SigninForm() {
 	const [ toastError, setToastError ] = useState(false)
 	const [ toastErrorText, setToastErrorText ] = useState("")
 
+    const [showPassword, setShowPassword] = useState(false)
+
     const [validEmail, setValidEmail] = useState(false)
 
     const [error, setError] = useState({} as any)
+    const [turnstileToken, setTurnstileToken] = useState("")
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            // turnstile call back sets the token by doing window.parent.postMessage(token, '*')
+            // get the token from the parent window
+            window.addEventListener("message", (event) => {
+                if (event.data) {
+                    if (event.data.token) {
+                        setTurnstileToken(event.data.token)
+                    }
+                }
+            })
+        }
+    })
 
     const { saveToken } = useUser()
 
@@ -35,6 +53,7 @@ export default function SigninForm() {
             body: JSON.stringify({
                 email: email,
                 password: password,
+                cfTurnstileResponse: turnstileToken,
             })
         })
 
@@ -99,12 +118,12 @@ export default function SigninForm() {
     }, [email])
 
     useEffect(() => {
-        if (email != "" && password != "" && validEmail) {
+        if (email != "" && password != "" && validEmail && turnstileToken != "") {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
         }
-    }, [email, password, validEmail])
+    }, [email, password, validEmail, turnstileToken])
 
     return (
         <div className="w-full max-w-sm">
@@ -127,13 +146,24 @@ export default function SigninForm() {
                 </div>
 
                 <div className="mt-2">
-                    <input type="password" placeholder="Password" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setPassword(e.target.value)
-                            }
-                        }}
-                    />
+                    <div className="join w-full">
+                        <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                            onChange={(e) => {
+                                if (e.target.value.length > 0) {
+                                    setPassword(e.target.value)
+                                }
+                            }}
+                        />
+                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                            setShowPassword(!showPassword)
+                        }}>
+                            {!showPassword ? (
+                                <FaEye />
+                            ) : (
+                                <FaEyeSlash />
+                            )}
+                        </p> 
+                    </div>
                     {error.password && (
                         <ErrorText text={error.password} />
                     )}
@@ -144,6 +174,8 @@ export default function SigninForm() {
                 </div>
 
                 <div className="mt-10 text-left">
+
+                    <Turnstile />
 
                     <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4"
                         onClick={() => {
@@ -158,7 +190,7 @@ export default function SigninForm() {
                         Continue
                     </button>
 
-                    <a className="text-sm link-hover link-primary cursor-pointer" href={'/onboaring/signup'}>Don't have an account?</a>
+                    <a className="text-sm link-hover link-primary cursor-pointer" href={'/onboarding/signup'}>Don't have an account?</a>
                 </div>
             </form>
 

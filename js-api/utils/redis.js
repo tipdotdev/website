@@ -1,5 +1,5 @@
-const dotenv = require('dotenv');
-const { createClient } = require('redis');
+import { createClient } from 'redis';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -21,4 +21,4 @@ redis.connect((err) => {
     }
 })
  
-exports.redis = redis;
+export { redis };

@@ -20,7 +20,7 @@ export default function TipBoxInfoForm(props:any) {
         <>
             <div className="flex flex-row items-center mt-5 w-full gap-2">
                 
-                <div className={`rounded-xl w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
+                <div className={`rounded-lg w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
                     ${tipType === "One-Time" ? (
                         "border-2 border-primary bg-primary/20 text-primary"
                     ) : (
@@ -47,11 +47,11 @@ export default function TipBoxInfoForm(props:any) {
             </div>
 
             <div className="flex flex-col mt-5">
-                <div className="join items-center rounded-xl bg-base-100 pl-6">
+                <div className="join items-center rounded-lg bg-base-100 pl-6">
                     <FaDollarSign className="text-xl -mr-4" />
                     <input 
                         type="text" 
-                        className="input input-lg w-full rounded-xl bg-transparent font-bold placeholder:font-bold text-xl placeholder:text-xl  focus:border-transparent focus:ring-transparent ring-transparent ring-0 focus:ring-0 outline-none focus:outline-none border-none outline-0 hover:border-zinc-800 hover:border-2 transition-all ease-in-out duration-150"  
+                        className="input input-lg w-full rounded-lg bg-transparent font-bold placeholder:font-bold text-xl placeholder:text-xl  focus:border-transparent focus:ring-transparent ring-transparent ring-0 focus:ring-0 outline-none focus:outline-none border-none outline-0 hover:border-zinc-800 hover:border-2 transition-all ease-in-out duration-150"  
                         placeholder="5"
                         onChange={(e) => {
                             if (e.target.value == "") {
@@ -69,20 +69,20 @@ export default function TipBoxInfoForm(props:any) {
 
                 <input 
                     type="text" 
-                    className="input input-lg w-full rounded-xl mt-5 font-bold placeholder:font-bold text-xl placeholder:text-xl"  
+                    className="input input-lg w-full rounded-lg mt-5 font-bold placeholder:font-bold text-xl placeholder:text-xl"  
                     placeholder="Name or nickname"
                     onChange={(e) => setTipName(e.target.value)}
                 />
 
                 <textarea 
-                    className="textarea mt-5 h-32 rounded-xl placeholder:text-xl placeholder:font-bold font-bold text-xl" 
+                    className="textarea mt-5 h-32 rounded-lg placeholder:text-xl placeholder:font-bold font-bold text-xl" 
                     placeholder="Leave a public message"
                     onChange={(e) => setTipMessage(e.target.value)}
                     style={{resize: "none"}}
                     maxLength={500}
                 />
 
-                <button className="btn btn-primary btn-md  flex flex-row w-full mt-5 normal-case text-xl"
+                <button className="btn btn-primary btn-lg  flex flex-row w-full mt-5 normal-case text-xl"
                     disabled={tipLoading || tipAmount < 5 } onClick={() => {
                         continueFunc()
                     }}

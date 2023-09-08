@@ -38,17 +38,19 @@ export default function UserTipPage(props:any) {
                         </div>
 
                     </div>
-
-                    <div className="flex flex-col w-full mt-5">
-                        <p className="text-xl font-bold text-zinc-400">About</p>
-                        <p className="text-md text-white">{pageUser?.bio}</p>
-                    </div>
+                    
+                    {pageUser?.bio && (
+                        <div className="flex flex-col w-full mt-5">
+                            <p className="text-xl font-bold text-zinc-400">About</p>
+                            <p className="text-md text-white">{pageUser?.bio}</p>
+                        </div>
+                    )}
 
                     <div className="mt-5">
                         {pageUser?.website && (
                             <div className="flex flex-row items-center gap-2 mb-2">
                                 <FaLink className="text-lg text-zinc-400" />
-                                <a href={pageUser?.website} className="text-md text-zinc-400 link link-hover">{pageUser?.website}</a>
+                                <a href={pageUser?.website} target="_blank" className="text-md text-zinc-400 link link-hover">{pageUser?.website}</a>
                             </div>
                         )}
                         <SocialsDisplay pageUser={pageUser} />

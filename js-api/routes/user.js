@@ -1,11 +1,20 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { authToken } = require('../utils/jwt');
-const { encrypt, decrypt, encryptObj, generateUID } = require('../utils/crypto');
-const { redis } = require('../utils/redis');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+// const express = require('express')
+// const router = express.Router()
+// const client = require('../utils/db');
+// const dotenv = require('dotenv');
+// const { authToken } = require('../utils/jwt');
+// const { encrypt, decrypt, encryptObj, generateUID } = require('../utils/crypto');
+// const { redis } = require('../utils/redis');
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { authToken } from '../utils/jwt.js';
+import { encrypt, decrypt, encryptObj, generateUID } from '../utils/crypto.js';
+import { redis } from '../utils/redis.js';
+import stripe from 'stripe';
+import { generateAccessToken } from '../utils/jwt.js';
 
 dotenv.config();
 
@@ -273,4 +282,4 @@ router.post("/delete/me", authToken, (req,res) => {
 
 })
 
-module.exports = router;
+export { router as userRouter }

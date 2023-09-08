@@ -1,5 +1,5 @@
-const { MongoClient } = require('mongodb');
-const dotenv = require('dotenv');
+import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -10,4 +10,4 @@ const uri = process.env.DATABASE_CONNECTION_URL;
 const client = new MongoClient(uri);
 
 // Export the client
-module.exports = client
+export default client;

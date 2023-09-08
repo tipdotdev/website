@@ -1,10 +1,11 @@
-import { FaCaretRight, FaDiscord, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaCaretRight, FaDiscord, FaEye, FaEyeSlash, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Toast from "../toast";
 import FomikTextInput from "../input/formikTextInput";
 import ErrorText from "../input/errorText";
 import { TbDiscountCheckFilled } from "react-icons/tb";
 import useUser from "../../hooks/useUser";
+import Turnstile from "@/comps/turnstile";
 
 
 export default function SignupForm(props:any) {
@@ -16,6 +17,7 @@ export default function SignupForm(props:any) {
     const [agreeTerms, setAgreeTerms] = useState(false)
     const [joinNews, setJoinNews] = useState(true)
     const [isDisabled, setIsDisabled] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
     const [ showToast, setShowToast ] = useState(false)
 	const [ toastError, setToastError ] = useState(false)
@@ -26,6 +28,22 @@ export default function SignupForm(props:any) {
     const [validPassword, setValidPassword] = useState(false)
 
     const [error, setError] = useState({} as any)
+
+    const [turnstileToken, setTurnstileToken] = useState("")
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            // turnstile call back sets the token by doing window.parent.postMessage(token, '*')
+            // get the token from the parent window
+            window.addEventListener("message", (event) => {
+                if (event.data) {
+                    if (event.data.token) {
+                        setTurnstileToken(event.data.token)
+                    }
+                }
+            })
+        }
+    })
 
     const { saveToken } = useUser()
 
@@ -41,6 +59,9 @@ export default function SignupForm(props:any) {
                 username: username,
                 password: password,
                 email: email,
+                cfTurnstileResponse: turnstileToken,
+                joinNews: joinNews
+                
             })
         })
 
@@ -48,9 +69,10 @@ export default function SignupForm(props:any) {
             let data = await req.json()
 
             // store token in local storage
-            saveToken(data.token)
+            // saveToken(data.token)
+            // save userID in local storage
+            localStorage.setItem("td:userID", data.userID)
 
-            setIsLoading(false)
             props.setShowVerify(true)
 
         } else {
@@ -146,19 +168,24 @@ export default function SignupForm(props:any) {
     }, [password])
 
     useEffect(() => {
-        if (username != "" && password != "" && email != "" && agreeTerms && !isLoading && validUsername && validEmail && validPassword) {
+        if (username != "" && password != "" && email != "" && agreeTerms && !isLoading && validUsername && validEmail && validPassword && turnstileToken != "") {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
         }
-    }, [username, password, email, agreeTerms, isLoading, error, validUsername, validEmail, validPassword])
+    }, [username, password, email, agreeTerms, isLoading, error, validUsername, validEmail, validPassword, turnstileToken])
 
     return (
         <div className="w-full max-w-sm">
 
             <h1 className="text-4xl font-bold mt-12">Sign up for tip.dev</h1>
 
-            <form onSubmit={(e) => { e.preventDefault() }} className="form-control ">               
+            <form method="POST" onSubmit={(e) => {
+
+                e.preventDefault()
+                signup()
+
+            }} className="form-control">               
                 <div className="mt-10">
                     <input type="email" placeholder="Email" className="input input-bordered w-full"
                         onChange={(e) => {
@@ -186,13 +213,24 @@ export default function SignupForm(props:any) {
                 </div>
 
                 <div className="mt-2">
-                    <input type="password" placeholder="Password" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setPassword(e.target.value)
-                            }
-                        }}
-                    />
+                    <div className="join w-full">
+                        <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                            onChange={(e) => {
+                                if (e.target.value.length > 0) {
+                                    setPassword(e.target.value)
+                                }
+                            }}
+                        />
+                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                            setShowPassword(!showPassword)
+                        }}>
+                            {!showPassword ? (
+                                <FaEye />
+                            ) : (
+                                <FaEyeSlash />
+                            )}
+                        </p>
+                    </div>
                     {error.password && (
                         <ErrorText text={error.password} />
                     )}
@@ -224,11 +262,9 @@ export default function SignupForm(props:any) {
 
                 <div className="mt-12 text-left">
 
-                    <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4"
-                        onClick={() => {
-                            signup()
-                        }}
-                    >
+                    <Turnstile />
+
+                    <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4">
                         {isLoading ? (
                             <span className="loading loading-spinner"></span>
                         ) : (

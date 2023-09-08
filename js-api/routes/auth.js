@@ -1,12 +1,12 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { generateAccessToken } = require('../utils/jwt');
-const { generateKey, generateUUID, encrypt, decrypt, generateAuthCode } = require('../utils/crypto');
-const { redis } = require('../utils/redis');
-const { Novu } = require('@novu/node');
-const { sendAuthCode } = require('../utils/mail');
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { generateAccessToken } from '../utils/jwt.js';
+import { generateKey, generateUUID, encrypt, decrypt, generateAuthCode } from '../utils/crypto.js';
+import { redis } from '../utils/redis.js';
+import { Novu } from '@novu/node';
+import { sendAuthCode } from '../utils/mail.js';
 
 dotenv.config();
 
@@ -57,7 +57,7 @@ router.post("/signin", (req, res) => {
 });
 
 // signup, unprotected
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
     const { username, password, email } = req.body;
 
     if (!username || !password || !email) {
@@ -99,6 +99,29 @@ router.post("/signup", (req, res) => {
         return res.status(400).json({ error: err });
     })
 
+    // validate turnstile
+    // Validate the token by calling the
+	// "/siteverify" API endpoint.
+	let formData = new FormData();
+	formData.append('secret', process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY);
+	formData.append('response', req.body.cfTurnstileResponse);
+    // formData.append('response', '123')
+
+	const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+	const result = await fetch(url, {
+		body: formData,
+		method: 'POST',
+	});
+
+	const outcome = await result.json();
+	if (!outcome.success) {
+        return res.status(400).json({
+            error: {
+                message: "invalid captcha, please reload the page and try again"
+            }
+        });
+	}
+
     let uuID = generateUUID();
     let token = generateAccessToken(uuID);
 
@@ -127,7 +150,6 @@ router.post("/signup", (req, res) => {
 
                     novu.subscribers.identify(uuID, {
                         email: email,
-                        username: username,
                     }).then((result) => {
 
                         // send email verification code
@@ -178,8 +200,6 @@ router.post("/signup", (req, res) => {
 
 // check if username is available, unprotected
 router.get("/check/:username", (req, res) => {
-
-    console.log(req.params.username)
 
     redis.sIsMember('td-usernames', req.params.username).then((result) => {
         console.log(result)
@@ -244,4 +264,5 @@ router.put("/forgot-password", (req, res) => {
     })
 })
 
-module.exports = router;
+// export router
+export { router as authRouter }

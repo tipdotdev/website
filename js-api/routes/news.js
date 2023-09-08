@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { redis } = require('../utils/redis');
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { redis } from '../utils/redis.js';
 
 dotenv.config();
 
@@ -51,4 +51,4 @@ router.get("/members/get/all", async (req, res) => {
     return res.json({ members: members });
 })
 
-module.exports = router
+export { router as newsRouter }

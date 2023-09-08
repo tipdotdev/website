@@ -5,7 +5,7 @@ import FomikTextInput from "../input/formikTextInput";
 import ErrorText from "../input/errorText";
 import { TbDiscountCheckFilled } from "react-icons/tb";
 import useUser from "../../hooks/useUser";
-
+import OtpInput from 'react-otp-input';
 
 export default function VerifyEmail(props:any) {
 
@@ -13,107 +13,57 @@ export default function VerifyEmail(props:any) {
     const [isLoading, setIsLoading] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
 
-    const [error, setError] = useState({} as any)
+    const [ showToast, setShowToast ] = useState(false)
+	const [ toastError, setToastError ] = useState(false)
+	const [ toastErrorText, setToastErrorText ] = useState("")
+
+    const { saveToken } = useUser()
 
     const verifyCode = async () => {
         setIsLoading(true) 
 
-        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/verify/email`, {
+        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + props.token
             },
             body: JSON.stringify({
-                code: code
+                userID: localStorage?.getItem("td:userID"),
+                code: code 
             })
         })
 
         if (req.status === 200) {
-            let data = await req.json()
+            const data = await req.json()
+            
+            // save token
+            saveToken(data.token)
+            setIsLoading(false)
 
-            // redirect
+            // redirect 
             window.location.href = "/onboarding/profile"
             
         } else {
             const data = await req.json()
             console.log(data)
-            setError(data.error)
+            setShowToast(true)
+            setToastError(data.error)
+            setToastErrorText(data.error.message)
             setIsLoading(false)
+
+            setTimeout(() => {
+                setShowToast(false)
+            }, 5000)
         }
 
         
     }
 
-    function OTPInput() {
-
-        // save the code
-        const first:any = document.getElementById("first")
-        const second:any  = document.getElementById("second")
-        const third:any  = document.getElementById("third")
-        const fourth:any  = document.getElementById("fourth")
-        const fifth:any  = document.getElementById("fifth")
-        const sixth:any  = document.getElementById("sixth")
-
-        first.focus()
-
-        first.addEventListener("keyup", () => {
-            if (first.value.length > 0) {
-                second.focus()
-            }
-        })
-
-        second.addEventListener("keyup", () => {
-            if (second.value.length > 0) {
-                third.focus()
-            }
-        })
-
-        third.addEventListener("keyup", () => {
-            if (third.value.length > 0) {
-                fourth.focus()
-            }
-        })
-
-        fourth.addEventListener("keyup", () => {
-            if (fourth.value.length > 0) {
-                fifth.focus()
-            }
-        })
-
-        fifth.addEventListener("keyup", () => {
-            if (fifth.value.length > 0) {
-                sixth.focus()
-            }
-        })
-
-        sixth.addEventListener("keyup", () => {
-            if (sixth.value.length > 0) {
-                sixth.blur()
-            }
-        })
-
-        // check if all inputs are filled
-        const inputsArr = [first, second, third, fourth, fifth, sixth]
-
-        inputsArr.forEach((input:any) => {
-            input.addEventListener("keyup", () => {
-                if (first.value.length > 0 && second.value.length > 0 && third.value.length > 0 && fourth.value.length > 0 && fifth.value.length > 0 && sixth.value.length > 0) {
-                    
-                    // set the code
-                    setCode(`${first.value}${second.value}${third.value}${fourth.value}${fifth.value}${sixth.value}`)
-
-                    setIsDisabled(false)
-                } else {
-                    setIsDisabled(true)
-                }
-            })
-        })
-    }
-
     useEffect(() => {
-        OTPInput()
-    }, [])
+        if (code.length === 6) {
+            setIsDisabled(false)
+        }
+    }, [code])
 
     return (
         <div className="w-full max-w-sm">
@@ -135,13 +85,29 @@ export default function VerifyEmail(props:any) {
                     )}
                 </div> */}
 
-                <div id="otp" className="flex flex-row text-center mt-5">
+                {/* <div id="otp" className="flex flex-row text-center mt-5">
                     <input className="mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="first" maxLength={1} /> 
                     <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="second" maxLength={1} /> 
                     <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="third" maxLength={1} /> 
                     <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="fourth" maxLength={1} />
                     <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="fifth" maxLength={1} /> 
                     <input className="ml-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="sixth" maxLength={1} />
+                </div> */}
+
+                <div className="mt-10 text-white">
+                    <OtpInput
+                        value={code}
+                        onChange={setCode}
+                        numInputs={6}
+                        renderSeparator={<span className="ml-1text-2xl"></span>}
+                        renderInput={(props) => <input {...props} className={"mr-1 input input-bordered h-16 w-12 text-center text-2xl"} type={'text'} />}
+                        containerStyle={{
+                            width: "100%",
+                        }}
+                        inputStyle={{
+                            width: "3rem",
+                        }}
+                    />
                 </div>
 
                 <div className="mt-12 text-left">
@@ -160,6 +126,14 @@ export default function VerifyEmail(props:any) {
                     </button>
                 </div>
             </form>
+
+            {showToast && (
+				<>
+					{toastError && (
+						<Toast type="error" text={toastErrorText} />
+					)}
+				</>
+			)}
         </div>
     )
 }

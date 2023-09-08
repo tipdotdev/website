@@ -1,10 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const client = require('../utils/db');
-const dotenv = require('dotenv');
-const { authToken } = require('../utils/jwt');
-const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
-const { redis } = require('../utils/redis');
+// const express = require('express')
+// const router = express.Router()
+// const client = require('../utils/db');
+// const dotenv = require('dotenv');
+// const { authToken } = require('../utils/jwt');
+// const { generateKey, generateUUID, encrypt, decrypt } = require('../utils/crypto');
+// const { redis } = require('../utils/redis');
+import express from 'express';
+const router = express.Router();
+import client from '../utils/db.js';
+import dotenv from 'dotenv';
+import { authToken } from '../utils/jwt.js';
+import { generateKey, generateUUID, encrypt, decrypt } from '../utils/crypto.js';
+import { redis } from '../utils/redis.js';
 
 dotenv.config();
 
@@ -51,4 +58,4 @@ router.post("/pageviews/add", (req,res) => {
 })
 
 // export router
-module.exports = router
+export { router as analyticsRouter }
