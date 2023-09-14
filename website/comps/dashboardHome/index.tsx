@@ -549,7 +549,7 @@ export default function DashboardHome(props:any) {
                                 {pageViewsLoading ? (
                                     <span className="loading loading-spinner loading-md"></span>
                                 ) : (
-                                    <h1 className="text-5xl font-bold mt-5 w-full flex flex-row">{pageViews.toLocaleString()}</h1>
+                                    <h1 className="text-5xl font-bold mt-5 w-full flex flex-row">{pageViews?.toLocaleString() || 0}</h1>
                                 )}
                             </div>
 

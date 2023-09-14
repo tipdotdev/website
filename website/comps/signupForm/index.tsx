@@ -31,6 +31,8 @@ export default function SignupForm(props:any) {
 
     const [turnstileToken, setTurnstileToken] = useState("")
 
+    const [signupAvailable, setSignupAvailable] = useState(false)
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             // turnstile call back sets the token by doing window.parent.postMessage(token, '*')
@@ -98,10 +100,12 @@ export default function SignupForm(props:any) {
                     username: null
                 })
             } else {
+                let data = await req.json()
                 setValidUsername(false)
+                console.log(data)
                 setError({
                     ...error,
-                    username: "Username is already taken"
+                    username: data
                 })
             }
         }
@@ -178,112 +182,118 @@ export default function SignupForm(props:any) {
     return (
         <div className="w-full max-w-sm">
 
-            <h1 className="text-4xl font-bold mt-12">Sign up for tip.dev</h1>
+            {signupAvailable ? (
+                <>
+                    <h1 className="text-4xl font-bold mt-12">Sign up for tip.dev</h1>
 
-            <form method="POST" onSubmit={(e) => {
+                    <form method="POST" onSubmit={(e) => {
 
-                e.preventDefault()
-                signup()
+                        e.preventDefault()
+                        signup()
 
-            }} className="form-control">               
-                <div className="mt-10">
-                    <input type="email" placeholder="Email" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setEmail(e.target.value)
-                            }
-                        }}
-                    />
-                    {error.email && (
-                        <ErrorText text={error.email} />
-                    )}
-                </div>
-
-                <div className="mt-2">
-                    <input type="text" placeholder="Username" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setUsername(e.target.value)
-                            }
-                        }}
-                    />
-                    {error.username && (
-                        <ErrorText text={error.username} />
-                    )}
-                </div>
-
-                <div className="mt-2">
-                    <div className="join w-full">
-                        <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
-                            onChange={(e) => {
-                                if (e.target.value.length > 0) {
-                                    setPassword(e.target.value)
-                                }
-                            }}
-                        />
-                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
-                            setShowPassword(!showPassword)
-                        }}>
-                            {!showPassword ? (
-                                <FaEye />
-                            ) : (
-                                <FaEyeSlash />
+                    }} className="form-control">               
+                        <div className="mt-10">
+                            <input type="email" placeholder="Email" className="input input-bordered w-full"
+                                onChange={(e) => {
+                                    if (e.target.value.length > 0) {
+                                        setEmail(e.target.value)
+                                    }
+                                }}
+                            />
+                            {error.email && (
+                                <ErrorText text={error.email} />
                             )}
-                        </p>
-                    </div>
-                    {error.password && (
-                        <ErrorText text={error.password} />
+                        </div>
+
+                        <div className="mt-2">
+                            <input type="text" placeholder="Username" className="input input-bordered w-full"
+                                onChange={(e) => {
+                                    if (e.target.value.length > 0) {
+                                        setUsername(e.target.value)
+                                    }
+                                }}
+                            />
+                            {error.username && (
+                                <ErrorText text={error.username} />
+                            )}
+                        </div>
+
+                        <div className="mt-2">
+                            <div className="join w-full">
+                                <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                                    onChange={(e) => {
+                                        if (e.target.value.length > 0) {
+                                            setPassword(e.target.value)
+                                        }
+                                    }}
+                                />
+                                <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                                    setShowPassword(!showPassword)
+                                }}>
+                                    {!showPassword ? (
+                                        <FaEye />
+                                    ) : (
+                                        <FaEyeSlash />
+                                    )}
+                                </p>
+                            </div>
+                            {error.password && (
+                                <ErrorText text={error.password} />
+                            )}
+                        </div>
+
+                        <div className="mt-2">
+                            
+                            <label className="label cursor-pointer justify-start w-full text-left items-center" onClick={() => {
+                                setAgreeTerms(!agreeTerms)
+                            }}>
+                                
+                                <input type="checkbox" checked={agreeTerms} className="checkbox checkbox-primary" />
+                                <p className="label-text ml-2 text-[#949ca8]">I agree to the <a href="/terms" target="_blank" className="link-primary link-hover text-[#949ca8]">Terms</a> and <a href="/privacy" target="_blank" className="link-primary link-hover text-[#949ca8]">Privacy Policy</a></p> 
+
+                            </label>
+                        </div>
+
+                        <div className="mt-[-5px]">
+                            
+                            <label className="label cursor-pointer justify-start w-full text-left items-center" onClick={() => {
+                                setJoinNews(!joinNews)
+                            }}>
+                                
+                                <input type="checkbox" checked={joinNews} className="checkbox checkbox-primary" />
+                                <p className="label-text ml-2 text-[#949ca8]">Recieve updates and news via email?</p>   
+
+                            </label>
+                        </div>
+
+                        <div className="mt-12 text-left">
+
+                            <Turnstile />
+
+                            <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4">
+                                {isLoading ? (
+                                    <span className="loading loading-spinner"></span>
+                                ) : (
+                                    null
+                                )}
+                                Continue
+                            </button>
+
+                            <a className="text-sm link-hover link-primary cursor-pointer" href={'/signin'}>Already have an account?</a>
+                        </div>
+                    </form>
+
+                    {showToast && (
+                        <>
+                            {toastError && (
+                                <Toast type="error" text={toastErrorText} />
+                            )}
+                        </>
                     )}
-                </div>
-
-                <div className="mt-2">
-                    
-                    <label className="label cursor-pointer justify-start w-full text-left items-center" onClick={() => {
-                        setAgreeTerms(!agreeTerms)
-                    }}>
-                        
-                        <input type="checkbox" checked={agreeTerms} className="checkbox checkbox-primary" />
-                        <p className="label-text ml-2 text-[#949ca8]">I agree to the <a href="/terms" target="_blank" className="link-primary link-hover text-[#949ca8]">Terms</a> and <a href="/privacy" target="_blank" className="link-primary link-hover text-[#949ca8]">Privacy Policy</a></p> 
-
-                    </label>
-                </div>
-
-                <div className="mt-[-5px]">
-                    
-                    <label className="label cursor-pointer justify-start w-full text-left items-center" onClick={() => {
-                        setJoinNews(!joinNews)
-                    }}>
-                        
-                        <input type="checkbox" checked={joinNews} className="checkbox checkbox-primary" />
-                        <p className="label-text ml-2 text-[#949ca8]">Recieve updates and news via email?</p>   
-
-                    </label>
-                </div>
-
-                <div className="mt-12 text-left">
-
-                    <Turnstile />
-
-                    <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4">
-                        {isLoading ? (
-                            <span className="loading loading-spinner"></span>
-                        ) : (
-                            null
-                        )}
-                        Continue
-                    </button>
-
-                    <a className="text-sm link-hover link-primary cursor-pointer" href={'/signin'}>Already have an account?</a>
-                </div>
-            </form>
-
-            {showToast && (
-				<>
-					{toastError && (
-						<Toast type="error" text={toastErrorText} />
-					)}
-				</>
-			)}
+                </>
+            ) : (
+                <h1 className="text-4xl font-bold mt-12 text-center">Signups are closed for now</h1>
+            )}
         </div>
     )
 }
