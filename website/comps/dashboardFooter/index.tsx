@@ -11,7 +11,7 @@ export default function DashboardFooter() {
                 <a href="/privacy" className="link link-hover link-primary text-inherit">PRIVACY</a>
             </div> 
             <div className="grid-flow-col  gap-4 md:place-self-center md:justify-self-end text-sm text-zinc-200/50">
-                <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="https://twitter.com/tipthisdev" target="_blank">
+                <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="https://twitter.com/tipdotdev" target="_blank">
                     <FaTwitter />
                 </a>
 
