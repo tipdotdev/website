@@ -1,4 +1,4 @@
-import { FaDiscord, FaTwitter } from "react-icons/fa";
+import { FaDiscord, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function DashboardFooter() {
     return (
@@ -17,6 +17,10 @@ export default function DashboardFooter() {
 
                 <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="https://discord.gg/DsxygKZe54" target="_blank">
                     <FaDiscord />
+                </a>
+
+                <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="https://instagram.com/tipdotdev" target="_blank">
+                    <FaInstagram />
                 </a>
             </div>
 
