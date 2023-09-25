@@ -204,7 +204,7 @@ export default function DashboardAccount(props:any) {
 
                     </div>
 
-                    <div className="col-span-2 row-span-2 flex flex-col bg-base-200 p-5 justify-center rounded-xl">
+                    <div className="col-span-2 flex row-span-2 flex-col bg-base-200 p-5 justify-center rounded-xl">
 
                         <h1 className="text-2xl font-bold">Public Data</h1>
 
@@ -214,7 +214,7 @@ export default function DashboardAccount(props:any) {
                                 
                                 <InfoTooltip text="Your name is displayed on your profile and on your tip page." />
                             </label>
-                            <div className="join w-full rounded-lg">
+                            <div className="flex join">
                                 <input type="text" placeholder="Name" className="input input-bordered join-item w-full" value={name}
                                     onChange={(e) => {
                                         if (e.target.value.length > 0) {

@@ -24,7 +24,9 @@ export default function Header(props:any) {
                 
                 {isOwner ? (
                     <div className="flex flex-col w-full items-start object-cover -mt-[5.8rem] pl-48 ">
-                        <button className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Edit Profile</button>
+                        <a className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center" 
+                            href="/dashboard"
+                        >Edit Profile</a>
                     </div>
                 ) : (
                     <>

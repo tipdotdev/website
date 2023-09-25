@@ -25,7 +25,7 @@ export default function page() {
     const connectStripe = async () => {
         setIsLoading(true)
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/connect/stripe`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/stripe/connect`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

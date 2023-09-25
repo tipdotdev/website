@@ -29,6 +29,7 @@ export default function UserTipPage(props:any) {
                         
                         <div className="flex flex-col">
                             <p className="text-3xl font-bold">{pageUser?.username}</p>
+                            {/* <p className="text-md text-zinc-400">{pageUser?.name || null}</p> */}
                             <a href={`https://tip.dev/${pageUser?.username}`} className="text-md mt-1 font-code link link-hover link-primary text-zinc-400">tip.dev/{pageUser?.username}</a>
                         </div>
                         
