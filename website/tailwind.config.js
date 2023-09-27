@@ -9,6 +9,25 @@ module.exports = {
     extend: {
       fontFamily: {
         code: ['JetBrains Mono', 'monospace'],
+      },
+      dropShadow: {
+        glow: [
+          "0 0px 10px rgba(0,0, 0, 0.35)",
+          "0 0px 20px rgba(0,0, 0, 0.35)",
+          "0 0px 30px rgba(0, 0,0, 0.35)",
+          "0 0px 40px rgba(0, 0,0, 0.35)",
+          "0 0px 50px rgba(0, 0,0, 0.35)"
+        ]
+      },
+      keyframes: {
+        blob: {
+          // make the blob rotate 360 degrees
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '50%': { transform: 'rotate(360deg)' },
+        }
+      },
+      animation: {
+        blob: 'blob 20s infinite',
       }
     },
   },

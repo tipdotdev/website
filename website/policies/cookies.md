@@ -363,16 +363,4 @@ The date at the top of this Cookie Policy indicates when it was last updated.
 
   
 
-If you have any questions about our use of cookies or other technologies, please email us at \_\_\_\_\_\_\_\_\_\_ or by post to:
-
-  
-
-\_\_\_\_\_\_\_\_\_\_
-
-\_\_\_\_\_\_\_\_\_\_
-
-\_\_\_\_\_\_\_\_\_\_
-
-ul { list-style-type: square; } ul > li > ul { list-style-type: circle; } ul > li > ul > li > ul { list-style-type: square; } ol li { font-family: Arial ; }
-
-This cookie policy was created using Termly's [Cookie Consent Manager](https://termly.io/products/cookie-consent-manager/).
+If you have any questions about our use of cookies or other technologies, please email us at hello@tip.dev

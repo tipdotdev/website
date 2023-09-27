@@ -817,4 +817,4 @@ United States
 **15\. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?**
   
 
-Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it. To request to review, update, or delete your personal information, please visit: [https://tip.dev/account](https://tip.dev/account).
+Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it. To request to review, update, or delete your personal information, please visit: [https://tip.dev/dashboard/account](https://tip.dev/dashboard/account).

@@ -1,6 +1,6 @@
 import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
-import SignupForm from "@/comps/signupForm";
+import { SignupForm } from "@/comps/signupForm";
 import VerifyEmail from "@/comps/signupForm/verifyEmail";
 import useUser from "@/hooks/useUser";
 import { Inter } from "next/font/google";

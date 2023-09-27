@@ -7,8 +7,7 @@ import { TbDiscountCheckFilled } from "react-icons/tb";
 import useUser from "../../hooks/useUser";
 import Turnstile from "@/comps/turnstile";
 
-
-export default function SignupForm(props:any) {
+export function SignupForm(props:any) {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -31,7 +30,7 @@ export default function SignupForm(props:any) {
 
     const [turnstileToken, setTurnstileToken] = useState("")
 
-    const [signupAvailable, setSignupAvailable] = useState(true)
+    const [signupAvailable, setSignupAvailable] = useState(false)
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -292,7 +291,10 @@ export default function SignupForm(props:any) {
                     )}
                 </>
             ) : (
-                <h1 className="text-4xl font-bold mt-12 text-center">Signups are closed for now</h1>
+                <div className="flex flex-col items-center justify-center">
+                    <img src="/svg/logo.svg" className="h-24 w-fit" />
+                    <h1 className="text-2xl font-medium mt-12 text-center">Signups are closed for now</h1>
+                </div>
             )}
         </div>
     )

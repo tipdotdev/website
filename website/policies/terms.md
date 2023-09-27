@@ -260,7 +260,7 @@ We accept the following forms of payment:
 
   
 
-\-  Strie
+\-  Stripe
 
 \-  PayPal
 
@@ -326,7 +326,7 @@ As a user of the Services, you agree not to:
 *   Use a buying agent or purchasing agent to make purchases on the Services.
 *   Make any unauthorized use of the Services, including collecting usernames and/or email addresses of users by electronic or other means for the purpose of sending unsolicited email, or creating user accounts by automated means or under false pretenses.
 *   Use the Services as part of any effort to compete with us or otherwise use the Services and/or the Content for any revenue-generating endeavor or commercial enterprise.
-*   Use the Services to advertise or offer to sell goods and services.
+*   Use the Services to advertise, offer, or sell goods via a third party application.
 *   Sell or otherwise transfer your profile.
 *   Sell or paywall NSFW or 18+ content.
 *   Paywall products via tips through tip.dev.
@@ -539,9 +539,4 @@ These Legal Terms and any policies or operating rules posted by us on the Servic
 
 In order to resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact us at:
 
-
->**Tip.dev**
->
->****United States****
->
 >****hello@tip.dev****

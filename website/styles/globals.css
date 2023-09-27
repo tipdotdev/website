@@ -20,32 +20,32 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
+/* ::-webkit-scrollbar {
+  width: 7px;
+} */
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: #272935;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #1f2029;
   border-radius: 18px;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #191a20;
-}
-
-::-moz-selection { /* Code for Firefox */
+} */
+/* 
+::-moz-selection { 
   color: #303030;
-  background: #fe7ac6;
-}
+  background: #fe7ac700;
+} */
 
-::selection {
+/* ::selection {
   color: #303030;
-  background: #fe7ac6;
-}
+  background: #fe7ac700;
+} */

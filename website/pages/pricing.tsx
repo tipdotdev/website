@@ -1,3 +1,4 @@
+import Footer from '@/comps/footer'
 import Navbar from '@/comps/navbar'
 import PlusIcon from '@/comps/plusIcon'
 import { Inter } from 'next/font/google'
@@ -13,6 +14,7 @@ export default function Page() {
 
             <Navbar />
             <PlusIcon className="h-5 w-5" />
+            <Footer />
 
         </main>
     )

@@ -43,8 +43,6 @@ export default function TipBox(props:any) {
     useEffect(() => {
         if (!pageUser?.stripe?.id) return
 
-        console.log(pageUser.stripe.id)
-
         const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string, {
             stripeAccount: pageUser.stripe.id,
         });
@@ -113,7 +111,10 @@ export default function TipBox(props:any) {
             body: JSON.stringify({
                 amount: tipAmount * 100,
                 currency: "usd",
-                username: pageUser?.username
+                username: pageUser?.username,
+                tipper: user?.username || null,
+                message: tipMessage,
+                name: tipName,
             })
         })
 
