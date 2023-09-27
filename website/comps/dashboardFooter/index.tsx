@@ -15,7 +15,7 @@ export default function DashboardFooter() {
                     <FaTwitter />
                 </a>
 
-                <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="https://discord.gg/DsxygKZe54" target="_blank">
+                <a className="text-2xl hover:opacity-40 transition-all ease-in-out duration-150 cursor-pointer" href="/discord" target="_blank">
                     <FaDiscord />
                 </a>
 

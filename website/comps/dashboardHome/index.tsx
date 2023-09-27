@@ -60,24 +60,26 @@ export default function DashboardHome(props:any) {
     })
     const [ pageViews, setPageViews ] = useState(0)
     const [ followers, setFollowers ] = useState(abbrNum(user.followerCount, 2) || 0)
-    const [ recentEvents, setRecentEvents ] = useState([
+    const [ recentEvents, setRecentEvents ] = useState([])
 
-        {
-            amount: "$125",
-            type: {
-                name: "Tip",
-                color: "red"
-            },
-            date: "10 minutes ago",
-            from: {
-                username: "Someone",
-                pictures: {
-                    avatar: "https://i.pravatar.cc/300"
-                }
+    // get income events
+    const getIncomeEvents = async () => {
+        setTotalIncomeLoading(true)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/income-events`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
-        },
+        })
 
-    ])
+        if (res.ok) {
+            const data = await res.json()
+            user.incomeEvents = data.incomeEvents
+            calculateTotalIncome()
+            calculateRecentEvents()
+            setTotalIncomeLoading(false)
+        }
+    }
 
     // calculate the total income
     const calculateTotalIncome = () => {
@@ -180,12 +182,12 @@ export default function DashboardHome(props:any) {
         }
 
         setTotalIncome({
-            total: total.toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
+            total: (total/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
             types: {
-                tips: abbrNum(tips, 1),
-                subscriptions: abbrNum(subscriptions, 1),
-                commisions: abbrNum(commisions, 1),
-                wishlist: abbrNum(wishlist, 1)
+                tips: abbrNum((tips/100), 1),
+                subscriptions: abbrNum((subscriptions/100), 1),
+                commisions: abbrNum((commisions/100), 1),
+                wishlist: abbrNum((wishlist/100), 1)
             }
         })
 
@@ -310,6 +312,7 @@ export default function DashboardHome(props:any) {
 
     useEffect(() => {
         getPageViews()
+        getIncomeEvents()
     }, [])
 
     // set recent events
@@ -321,16 +324,16 @@ export default function DashboardHome(props:any) {
 
         user.incomeEvents?.forEach((event:any) => {
             events.push({
-                amount: event.amount.toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
+                amount: ((event.amount)/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
                 type: {
                     name: event.type,
                     color: "red"
                 },
-                date: event.date,
+                date: new Date(event.created_at).toLocaleDateString(),
                 from: {
-                    username: event.from.username,
+                    username: event.sender.username,
                     pictures: {
-                        avatar: event.from.pictures.avatar
+                        avatar: event.sender.pictures?.avatar || 'https://cdn.tip.dev/tipdev/avatars/default.jpeg'
                     }
                 }
             })
@@ -446,7 +449,7 @@ export default function DashboardHome(props:any) {
                                     {totalIncomeLoading ? (
                                         <span className="loading loading-spinner loading-sm text-zinc-400"></span>
                                     ) : (
-                                        <p className="text-lg">{totalIncome.types.tips} Tips (one-off + recurring)</p>
+                                        <p className="text-lg">${totalIncome.types.tips} Tips (one-off + recurring)</p>
                                     )}
                                 </div>
 
@@ -455,7 +458,7 @@ export default function DashboardHome(props:any) {
                                     {totalIncomeLoading ? (
                                         <span className="loading loading-spinner loading-sm text-zinc-400"></span>
                                     ) : (
-                                        <p className="text-lg">{totalIncome.types.subscriptions} Subscriptions</p>
+                                        <p className="text-lg">${totalIncome.types.subscriptions} Subscriptions</p>
                                     )}
                                 </div>
 
@@ -464,7 +467,7 @@ export default function DashboardHome(props:any) {
                                     {totalIncomeLoading ? (
                                         <span className="loading loading-spinner loading-sm text-zinc-400"></span>
                                     ) : (
-                                        <p className="text-lg">{totalIncome.types.commisions} Commisions</p>
+                                        <p className="text-lg">${totalIncome.types.commisions} Commisions</p>
                                     )}
                                 </div>
 
@@ -473,7 +476,7 @@ export default function DashboardHome(props:any) {
                                     {totalIncomeLoading ? (
                                         <span className="loading loading-spinner loading-sm text-zinc-400"></span>
                                     ) : (
-                                        <p className="text-lg">{totalIncome.types.wishlist} Wishlist purchases</p>
+                                        <p className="text-lg">${totalIncome.types.wishlist} Wishlist purchases</p>
                                     )}
                                 </div>
                             </div>

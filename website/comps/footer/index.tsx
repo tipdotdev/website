@@ -16,7 +16,7 @@ export default function Footer(props:any) {
                     <header className="footer-title">Support</header> 
                     <a className="link link-hover" href="/contact">Contact us</a> 
                     <a className="link link-hover" href="https://docs.tip.dev">API Documentation</a> 
-                    <a className="link link-hover" href="https://discord.gg/DsxygKZe54">Discord server</a> 
+                    <a className="link link-hover" target="_blank" href="/discord">Discord server</a> 
                     <a className="link link-hover" href="/blog">Blog</a> 
                 </nav> 
                 <nav>
@@ -50,7 +50,7 @@ export default function Footer(props:any) {
                         </a> 
 
                         <a className="cursor-pointer hover:text-zinc-400 transition-all ease-in-out duration-150 text-2xl"
-                            href="https://discord.gg/DsxygKZe54" target="_blank"
+                            href="/discord" target="_blank"
                         >
                             <FaDiscord />
                         </a> 

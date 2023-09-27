@@ -31,7 +31,7 @@ export default function HomeHero() {
                         <div className="bg-base-200 p-4 rounded-full flex flex-row justify-center items-center">
                             <div className="join gap-2 items-center ml-4">
                                 <p className="text-2xl font-bold join-item">tip.dev/</p>
-                                <input className="bg-transparent text-2xl font-bold focus:outline-none join-item placeholder-zinc-400" placeholder="you" />
+                                <input className="bg-transparent text-primary text-2xl font-bold focus:outline-none join-item placeholder-zinc-400" placeholder="you" />
                             </div>
                             <button className="btn btn-primary rounded-full">Claim</button>
                         </div>

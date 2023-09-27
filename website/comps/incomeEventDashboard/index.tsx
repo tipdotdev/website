@@ -12,7 +12,7 @@ export default function IncomeEventDashboard(props:any) {
                 </div>
 
                 <div className="flex flex-col justify-start items-start"> 
-                    <p className="text-xl font-code text-zinc-400">{event.from.username} gave you</p>
+                    <p className="text-xl font-code text-zinc-400">{event.from.username || "Someone"} gave you</p>
                     <h1 className="text-5xl font-bold">{event.amount}</h1>
 
                     <div className="flex flex-row justify-start items-center  mt-2">
