@@ -1,5 +1,5 @@
 import SEOHead from '@/comps/seohead';
-import { getPostData } from '../utils/posts';
+import { getPostData } from '../../utils/posts';
 import { Inter } from 'next/font/google'
 import Navbar from '@/comps/navbar';
 import DashboardFooter from '@/comps/dashboardFooter';
