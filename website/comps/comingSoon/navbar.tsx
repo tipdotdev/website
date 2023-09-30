@@ -81,7 +81,7 @@ export default function ComingSoonNavbar() {
                 </ul>
                 </div>
                 <a className="btn btn-ghost normal-case text-xl" href="/">
-                    <img src="/logo-no-bg-v3.png" className="sm:h-10 w-fit" />
+                    <img src="/logo-no-bg-v3.png" className="h-10" />
                     <p className="sm:inline-block hidden">tip.dev</p>
                 </a>
             </div>
