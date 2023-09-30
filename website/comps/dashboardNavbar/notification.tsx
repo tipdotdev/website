@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useNotifications } from "@novu/notification-center"
 import { useEffect, useRef } from "react";
 // import Knock from "@knocklabs/client"
