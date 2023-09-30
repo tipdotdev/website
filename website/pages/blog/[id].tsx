@@ -74,7 +74,9 @@ export default function Page({ postData }: { postData: any }) {
                 </div>
             </div>
 
-            <BlogCTA />
+            <div className="flex flex-col items-center sm:w-1/2 w-full">
+                <BlogCTA />
+            </div>
 
             <Footer />
 

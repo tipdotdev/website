@@ -49,7 +49,7 @@ export default function ComingSoon() {
             <div className="hero-content text-center ">
                 <div className='
 					absolute
-					w-[30rem]
+					w-[20rem]
 					sm:w-[40rem]
 					sm:h-[20rem]
 					h-[10rem]

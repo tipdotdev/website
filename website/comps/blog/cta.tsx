@@ -41,7 +41,7 @@ export default function BlogCTA(props:any) {
 	}
 
     return (
-        <div className="flex flex-col items-center w-1/2 mb-20 bg-base-200 p-6 rounded-xl">
+        <div className="flex flex-col items-center w-full mb-20 bg-base-200 p-6 rounded-xl">
             <div className="flex flex-col w-full">
                 <h1 className="text-4xl font-black mb-4">Don't miss new posts!</h1>
                 <p className="text-md text-zinc-200">Subscribe to our newsletter to get updates when we post.</p>

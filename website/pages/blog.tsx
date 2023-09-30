@@ -27,7 +27,7 @@ export default function Page({ allPosts }: { allPosts: any }) {
 	
   	return (
 		<main
-			className={`flex min-h-screen flex-col items-center px-10 ${inter.className}`}
+			className={`flex min-h-screen flex-col items-center px-4 ${inter.className}`}
 	  		data-theme="dracula"
   		>	
 	  		<SEOHead title="Tip.dev Blog Posts" />
@@ -40,11 +40,14 @@ export default function Page({ allPosts }: { allPosts: any }) {
 
             <div className="h-28"> </div>
             
-            <div className="flex flex-col items-center w-1/2 mb-20">
+            <div className="flex flex-col items-center sm:w-1/2 w-full mb-20">
                 <PostList posts={allPosts} />
+
             </div>
 
-            <BlogCTA />
+            <div className="flex flex-col items-center sm:w-1/2 w-full">
+                <BlogCTA />
+            </div>
 
             <Footer />
 
