@@ -43,7 +43,7 @@ export default function Page({ postData }: { postData: any }) {
     console.log(postData)
     return (
 		<main
-			className={`flex min-h-screen flex-col items-center px-10 ${inter.className}`}
+			className={`flex min-h-screen flex-col items-center px-4 ${inter.className}`}
 	  		data-theme="dracula"
   		>	
 	  		<SEOHead title={postData.title} description={postData.description} image={postData.thumbnail} />

@@ -117,7 +117,7 @@ export default function ComingSoonNavbar() {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn btn-primary px-8">Coming Soon</a>
+                <a className="btn btn-primary px-8">Soon!</a>
             </div>
         </div>
     )
