@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google'
 import Navbar from "@/comps/navbar";
 import ComingSoonNavbar from "@/comps/comingSoon/navbar";
 import Footer from "@/comps/footer";
-import PostMarkdownRenderer from "@/comps/blog/renderer";
 import BlogCTA from "@/comps/blog/cta";
 
 const inter = Inter({ subsets: ['latin'] })
