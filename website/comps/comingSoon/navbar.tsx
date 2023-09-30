@@ -1,10 +1,7 @@
-import { FaArrowCircleLeft, FaBars, FaGripVertical, FaUserCircle } from "react-icons/fa";
-import useUser from "@/hooks/useUser";
-import UserMenu from "./userMenu";
+import { FaBars } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
-export default function Navbar() {
-    const { user, isSignedIn, logout } = useUser()
+export default function ComingSoonNavbar() {
 
     // on scroll, change navbar bg color
     const [ scroll, setScroll ] = useState(false)
@@ -67,7 +64,7 @@ export default function Navbar() {
                         </ul>
                     </li>
                     <li><a
-                        href={`/pricing`}
+                        href={``}
                     >
                         Pricing
                     </a></li>
@@ -84,7 +81,7 @@ export default function Navbar() {
                 </ul>
                 </div>
                 <a className="btn btn-ghost normal-case text-xl" href="/">
-                    <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />
+                    <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />tip.dev
                 </a>
             </div>
             <div className="navbar-center hidden lg:flex">
@@ -102,7 +99,7 @@ export default function Navbar() {
                         </details>
                     </li>
                     <li><a
-                        href={`/pricing`}
+                        href={``}
                     >
                         Pricing
                     </a></li>
@@ -118,15 +115,9 @@ export default function Navbar() {
                     </a></li>
                 </ul>
             </div>
-            {isSignedIn ? ( 
-                <div className="navbar-end">
-                    <UserMenu user={user} logout={logout} />
-                </div>
-            ) : (
-                <div className="navbar-end">
-                    <a className="btn btn-primary px-8" href="/onboarding/signup">Get Started</a>
-                </div>
-            )}
+            <div className="navbar-end">
+                <a className="btn btn-primary px-8">Coming Soon</a>
+            </div>
         </div>
     )
 }

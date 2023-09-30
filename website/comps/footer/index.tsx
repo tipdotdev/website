@@ -15,25 +15,25 @@ export default function Footer(props:any) {
                 <nav>
                     <header className="footer-title">Support</header> 
                     <a className="link link-hover" href="/contact">Contact us</a> 
-                    <a className="link link-hover" href="https://docs.tip.dev">API Documentation</a> 
+                    <a className="link link-hover" href="">API Documentation</a> 
                     <a className="link link-hover" target="_blank" href="/discord">Discord server</a> 
                     <a className="link link-hover" href="/blog">Blog</a> 
                 </nav> 
                 <nav>
                     <header className="footer-title">Company</header> 
-                    <a className="link link-hover" href="/company/about">About us</a> 
+                    <a className="link link-hover" href="">About us</a> 
                     <a className="link link-hover" href="/blog">Blog</a>
-                    <a className="link link-hover" href="/contact">Contact</a> 
-                    <a className="link link-hover" href="/company/jobs">Jobs</a> 
-                    <a className="link link-hover" href="/company/press-kit">Press kit</a>
+                    <a className="link link-hover" href="">Contact</a> 
+                    <a className="link link-hover" href="">Jobs</a> 
+                    <a className="link link-hover" href="">Press kit</a>
                 </nav> 
                 <nav>
                     <header className="footer-title">Legal</header> 
                     <a className="link link-hover" href="/policies/terms">Terms of service</a> 
                     <a className="link link-hover" href="/policies/privacy">Privacy policy</a> 
                     <a className="link link-hover" href="/policies/cookies">Cookie policy</a>
-                    <a className="link link-hover" href="/policies/content">Content policy</a>
-                    <a className="link link-hover" href="/policies/cookies">Community guidlines</a>
+                    <a className="link link-hover" href="">Content policy</a>
+                    <a className="link link-hover" href="">Community guidlines</a>
                 </nav>
             </footer>
             <footer className="footer px-10 py-4 bg-base-200 text-base-content w-screen">
