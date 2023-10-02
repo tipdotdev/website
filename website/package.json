@@ -9,8 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.21.15",
-    "@clerk/themes": "^1.7.5",
+    "@igorkowalczyk/is-browser": "^5.0.2",
     "@knocklabs/node": "^0.4.22",
     "@knocklabs/react-notification-feed": "^0.8.6",
     "@novu/node": "^0.16.4",

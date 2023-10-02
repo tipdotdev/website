@@ -43,6 +43,7 @@ export default function ComingSoon() {
     return (
         <div className="hero min-h-screen w-screen bg-base-100
             bg-[url('/svg/grain.svg')]
+			firefox:bg-none // temp fix 
             bg-blend-overlay
             bg-opacity-[10%]
         ">

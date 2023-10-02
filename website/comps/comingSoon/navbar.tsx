@@ -116,7 +116,7 @@ export default function ComingSoonNavbar() {
                     </a></li>
                 </ul>
             </div>
-            <div className="navbar-end">
+            <div className="navbar-end sm:flex hidden ">
                 <a className="btn btn-primary px-8">Coming Soon</a>
             </div>
         </div>

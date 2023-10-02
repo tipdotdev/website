@@ -39,8 +39,6 @@ export default function Page({ postData }: { postData: any }) {
             day: 'numeric',
         }
     )
-
-    console.log(postData)
     return (
 		<main
 			className={`flex min-h-screen flex-col items-center px-4 ${inter.className}`}
@@ -58,7 +56,7 @@ export default function Page({ postData }: { postData: any }) {
             
             <div className="flex flex-col text-left md:w-1/2 w-full mb-20">
 
-                <img src={postData.thumbnail} className="rounded-2xl w-fit" />
+                <img src={postData.thumbnail} className="rounded-2xl w-full aspect-video" />
 
                 <p className="text-sm text-zinc-400 mt-4">Published on {readableDate} by {postData.author}</p>
 
