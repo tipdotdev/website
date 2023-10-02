@@ -1,4 +1,3 @@
-import { UserProfile } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 import { FaArrowRight, FaCamera, FaGithub, FaInstagram, FaLinkedin, FaSquare, FaTwitter } from "react-icons/fa"
 import Avatar from "../avatar"
