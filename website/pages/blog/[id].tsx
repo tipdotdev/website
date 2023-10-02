@@ -44,7 +44,7 @@ export default function Page({ postData }: { postData: any }) {
 			className={`flex min-h-screen flex-col items-center px-4 ${inter.className}`}
 	  		data-theme="dracula"
   		>	
-	  		<SEOHead title={postData.title} description={postData.description} image={postData.thumbnail} />
+	  		<SEOHead title={postData.title} description={postData.description} largeImage={postData.thumbnail} />
 
             {!showComingSoon ?
                 <Navbar />
