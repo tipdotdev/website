@@ -1,7 +1,6 @@
 import SEOHead from "@/comps/seohead";
 import SigninForm from "@/comps/signinForm";
 import useUser from "@/hooks/useUser";
-import { SignIn, SignUp } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { useEffect } from "react";
 
