@@ -31,7 +31,7 @@ export default function Turnstile(props:any) {
             callback: function (token) {
               window.parent.postMessage(token, '*')
             },
-            appearance: 'execute',
+            appearance: 'always',
             size: 'normal'
           })
         }`}
@@ -41,7 +41,7 @@ export default function Turnstile(props:any) {
         async={true}
         defer={true}
       />
-      <div id="my-widget" className='mb-5' />
+      <div id="my-widget" className='mb-5 justify-center items-center' />
     </div>
   )
 }

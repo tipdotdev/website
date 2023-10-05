@@ -55,7 +55,7 @@ export default function StatusPageEmbed(props:any) {
     return (
         <a className={`justify-center items-center flex flex-row
             transition-all ease-in-out duration-150 cursor-pointer
-            ${props.showText ? "hover:bg-base-100 p-1 px-2 rounded-lg" : ""}
+            ${props.showText ? "hover:bg-neutral-focus p-1 px-2 rounded-lg" : ""}
         `}
             href="https://status.tip.dev"
             target="_blank"

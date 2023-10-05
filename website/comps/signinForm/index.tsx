@@ -67,17 +67,18 @@ export default function SigninForm() {
             window.location.href = "/dashboard"
         } else {
             const data = await req.json()
+            
             setToastError(true)
-            setToastErrorText(data.error.message)
+            setToastErrorText(data.message)
             setShowToast(true)
             setIsLoading(false)
 
-            if (data.error.message == "incorrect password") {
+            if (data.message == "incorrect password") {
                 setError({
                     ...error,
                     password: "Incorrect password"
                 })
-            } else if (data.error.message == "user not found") {
+            } else if (data.message == "user not found") {
                 setError({
                     ...error,
                     email: "User not found"

@@ -28,6 +28,9 @@ module.exports = {
       },
       animation: {
         blob: 'blob 20s infinite',
+      },
+      aspectRatio: {
+        "banner": "16/3",
       }
     },
   },

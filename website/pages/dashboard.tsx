@@ -5,6 +5,7 @@ import DashboardSidebar from "@/comps/dashboardSidebar";
 import SEOHead from "@/comps/seohead";
 import DashboardHome from "@/comps/dashboardHome";
 import { useEffect } from "react";
+import DashboardFooter from "@/comps/dashboardFooter";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -46,6 +47,9 @@ export default function Page() {
                         content={ <DashboardHome user={user} token={token} /> }
                         user={ user }
                     />
+                    
+                    <DashboardFooter />
+
                 </>
             }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { FaArrowRight, FaCamera, FaGithub, FaInstagram, FaLinkedin, FaSquare, FaTwitter } from "react-icons/fa"
+import { FaArrowRight, FaCamera, FaEye, FaEyeSlash, FaGithub, FaInstagram, FaLinkedin, FaSquare, FaTwitter } from "react-icons/fa"
 import Avatar from "../avatar"
 import InfoTooltip from "../infoTooltip"
 import { TbDiscountCheckFilled } from "react-icons/tb"
@@ -19,7 +19,10 @@ export default function DashboardAccount(props:any) {
 
     const [email, setEmail] = useState(user?.email || null as any)
     const [validEmail, setValidEmail] = useState(false)
-    const [password, setPassword] = useState(null as any)
+    const [password, setPassword] = useState("" as any)
+    const [newPassword, setNewPassword] = useState("" as any)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showNewPassword, setShowNewPassword] = useState(false)
     const [validPassword, setValidPassword] = useState(false)
 
     const [socials, setSocials] = useState(user?.socials || {})
@@ -42,6 +45,9 @@ export default function DashboardAccount(props:any) {
             modal?.showModal()
         } else if (social == "delete") {
             const modal = document.getElementById("delete_modal") as any
+            modal?.showModal()
+        } else if (social == "change_password") {
+            const modal = document.getElementById("change_password_modal") as any
             modal?.showModal()
         }
     }
@@ -171,7 +177,7 @@ export default function DashboardAccount(props:any) {
                                     {newBanner || user.pictures?.banner ? (
                                         <div className="mr-2">
                                             <div className="rounded-xl w-full">
-                                                <img src={!newBanner ? user.pictures?.banner : URL.createObjectURL(newBanner)} className="w-full h-[7rem] object-cover object-center rounded-xl"/>
+                                                <img src={!newBanner ? user.pictures?.banner : URL.createObjectURL(newBanner)} className="w-full aspect-banner object-cover object-center rounded-xl"/>
                                             </div>
                                         </div>
                                     ) : (
@@ -381,18 +387,7 @@ export default function DashboardAccount(props:any) {
                             <label className="label items-center justify-normal">
                                 <span className="label-text text-lg font-bold mr-2">Password</span>
                             </label>
-                            <div className="join w-full">
-                                <input type="password" placeholder="Password" className="input input-bordered w-full join-item"
-                                    onChange={(e) => {
-                                        if (e.target.value.length > 0) {
-                                            setPassword(e.target.value)
-                                        }
-                                    }}
-                                />
-                                <button className="btn join-item btn-primary rounded-r-lg" disabled={
-                                    password == null || password.length < 8
-                                }>Save</button>
-                            </div>
+                            <button className="btn btn-neutral w-full mt-2" onClick={() => openModal('change_password')}>Click to change</button>
                         </div>
 
 
@@ -406,9 +401,9 @@ export default function DashboardAccount(props:any) {
                         <div className="flex flex-row mt-7 justify-between gap-2">
                             <div className="flex flex-col w-1/2">
                                 <p className="text-lg font-bold">Delete Account</p>
-                                <p className="text-zinc-400 font-semibold">Delete your account and all associated data. This action is irreversible.</p>
+                                <p className="text-zinc-400 font-semibold">Delete your account and all associated data.</p>
                             </div>
-                            <button className="btn btn-error w-1/2" onClick={() => {
+                            <button className="btn btn-error" onClick={() => {
                                 openModal("delete")
                             }}>Delete Account</button>
                         </div>
@@ -529,6 +524,60 @@ export default function DashboardAccount(props:any) {
                     <button className="btn btn-error w-full mt-10" disabled={confirmDeleteText !== "Delete my account"} onClick={() => {
                         deleteAccount()
                     }}>Delete Account</button>
+
+                </form>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
+            {/* Change password modal */}
+            <dialog id="change_password_modal" className="modal">
+                <form method="dialog" className="modal-box w-full">
+                    <h3 className="font-bold text-2xl">Change your password</h3>
+                    <p className="text-sm text-zinc-400 mt-2">Enter your current password and your new password.</p>
+
+                    <div className="join w-full mt-10">
+                        <input type={showPassword ? "text" : "password"} placeholder="Current Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                            onChange={(e) => {
+                                if (e.target.value.length > 0) {
+                                    setPassword(e.target.value)
+                                }
+                            }}
+                        />
+                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                            setShowPassword(!showPassword)
+                        }}>
+                            {!showPassword ? (
+                                <FaEye />
+                            ) : (
+                                <FaEyeSlash />
+                            )}
+                        </p> 
+                    </div>
+
+                    <div className="join w-full mt-6">
+                        <input type={showNewPassword ? "text" : "password"} placeholder="New Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                            onChange={(e) => {
+                                if (e.target.value.length > 0) {
+                                    setNewPassword(e.target.value)
+                                }
+                            }}
+                        />
+                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                            setShowNewPassword(!showNewPassword)
+                        }}>
+                            {!showNewPassword ? (
+                                <FaEye />
+                            ) : (
+                                <FaEyeSlash />
+                            )}
+                        </p> 
+                    </div>
+
+                    <button className="btn btn-primary w-full mt-10" disabled={password && newPassword && validPassword} onClick={() => {
+                        // change password
+                    }}>Change Password</button>
 
                 </form>
                 <form method="dialog" className="modal-backdrop">

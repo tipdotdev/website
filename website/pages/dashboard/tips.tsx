@@ -31,6 +31,8 @@ export default function Page() {
                 content={ <DashboardTips user={user} /> }
                 user={ user }
             /> */}
+            
+            <DashboardFooter />
 
         </main>
     )

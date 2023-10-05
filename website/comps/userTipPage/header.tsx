@@ -17,7 +17,7 @@ export default function Header(props:any) {
                 {pageUser?.pictures?.banner == null ? (
                     <div className="w-full h-[20rem] bg-base-200 rounded-xl"></div>
                 ) : (
-                    <img src={pageUser?.pictures?.banner} className="w-full lg:h-[20rem] md:h-[15rem] sm:h-[10rem] object-cover object-center rounded-xl" />
+                    <img src={pageUser?.pictures?.banner} className="w-full aspect-banner object-center object-cover rounded-xl" />
                 )}
 
                 <img src={pageUser?.pictures?.avatar} className="sm:w-36 w-20 sm:h-36 h-20 object-cover rounded-full sm:-mt-20 -mt-10 ml-5 border-[6px] border-base-100" />

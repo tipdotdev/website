@@ -21,21 +21,25 @@ export default function Page() {
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
 
-            <SEOHead title="{$} | Dashboard Account" />
-            
-            <DashboardTopNav />
-
-            {/* <DashboardFooter /> */}
-
             {isAuthLoading || !user ? (
                 <div className="flex flex-col justify-center items-center w-full h-full">
                     <span className="loading loading-spinner loading-md"></span>
                 </div>
-            ) : 
-                <DashboardSidebar 
-                    content={ <DashboardAccount user={user} token={token} logout={logout} /> }
-                    user={ user }
-                />
+            ) :
+                <>
+
+                    <SEOHead title="{$} | Account" />
+                    
+                    <DashboardTopNav />
+
+                    <DashboardSidebar 
+                        content={ <DashboardAccount user={user} token={token} logout={logout} /> }
+                        user={ user }
+                    />
+                    
+                    <DashboardFooter />
+
+                </>
             }
 
         </main>

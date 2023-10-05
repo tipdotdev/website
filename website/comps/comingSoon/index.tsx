@@ -43,7 +43,7 @@ export default function ComingSoon() {
     return (
         <div className="hero min-h-screen w-screen bg-base-100
             bg-[url('/svg/grain.svg')]
-			firefox:bg-none // temp fix 
+			firefox:bg-[url('/svg/grain-firefox.svg')]
             bg-blend-overlay
             bg-opacity-[10%]
         ">
@@ -62,7 +62,7 @@ export default function ComingSoon() {
 				' />
                 <div className="max-w-4xl z-0">
                     
-                    <p className="sm:text-5xl text-2xl text-zinc-300 font-code mb-2">Coming Soon</p>
+                    <p className="sm:text-4xl text-2xl text-zinc-300 font-code mb-2">Coming Soon</p>
 
                     <h1 className="sm:text-8xl text-6xl font-bold">
                         Make <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">money</span> doing what you love

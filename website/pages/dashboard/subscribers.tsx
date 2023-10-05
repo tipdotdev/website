@@ -24,6 +24,8 @@ export default function Page() {
                 user={ user }
             /> */}
 
+            <DashboardFooter />
+
         </main>
     )
 }
