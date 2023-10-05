@@ -8,8 +8,9 @@ export default function StatusPageEmbed(props:any) {
         const req = await fetch("https://uptime.betterstack.com/api/v2/monitors", {
             method: "GET",
             headers: {
-                'Authorization': `Bearer ${process.env.STATUS_API_KEY}`
-            },
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + process.env.STATUS_API_KEY
+            }
         })
 
         if (!req.ok) {
@@ -48,7 +49,7 @@ export default function StatusPageEmbed(props:any) {
     }
 
     useEffect(() => {
-        determineStatus()
+        // determineStatus()
     }, [])
 
     return (
