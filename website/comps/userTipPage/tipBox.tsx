@@ -30,6 +30,7 @@ export default function TipBox(props:any) {
     const [tipLoading, setTipLoading] = useState(false)
     const [error, setError] = useState({} as any)
     const [email, setEmail] = useState("" as any)
+    const [validEmail, setValidEmail] = useState(false)
 
     const [step, setStep] = useState(1)
 
@@ -100,8 +101,30 @@ export default function TipBox(props:any) {
         return true
     }
 
+    const validateEmail = () => {
+        if (email.length != 0) {
+            let re = /\S+@\S+\.\S+/;
+            let valid = re.test(email);
+
+            if (valid) {
+                setValidEmail(true)
+                setError({
+                    ...error,
+                    email: null
+                })
+            } else {
+                setValidEmail(false)
+                setError({
+                    ...error,
+                    email: "Email is not valid"
+                })
+            }
+        }
+    }
+
     const createIntent = async () => {
         if (!validateTipAmount()) return
+        if (!validEmail) return
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/stripe/create/payment-intent`, {
             method: "POST",
@@ -115,6 +138,7 @@ export default function TipBox(props:any) {
                 tipper: user?.username || null,
                 message: tipMessage,
                 name: tipName,
+                email: email,
             })
         })
 
@@ -146,61 +170,9 @@ export default function TipBox(props:any) {
         }
     })
 
-    // const [stripeConnectInstance, setStripeConnectInstance] = useState(null as any);
-
-    // useEffect(() => {
-    //     let stripeConnect;
-    //     (async () => {
-    //         try {
-    //             stripeConnect = await loadConnect()
-    //         } catch (error) {
-    //             console.log(error)
-    //             return
-    //         }
-
-    //         if (clientSecret) {
-    //             // initialize StripeConnect after window loads
-    //             const instance = stripeConnect.initialize({
-    //                 publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string,
-    //                 clientSecret: clientSecret,
-    //                 appearance: {
-    //                     // theme: "night",
-    //                     // labels: "floating",
-    //                     // variables: {
-    //                         colorBackground: "#272935",
-    //                         colorPrimary: "#ff7ac6",
-    //                     // }
-    //                 },
-    //                 uiConfig: {
-    //                     overlay: 'dialog'
-    //                 },
-    //                 refreshClientSecret: async () => {
-    //                     return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/stripe/create/payment-intent`, {
-    //                         method: "POST",
-    //                         headers: {
-    //                             "Content-Type": "application/json"
-    //                         },
-    //                         body: JSON.stringify({
-    //                             amount: tipAmount * 100,
-    //                             currency: "usd",
-    //                             username: pageUser?.username
-    //                         })
-    //                     })
-    //                     .then((res) => {
-    //                         return res.json()
-    //                     }
-    //                     )
-    //                     .then((data) => {
-    //                         return data.client_secret
-    //                     }
-    //                     )
-    //                 },
-    //             })
-
-    //             setStripeConnectInstance(instance)
-    //         }
-    //     })();
-    // }, [])
+    useEffect(() => {
+        validateEmail()
+    }, [email])
 
     const [showConfetti, setShowConfetti] = useState(false as any)
 
@@ -226,6 +198,9 @@ export default function TipBox(props:any) {
                     setError={setError}
                     setStep={setStep}
                     continue={createIntent}
+                    setEmail={setEmail}
+                    email={email}
+                    validEmail={validEmail}
                 />
             ) : step == 2 ? (
                 <Elements stripe={stripePromise} options={{
@@ -259,6 +234,9 @@ export default function TipBox(props:any) {
                     setError={setError}
                     setStep={setStep}
                     continue={createIntent}
+                    setEmail={setEmail}
+                    email={email}
+                    validEmail={validEmail}
                 />
             )}
 

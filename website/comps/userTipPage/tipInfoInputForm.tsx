@@ -1,5 +1,6 @@
 import { FaDollarSign } from "react-icons/fa"
 import ErrorText from "../input/errorText"
+import { useState } from "react"
 
 export default function TipBoxInfoForm(props:any) {
     const tipType = props.tipType
@@ -15,6 +16,9 @@ export default function TipBoxInfoForm(props:any) {
     const setError = props.setError
     const setStep = props.setStep
     const continueFunc = props.continue
+    const email = props.email
+    const setEmail = props.setEmail
+    const validEmail = props.validEmail
 
     return (
         <>
@@ -74,6 +78,21 @@ export default function TipBoxInfoForm(props:any) {
                     onChange={(e) => setTipName(e.target.value)}
                 />
 
+                <div className="flex flex-col w-full">
+                    <input 
+                        type="email" 
+                        className="input input-lg w-full rounded-lg mt-5 font-bold placeholder:font-bold text-xl placeholder:text-xl" 
+                        placeholder="Email" 
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                        }} 
+                    />
+
+                    {error.email && (
+                        <ErrorText text={error.email} />
+                    )}
+                </div>
+
                 <textarea 
                     className="textarea mt-5 h-32 rounded-lg placeholder:text-xl placeholder:font-bold font-bold text-xl" 
                     placeholder="Leave a public message"
@@ -83,7 +102,7 @@ export default function TipBoxInfoForm(props:any) {
                 />
 
                 <button className="btn btn-primary btn-lg  flex flex-row w-full mt-5 normal-case text-xl"
-                    disabled={tipLoading || tipAmount < 5 } onClick={() => {
+                    disabled={tipLoading || tipAmount < 5 || !email || !validEmail } onClick={() => {
                         continueFunc()
                     }}
                 >

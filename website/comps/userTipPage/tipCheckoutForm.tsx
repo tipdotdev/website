@@ -1,10 +1,14 @@
 // import { ConnectPayments } from "@stripe/react-connect-js";
 import { CardCvcElement, CardElement, CardExpiryElement, CardNumberElement, PaymentElement, useElements, useStripe, ExpressCheckoutElement, AddressElement } from "@stripe/react-stripe-js";
+import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import ErrorText from "../input/errorText";
 
 export default function TipBoxCheckoutForm(props:any) {
     const stripe = useStripe();
     const elements = useElements();
+
+    const [errors, setErrors] = useState({} as any)
 
     async function handleSubmit(event: any) {
         event.preventDefault();
@@ -15,31 +19,13 @@ export default function TipBoxCheckoutForm(props:any) {
             return;
         }
 
-        // const result = await stripe.confirmPayment({
-        //     //`Elements` instance that was used to create the Payment Element
-        //     elements,
-        //     confirmParams: {
-        //         return_url: `${process.env.NEXT_PUBLIC_URL}/${props.user?.username}`,
-        //     },
-        // });
-
-        // if (result.error) {
-        //     // Show error to your customer (for example, payment details incomplete)
-        //     console.log(result.error.message);
-        // } else {
-        //     // Your customer will be redirected to your `return_url`. For some payment
-        //     // methods like iDEAL, your customer will be redirected to an intermediate
-        //     // site first to authorize the payment, then redirected to the `return_url`.
-        //     props.setStep(3);
-        // }
-
         const result = await stripe.confirmCardPayment(props.clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement) as any,
                 billing_details: {
                     email: props.email,
                 },
-            }
+            },
         })
 
         if (result.error) {
@@ -86,35 +72,25 @@ export default function TipBoxCheckoutForm(props:any) {
             <form className="flex flex-col w-full h-full" onSubmit={(e) => {
                 handleSubmit(e)
             }}>
-                <div className="flex flex-col w-full mt-5">
+                {/* <div className="flex flex-col w-full mt-5">
                     <input type="email" className="input input-bordered input-lg" placeholder="Email" onChange={(e) => {
                         props.setEmail(e.target.value)
                     }} />
-                </div>
+
+                    {errors.email && (
+                        <ErrorText text={errors.email} />
+                    )}
+                </div> */}
                 
                 <div className="mt-5 rounded-lg bg-base-200 p-2 py-3 border-zinc-500 border">
-                    {/* <PaymentElement /> */}
-                    {/* <ConnectPayments /> */}
 
                     <div className="flex flex-col w-full">
-                        {/* <label className="text-md font-bold text-zinc-400 ml-1 mb-1">Card Number</label>
-                        <CardNumberElement options={cardStyle} className="text-white bg-base-100 p-6 text-lg rounded-lg" />
-
-                        <div className="justify-between flex flex-row items-center mt-3 w-full gap-2">
-
-                            <div className="flex flex-col w-1/2">
-                                <label className="text-md font-bold text-zinc-400 ml-1 mb-1">Expiration Date</label>
-                                <CardExpiryElement options={cardStyle} className="text-white bg-base-100 p-6 text-lg rounded-lg" />
-                            </div>
-
-                            <div className="flex flex-col w-1/2">
-                                <label className="text-md font-bold text-zinc-400 ml-1 mb-1">CVC</label>
-                                <CardCvcElement options={cardStyle} className="text-white bg-base-100 p-6 text-lg rounded-lg" />
-                            </div>
-
-                        </div> */}
                         <label className="text-md font-semibold text-zinc-400 ml-1 mb-1">Card Details</label>
                         <CardElement options={cardStyle as any} className="text-white bg-base-100 p-6 text-lg rounded-lg border border-zinc-700" />
+
+                        {errors.card && (
+                            <ErrorText text={errors.card} />
+                        )}
                     </div>
 
 

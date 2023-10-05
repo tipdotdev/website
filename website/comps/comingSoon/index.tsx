@@ -1,5 +1,5 @@
 import { FaArrowCircleRight, FaCaretRight, FaDiscord, FaTwitter } from "react-icons/fa";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Toast from "../toast";
 
 export default function ComingSoon() {
@@ -7,6 +7,12 @@ export default function ComingSoon() {
 	const [ showToast, setShowToast ] = useState(false)
 	const [ error, setError ] = useState(false)
 	const [ errorText, setErrorText ] = useState("")
+
+	const [days, setDays] = useState(0)
+	const [hours, setHours] = useState(0)
+	const [minutes, setMinutes] = useState(0)
+	const [seconds, setSeconds] = useState(0)
+	const countDownDate = new Date("Dec 1, 2023 23:59:59").getTime()
 
 	const submitEmail = async () => {
 		let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/news/enter`, {
@@ -40,6 +46,27 @@ export default function ComingSoon() {
 
 	}
 
+	// change the values of the countdown
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const now = new Date().getTime()
+			const distance = countDownDate - now
+
+			const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+			const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+			const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+			const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+			setDays(days)
+			setHours(hours)
+			setMinutes(minutes)
+			setSeconds(seconds)
+		}
+		, 1000)
+		return () => clearInterval(interval)
+	}
+	, [])
+
     return (
         <div className="hero min-h-screen w-screen bg-base-100
             bg-[url('/svg/grain.svg')]
@@ -67,6 +94,33 @@ export default function ComingSoon() {
                     <h1 className="sm:text-8xl text-6xl font-bold">
                         Make <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">money</span> doing what you love
                     </h1>
+
+					{/* <div className="flex flex-row gap-4 mt-10 justify-center">
+						<div className="flex flex-col">
+							<span className="countdown font-mono text-5xl">
+							<span style={{"--value":days} as any}></span>
+							</span>
+							days
+						</div> 
+						<div className="flex flex-col">
+							<span className="countdown font-mono text-5xl">
+							<span style={{"--value":hours} as any}></span>
+							</span>
+							hours
+						</div> 
+						<div className="flex flex-col">
+							<span className="countdown font-mono text-5xl">
+							<span style={{"--value":minutes} as any}></span>
+							</span>
+							min
+						</div> 
+						<div className="flex flex-col">
+							<span className="countdown font-mono text-5xl">
+							<span style={{"--value":seconds} as any}></span>
+							</span>
+							sec
+						</div>
+					</div> */}
 
                     <div className="flex flex-row gap-4 justify-center items-center mt-20 w-full">
                         

@@ -65,7 +65,7 @@ export default function DashboardHome(props:any) {
     // get income events
     const getIncomeEvents = async () => {
         setTotalIncomeLoading(true)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/income-events`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/income/${timeRange.totalIncome.value}`, {
             method: "GET",
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -74,7 +74,9 @@ export default function DashboardHome(props:any) {
 
         if (res.ok) {
             const data = await res.json()
-            user.incomeEvents = data.incomeEvents
+            user.incomeEvents = data.incomeEvents.data
+            user.totalIncome = data.totalIncome
+            console.log(user)
             calculateTotalIncome()
             calculateRecentEvents()
             setTotalIncomeLoading(false)
@@ -85,101 +87,11 @@ export default function DashboardHome(props:any) {
     const calculateTotalIncome = () => {
         setTotalIncomeLoading(true)
 
-        let total = 0
-        let tips = 0
-        let subscriptions = 0
-        let commisions = 0
-        let wishlist = 0
-
-        // based on the time range, get the total income
-        if (timeRange.totalIncome.value == "all") {
-            // go though each user.incomeEvents and add the amount to the total, if there is no event, add 0
-            // also add the amount to the type total
-            user.incomeEvents?.forEach((event:any) => {
-                total += event.amount
-                if (event.type == "tip") {
-                    tips += event.amount
-                } else if (event.type == "subscription") {
-                    subscriptions += event.amount
-                } else if (event.type == "commision") {
-                    commisions += event.amount
-                } else if (event.type == "wishlist") {
-                    wishlist += event.amount
-                }
-            })
-        } else if (timeRange.totalIncome.value == "last30days") {
-            // go through each user.incomeEvents, check the date, if it is within the last 30 days, add the amount to the total
-            // also add the amount to the type total
-            user.incomeEvents?.forEach((event:any) => {
-                const time = new Date(event.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-
-                if (days <= 30) {
-                    total += event.amount
-                    if (event.type == "tip") {
-                        tips += event.amount
-                    } else if (event.type == "subscription") {
-                        subscriptions += event.amount
-                    } else if (event.type == "commision") {
-                        commisions += event.amount
-                    } else if (event.type == "wishlist") {
-                        wishlist += event.amount
-                    }
-                }
-            })
-        } else if (timeRange.totalIncome.value == "last7days") {
-            // go through each user.incomeEvents, check the date, if it is within the last 7 days, add the amount to the total
-            // also add the amount to the type total
-            user.incomeEvents?.forEach((event:any) => {
-                const time = new Date(event.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-
-                if (days <= 7) {
-                    total += event.amount
-                    if (event.type == "tip") {
-                        tips += event.amount
-                    } else if (event.type == "subscription") {
-                        subscriptions += event.amount
-                    } else if (event.type == "commision") {
-                        commisions += event.amount
-                    } else if (event.type == "wishlist") {
-                        wishlist += event.amount
-                    }
-                }
-            })
-        } else if (timeRange.totalIncome.value == "last24hours") {
-            // go through each user.incomeEvents, check the date, if it is within the last 24 hours, add the amount to the total
-            // also add the amount to the type total
-            user.incomeEvents?.forEach((event:any) => {
-                const time = new Date(event.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const hours = Math.floor(diff / 1000 / 60 / 60);
-
-                if (hours <= 24) {
-                    total += event.amount
-                    if (event.type == "tip") {
-                        tips += event.amount
-                    } else if (event.type == "subscription") {
-                        subscriptions += event.amount
-                    } else if (event.type == "commision") {
-                        commisions += event.amount
-                    } else if (event.type == "wishlist") {
-                        wishlist += event.amount
-                    }
-                }
-            })
-        }
+        let total = user.totalIncome.total
+        let tips = user.totalIncome.types.tip
+        let subscriptions = user.totalIncome.types.subscription
+        let commisions = user.totalIncome.types.commision
+        let wishlist = user.totalIncome.types.wishlist
 
         setTotalIncome({
             total: (total/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
@@ -195,7 +107,7 @@ export default function DashboardHome(props:any) {
     }
 
     useEffect(() => {
-        calculateTotalIncome()
+        getIncomeEvents()
     }, [timeRange.totalIncome])
 
     // calculate the total supporters
@@ -322,22 +234,25 @@ export default function DashboardHome(props:any) {
         // all we need o do is set the 5 most recent events
         const events:any = []
 
-        user.incomeEvents?.forEach((event:any) => {
+        for (let i = 0; i < user.incomeEvents?.length; i++) {
+            let from = JSON.parse(user.incomeEvents[i].metadata.tipper)
+
             events.push({
-                amount: ((event.amount)/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
+                amount: ((user.incomeEvents[i].amount)/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
                 type: {
-                    name: event.type,
+                    name: user.incomeEvents[i].metadata.type,
                     color: "red"
                 },
-                date: new Date(event.created_at).toLocaleDateString(),
+                // calculate the date from a unix timestamp
+                date: user.incomeEvents[i].created,
                 from: {
-                    username: event.sender.username,
+                    username: from.username || from.name || "Someone",
                     pictures: {
-                        avatar: event.sender.pictures?.avatar || 'https://cdn.tip.dev/tipdev/avatars/default.jpeg'
+                        avatar: from.pictures?.avatar || 'https://cdn.tip.dev/tipdev/avatars/default.jpeg'
                     }
                 }
             })
-        })
+        }
 
         setRecentEvents(events.slice(0, 5))
         setRecentEventsLoading(false)
@@ -449,7 +364,7 @@ export default function DashboardHome(props:any) {
                                     {totalIncomeLoading ? (
                                         <span className="loading loading-spinner loading-sm text-zinc-400"></span>
                                     ) : (
-                                        <p className="text-lg">${totalIncome.types.tips} Tips (one-off + recurring)</p>
+                                        <p className="text-lg">${totalIncome.types.tips} Tips</p>
                                     )}
                                 </div>
 

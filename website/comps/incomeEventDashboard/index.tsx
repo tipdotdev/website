@@ -3,6 +3,7 @@ import Avatar from "../avatar"
 
 export default function IncomeEventDashboard(props:any) {
     const event = props.event
+    console.log(event)
     return (
         <div className="text-center flex flex-row p-5 bg-base-300/50 rounded-xl items-center justify-between">
 
@@ -12,7 +13,7 @@ export default function IncomeEventDashboard(props:any) {
                 </div>
 
                 <div className="flex flex-col justify-start items-start"> 
-                    <p className="text-xl font-code text-zinc-400">{event.from.username || "Someone"} gave you</p>
+                    <p className="text-xl font-code text-zinc-400">{event.from.username || event.from.name || "Someone"} gave you</p>
                     <h1 className="text-5xl font-bold">{event.amount}</h1>
 
                     <div className="flex flex-row justify-start items-center  mt-2">

@@ -11,11 +11,11 @@ export default function Header(props:any) {
     const isOwner = user?.user_id == pageUser?.user_id
 
     return (
-        <div className="flex flex-col w-full justify-center items-center sm:mb-[25rem] mb-[15rem]">
+        <div className="flex flex-col w-full justify-center items-center sm:mb-[22rem] mb-[15rem]">
             <div className="flex flex-col w-[99%] top-2 absolute">
 
                 {pageUser?.pictures?.banner == null ? (
-                    <div className="w-full h-[20rem] bg-base-200 rounded-xl"></div>
+                    <div className="w-full aspect-banner bg-base-200 rounded-xl"></div>
                 ) : (
                     <img src={pageUser?.pictures?.banner} className="w-full aspect-banner object-center object-cover rounded-xl" />
                 )}
