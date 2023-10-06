@@ -30,7 +30,7 @@ export function SignupForm(props:any) {
 
     const [turnstileToken, setTurnstileToken] = useState("")
 
-    const [signupAvailable, setSignupAvailable] = useState(true)
+    const [signupAvailable, setSignupAvailable] = useState(false)
 
     useEffect(() => {
         if (typeof window !== "undefined") {
