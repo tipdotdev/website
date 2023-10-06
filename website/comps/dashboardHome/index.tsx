@@ -59,7 +59,7 @@ export default function DashboardHome(props:any) {
         }
     })
     const [ pageViews, setPageViews ] = useState(0)
-    const [ followers, setFollowers ] = useState(abbrNum(user.followerCount, 2) || 0)
+    const [ followers, setFollowers ] = useState(abbrNum(user?.followerCount, 2) || 0)
     const [ recentEvents, setRecentEvents ] = useState([])
 
     // get income events
@@ -76,7 +76,7 @@ export default function DashboardHome(props:any) {
             const data = await res.json()
             user.incomeEvents = data.incomeEvents.data
             user.totalIncome = data.totalIncome
-            console.log(user)
+
             calculateTotalIncome()
             calculateRecentEvents()
             setTotalIncomeLoading(false)
@@ -107,8 +107,32 @@ export default function DashboardHome(props:any) {
     }
 
     useEffect(() => {
-        getIncomeEvents()
-    }, [timeRange.totalIncome])
+        if (!props.isAuthLoading && user) {
+            getIncomeEvents()
+        }
+    }, [timeRange.totalIncome, props.isAuthLoading, user])
+
+    // get the supporters
+    const getSupporters = async () => {
+        setSupportersLoading(true)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me/supporters/${timeRange.supporters.value}`, {
+            method: "GET",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        if (res.ok) {
+            const data = await res.json()
+
+            if (user) {
+                user.supporters = data.supporters
+            }
+
+            calculateSupporters()
+            setSupportersLoading(false)
+        }
+    }
 
     // calculate the total supporters
     const calculateSupporters = () => {
@@ -118,77 +142,21 @@ export default function DashboardHome(props:any) {
         let recurring = 0
         let oneOff = 0
 
-        // based on the time range, get the total supporters
-        if (timeRange.supporters.value == "all") {
-            // go though each user.supporters and add the amount to the total, if there is no supporter, add 0
-            // also add the amount to the type total
-            user.supporters?.forEach((supporter:any) => {
-                total += 1
-                if (supporter.type == "recurring") {
-                    recurring += 1
-                } else if (supporter.type == "one-off") {
-                    oneOff += 1
+        // user.supporters is an object with the keys as the email of the supporter, and the value as an array of all the events from that supporter
+        for (const [key, value] of Object.entries(user?.supporters)) {
+            // how many supporters there are is how many keys there are
+            total++
+
+            for (let i = 0; i < (value as any[]).length; i++) {
+                // if the key has more than one event, it is recurring
+                // so we want to add one to recurring for just the key not each event
+                if ((value as any[]).length > 1) {
+                    recurring++
+                    break
+                } else {
+                    oneOff++
                 }
-            })
-        } else if (timeRange.supporters.value == "last30days") {
-            // go through each user.supporters, check the date, if it is within the last 30 days, add the amount to the total
-            // also add the amount to the type total
-            user.supporters?.forEach((supporter:any) => {
-                const time = new Date(supporter.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-
-                if (days <= 30) {
-                    total += 1
-                    if (supporter.type == "recurring") {
-                        recurring += 1
-                    } else if (supporter.type == "one-off") {
-                        oneOff += 1
-                    }
-                }
-            })
-        } else if (timeRange.supporters.value == "last7days") {
-            // go through each user.supporters, check the date, if it is within the last 7 days, add the amount to the total
-            // also add the amount to the type total
-            user.supporters?.forEach((supporter:any) => {
-                const time = new Date(supporter.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-
-                if (days <= 7) {
-                    total += 1
-                    if (supporter.type == "recurring") {
-                        recurring += 1
-                    } else if (supporter.type == "one-off") {
-                        oneOff += 1
-                    }
-                }
-            })
-        } else if (timeRange.supporters.value == "last24hours") {
-            // go through each user
-            user.supporters?.forEach((supporter:any) => {
-                const time = new Date(supporter.date).getTime();
-                const now = new Date().getTime();
-
-                const diff = now - time;
-
-                const hours = Math.floor(diff / 1000 / 60 / 60);
-
-                if (hours <= 24) {
-                    total += 1
-                    if (supporter.type == "recurring") {
-                        recurring += 1
-                    } else if (supporter.type == "one-off") {
-                        oneOff += 1
-                    }
-                }
-            })
+            }
         }
 
         setSupporters({
@@ -203,8 +171,10 @@ export default function DashboardHome(props:any) {
     }
 
     useEffect(() => {
-        calculateSupporters()
-    }, [timeRange.supporters])
+        if (!props.isAuthLoading && user) {
+            getSupporters()
+        }
+    }, [timeRange.supporters, props.isAuthLoading, user])
 
     // get the page views
     const getPageViews = async () => {
@@ -222,11 +192,6 @@ export default function DashboardHome(props:any) {
         }
     }
 
-    useEffect(() => {
-        getPageViews()
-        getIncomeEvents()
-    }, [])
-
     // set recent events
     const calculateRecentEvents = () => {
         setRecentEventsLoading(true)
@@ -234,17 +199,17 @@ export default function DashboardHome(props:any) {
         // all we need o do is set the 5 most recent events
         const events:any = []
 
-        for (let i = 0; i < user.incomeEvents?.length; i++) {
-            let from = JSON.parse(user.incomeEvents[i].metadata.tipper)
+        for (let i = 0; i < user?.incomeEvents?.length; i++) {
+            let from = JSON.parse(user?.incomeEvents[i].metadata.tipper)
 
             events.push({
-                amount: ((user.incomeEvents[i].amount)/100).toLocaleString('en-US', { style: 'currency', currency: user.currency || "USD", minimumFractionDigits: 0 }),
+                amount: ((user?.incomeEvents[i].amount)/100).toLocaleString('en-US', { style: 'currency', currency: user?.currency || "USD", minimumFractionDigits: 0 }),
                 type: {
-                    name: user.incomeEvents[i].metadata.type,
+                    name: user?.incomeEvents[i].metadata.type,
                     color: "red"
                 },
                 // calculate the date from a unix timestamp
-                date: user.incomeEvents[i].created,
+                date: user?.incomeEvents[i].created,
                 from: {
                     username: from.username || from.name || "Someone",
                     pictures: {
@@ -259,12 +224,17 @@ export default function DashboardHome(props:any) {
     }
 
     useEffect(() => {
-        calculateRecentEvents()
-    }, [])
+        if (!props.isAuthLoading && user) {
+            getPageViews()
+            getIncomeEvents()
+            getSupporters()
+            calculateRecentEvents()
+        }
+    }, [props.isAuthLoading, user])
 
     // calculate the time since the account was created
     const timeSince = () => {
-        const time = new Date(user.created_at).getTime();
+        const time = new Date(user?.created_at).getTime();
         const now = new Date().getTime();
 
         const diff = now - time;
@@ -289,6 +259,14 @@ export default function DashboardHome(props:any) {
         }
     };
 
+    if (props.isAuthLoading || !user) {
+        return (
+            <div className="flex flex-col justify-center items-center w-full h-full">
+                <span className="loading loading-spinner loading-md"></span>
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-col w-full ml-10 mb-10">
             <div className="text-center flex-col bg-base-100 w-full rounded-xl items-center">
@@ -298,13 +276,23 @@ export default function DashboardHome(props:any) {
                 <div className="col-span-4 flex flex-row justify-between items-center bg-base-200 p-5 rounded-xl">
                     <div className="flex flex-row justify-start items-center">
                         <div className="w-24 flex">
-                            <Avatar user={user} />
+                            <a className=""
+                                href="/dashboard/account"
+                            >
+                                <Avatar user={user}
+                                    className="hover:opacity-60 transition-all ease-in-out duration-150"
+                                />
+                            </a>
                         </div>
                         <div className="flex flex-col justify-start items-start">
                             <h1 className="text-4xl font-extrabold ml-5">{greeting}, <span className="text-primary">{user?.username}</span></h1>
-                            <div className="tooltip tooltip-bottom" data-tip="Your page is live!">
-                                <p className="ml-5 mt-2">🟢 <a href={`https://tip.dev/${user?.username}`} className="text-md mt-1 font-code link link-hover link-primary text-white">tip.dev/{user?.username}</a>
-                                </p>
+
+                            <div className="flex flex-row justify-start items-center mt-2 ml-5">
+                                <div className="animate-pulse bg-success rounded-lg h-3 w-3"></div> 
+
+                                <div className="tooltip tooltip-bottom" data-tip="Your page is live!">
+                                    <a href={`https://tip.dev/${user?.username}`} className="text-md ml-2 font-code link link-hover link-primary text-white">tip.dev/{user?.username}</a>
+                                </div>
                             </div>
                         </div>
                     </div>

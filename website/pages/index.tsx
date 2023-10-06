@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 
-	const [showComingSoon, setShowComingSoon] = useState(true)
+	const showComingSoon = true
 	
   	return (
 		<main

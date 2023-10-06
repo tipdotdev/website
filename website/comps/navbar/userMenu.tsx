@@ -15,11 +15,12 @@ export default function UserMenu(props:any) {
                     <div className="w-8 flex">
                         <Avatar user={user} />
                     </div>
+
                     <FaBars className="w-6 h-6 text-zinc-300 ml-2 mr-2" />
                 </div>
             </label>
             <div className="menu menu-sm dropdown-content mt-3 p-4 shadow bg-base-300 rounded-box w-52 z-[99] border border-zinc-800">
-                <p className="text-lg flex flex-row">Hey, <span className="text-lg font-bold text-primary">{user?.username}</span> 
+                <p className="text-lg flex flex-row">Hey, <span className="text-lg font-bold text-primary ml-1">{user?.username}</span> 
                 
                     {user?.isPremium &&
                         <PlusIcon className="w-3 h-3"/>

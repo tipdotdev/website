@@ -32,26 +32,16 @@ export default function Page() {
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
 
-            {isAuthLoading || !user ? (
-                <div className="flex flex-col justify-center items-center w-full h-full">
-                    <span className="loading loading-spinner loading-md"></span>
-                </div>
-            ) :
-                <>
-
-                    <SEOHead title="{$} | Dashboard" />
+            <SEOHead title="{$} | Dashboard" />
                     
-                    <DashboardTopNav />
+            <DashboardTopNav />
 
-                    <DashboardSidebar 
-                        content={ <DashboardHome user={user} token={token} /> }
-                        user={ user }
-                    />
-                    
-                    <DashboardFooter />
-
-                </>
-            }
+            <DashboardSidebar 
+                content={ <DashboardHome user={user} token={token} isAuthLoading={isAuthLoading} /> }
+                user={ user }
+            />
+            
+            <DashboardFooter />
 
         </main>
     )

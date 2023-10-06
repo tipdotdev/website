@@ -3,7 +3,6 @@ import Avatar from "../avatar"
 
 export default function IncomeEventDashboard(props:any) {
     const event = props.event
-    console.log(event)
     return (
         <div className="text-center flex flex-row p-5 bg-base-300/50 rounded-xl items-center justify-between">
 

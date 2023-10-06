@@ -47,7 +47,7 @@ export default function DashboardSidebar({content, user} : {content: any, user:a
                                 ""
                             )}
                         `}
-                    ><a href={`/${user.username}`}>
+                    ><a href={`/${user?.username}`}>
                         <FaExternalLinkAlt className="mr-2" />
                         Your Page
                     </a></li>

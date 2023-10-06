@@ -36,7 +36,7 @@ export default function TipBoxInfoForm(props:any) {
                     <p className="text-xl font-bold">One-Time</p>
                 </div>
 
-                {/* <div className={`rounded-xl w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
+                {/* <div className={`rounded-lg w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
                     ${tipType === "Monthly" ? (
                         "border-2 border-primary bg-primary/20 text-primary"
                     ) : (

@@ -16,6 +16,7 @@ export default function DashboardTopNav() {
             <div className="navbar-start">
                 <a className="btn btn-ghost normal-case text-xl" href="/">
                     <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />
+                    <div className="badge badge-warning badge-sm">BETA</div>
                 </a>
             </div>
             

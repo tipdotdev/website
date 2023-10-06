@@ -11,7 +11,7 @@ export default function Header(props:any) {
     const isOwner = user?.user_id == pageUser?.user_id
 
     return (
-        <div className="flex flex-col w-full justify-center items-center sm:mb-[22rem] mb-[15rem]">
+        <div className="flex flex-col w-full justify-center items-center sm:mb-[22rem] mb-[10rem]">
             <div className="flex flex-col w-[99%] top-2 absolute">
 
                 {pageUser?.pictures?.banner == null ? (
@@ -20,18 +20,16 @@ export default function Header(props:any) {
                     <img src={pageUser?.pictures?.banner} className="w-full aspect-banner object-center object-cover rounded-xl" />
                 )}
 
-                <img src={pageUser?.pictures?.avatar} className="sm:w-36 w-20 sm:h-36 h-20 object-cover rounded-full sm:-mt-20 -mt-10 ml-5 border-[6px] border-base-100" />
+                <img src={pageUser?.pictures?.avatar} className="sm:w-36 w-16 sm:h-36 h-16 object-cover rounded-full sm:-mt-20 -mt-8 ml-5 border-[6px] border-base-100" />
                 
                 {isOwner ? (
-                    <div className="flex flex-col w-full items-start object-cover -mt-[5.8rem] pl-48 ">
-                        <a className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center" 
-                            href="/dashboard"
-                        >Edit Profile</a>
+                    <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4rem] sm:pl-44 pl-32">
+                        <button className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Edit Profile</button>
                     </div>
                 ) : (
                     <>
                         {user?.following?.includes(pageUser.user_id) ? (
-                            <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4.5rem] sm:pl-44 pl-32">
+                            <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4rem] sm:pl-44 pl-32">
                                 <button className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center" onMouseOver={(e) => {
                                     (e.target as HTMLButtonElement).innerHTML = "Unfollow"
                                     // set it back to "Follow" after the mouse leaves
@@ -41,7 +39,7 @@ export default function Header(props:any) {
                                 }}>Following</button>
                             </div>
                         ) : (
-                            <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4.5rem] sm:pl-44 pl-32">
+                            <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4rem] sm:pl-44 pl-32">
                                 <button className="btn btn-primary rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Follow</button>
                             </div>
                         )}

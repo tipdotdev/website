@@ -114,6 +114,14 @@ export default function DashboardAccount(props:any) {
         }
     }
 
+    if (props.isAuthLoading || !user) {
+        return (
+            <div className="flex flex-col justify-center items-center w-full h-full">
+                <span className="loading loading-spinner loading-md"></span>
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-col w-full ml-10 mb-10">
             <div className="flex-col bg-base-100 w-full rounded-xl items-center">
