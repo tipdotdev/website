@@ -22,7 +22,7 @@ export default function Page() {
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center px-10 ${inter.className}`} data-theme="dracula">
 
-            <SEOHead title="{$} | Subscribers" />
+            <SEOHead title="{$} | Settings" />
                     
             <DashboardTopNav />
 

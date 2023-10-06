@@ -103,7 +103,7 @@ export default function DashboardSidebar({content, user} : {content: any, user:a
                                 ""
                             )}
                         `}
-                    ><a href="/dashboard/history">
+                    ><a href="/dashboard/earnings-history">
                         <FaHistory className="mr-2" />
                         History
                     </a></li>
@@ -114,7 +114,7 @@ export default function DashboardSidebar({content, user} : {content: any, user:a
 
                     <li
                         className={`mt-1 rounded-lg transition-all ease-in-out duration-150 cursor-pointer w-full
-                            ${activePage == "payout-settings" ? (
+                            ${activePage == "payout" ? (
                                 "bg-primary/20"
                             ) : (
                                 ""
