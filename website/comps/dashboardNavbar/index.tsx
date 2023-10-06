@@ -41,9 +41,7 @@ export default function DashboardTopNav() {
                     </NovuProvider>
                 </div>
             ) : (
-                <div className="navbar-end">
-                    <a className="btn btn-primary px-8" href="/onboarding/signup">Get Started</a>
-                </div>
+                <></>
             )}
         </div>
     )
