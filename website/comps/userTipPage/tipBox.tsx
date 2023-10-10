@@ -29,7 +29,7 @@ export default function TipBox(props:any) {
     const [tipMessage, setTipMessage] = useState("")
     const [tipLoading, setTipLoading] = useState(false)
     const [error, setError] = useState({} as any)
-    const [email, setEmail] = useState("" as any)
+    const [email, setEmail] = useState(user?.email || "" as any)
     const [validEmail, setValidEmail] = useState(false)
 
     const [step, setStep] = useState(1)
@@ -56,6 +56,12 @@ export default function TipBox(props:any) {
             setWindowHeight(window.innerHeight)
         }
     }, [])
+
+    useEffect(() => {
+        if (user) {
+            setEmail(user.email)
+        }
+    }, [user])
 
     // validate tip amount
     const validateTipAmount = () => {

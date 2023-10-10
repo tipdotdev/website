@@ -83,6 +83,7 @@ export default function TipBoxInfoForm(props:any) {
                         type="email" 
                         className="input input-lg w-full rounded-lg mt-5 font-bold placeholder:font-bold text-xl placeholder:text-xl" 
                         placeholder="Email" 
+                        value={email}
                         onChange={(e) => {
                             setEmail(e.target.value)
                         }} 
