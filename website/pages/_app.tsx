@@ -6,11 +6,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GoogleAnalytics trackPageViews />
-      <script
-        src="/plausible/js/script.js"
-        data-api="/plausible/api/event"
-        data-domain="tip.dev"
-      ></script>
+      <script defer data-domain="tip.dev" src="https://plausible-analytics-production-d712.up.railway.app/js/script.js"></script>
       <Component {...pageProps} />
     </>
   )
