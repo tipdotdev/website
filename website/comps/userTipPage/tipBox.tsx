@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FaDollarSign } from "react-icons/fa"
+import { FaDollarSign, FaTwitter } from "react-icons/fa"
 import ErrorText from "../input/errorText"
 import TipBoxInfoForm from "./tipInfoInputForm"
 import TipBoxCheckoutForm from "./tipCheckoutForm"
@@ -49,8 +49,6 @@ export default function TipBox(props:any) {
         });
         setStripePromise(stripePromise)
     }, [pageUser])
-
-    console.log(stripePromise)
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -205,14 +203,18 @@ export default function TipBox(props:any) {
             ) : step == 2 ? (
                 <Elements stripe={stripePromise} options={{
                     clientSecret: clientSecret,
-                    // appearance: {
-                    //     theme: "night",
-                    //     labels: "floating",
-                    //     variables: {
-                    //         colorBackground: "#272935",
-                    //         colorPrimary: "#ff7ac6",
-                    //     }
-                    // },
+                    appearance: {
+                        theme: "night",
+                        labels: "floating",
+                        variables: {
+                            colorBackground: "#272935",
+                            colorPrimary: "#ff7ac6",
+                        }
+                    },
+                    // paymentMethodTypes: ['card', 'paypal'],
+                    // mode: 'payment',
+                    // amount: tipAmount * 100,
+                    // currency: "usd",
                 }}>
                     <TipBoxCheckoutForm user={pageUser} amount={tipAmount} setEmail={setEmail} clientSecret={clientSecret} setStep={setStep} email={email} setShowConfetti={setShowConfetti} openModal={openModal} />
                 </Elements>
@@ -253,17 +255,14 @@ export default function TipBox(props:any) {
                     width={windowWidth}
                     height={windowHeight}
                     numberOfPieces={200}
-
-
                 />
                 <form method="dialog" className="modal-box w-full">
                 
-                    <h3 className="font-bold text-3xl">Thank you for your support</h3>
+                    <h3 className="font-bold text-3xl">🎉 Thank you for your support</h3>
 
-                    <p className="text-lg mt-2 text-zinc-400">Your tip has been sent to {pageUser?.username}</p>
+                    <p className="text-lg mt-2 text-zinc-400">Your tip has been sent to {pageUser?.username}, and a receipt has been emailed to you.</p>
 
                     <p className="text-lg mt-5 font-semibold">People like you allow developers to keep creating amazing projects for the world to use!</p>
-
 
                 </form>
                 <form method="dialog" className="modal-backdrop">

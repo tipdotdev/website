@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { FaBullseye, FaCoins, FaDollarSign, FaExternalLinkAlt, FaHistory, FaHome, FaUsers, FaBolt, FaUser, FaCode } from "react-icons/fa"
+import { FaBullseye, FaCoins, FaDollarSign, FaExternalLinkAlt, FaHistory, FaHome, FaUsers, FaBolt, FaUser, FaCode, FaPencilRuler } from "react-icons/fa"
 import { IoSettingsSharp } from "react-icons/io5"
 
 export default function DashboardSidebar({content, user} : {content: any, user:any}) {
@@ -50,6 +50,19 @@ export default function DashboardSidebar({content, user} : {content: any, user:a
                     ><a href={`/${user?.username}`}>
                         <FaExternalLinkAlt className="mr-2" />
                         Your Page
+                    </a></li>
+
+                    <li
+                        className={`mt-3 rounded-lg transition-all ease-in-out duration-150 cursor-pointer w-full
+                            ${activePage == "profile" ? (
+                                "bg-primary/20"
+                            ) : (
+                                ""
+                            )}
+                        `}
+                    ><a href={`/dashboard/profile`}>
+                        <FaPencilRuler className="mr-2" />
+                        Profile
                     </a></li>
 
                     <div className="divider"></div>

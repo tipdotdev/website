@@ -4,6 +4,7 @@ import SEOHead from "@/comps/seohead";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import UserTipPage from "@/comps/userTipPage";
+import TipPageFooter from "@/comps/userTipPage/footer";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -70,12 +71,13 @@ export default function Page() {
     }, [pageUser])
 
     return (
-        <main className={`flex min-h-screen flex-col justify-center items-center pb-10 ${inter.className}`} data-theme="dracula">
+        <main className={`flex min-h-screen flex-col justify-center items-center ${inter.className}`} data-theme="dracula">
 
             <SEOHead title={`{$} ${username}`} />  
 
             <UserTipPage pageUser={pageUser} user={viewer} query={query} />
-
+            
+            <TipPageFooter />
         </main>
     )
 }

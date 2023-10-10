@@ -11,7 +11,7 @@ export default function UserTipPage(props:any) {
     const user = props.user
 
     return (
-        <div className="flex flex-col h-full w-full items-center ">
+        <div className="flex flex-col h-full w-full items-center pb-10 sm:gap-10 gap-4 ">
 
             <Header pageUser={pageUser} user={user} />
 

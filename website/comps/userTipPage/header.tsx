@@ -11,8 +11,8 @@ export default function Header(props:any) {
     const isOwner = user?.user_id == pageUser?.user_id
 
     return (
-        <div className="flex flex-col w-full justify-center items-center sm:mb-[22rem] mb-[10rem]">
-            <div className="flex flex-col w-[99%] top-2 absolute">
+        <div className="flex flex-col w-full justify-center items-center mt-2">
+            <div className="flex flex-col w-[99%]">
 
                 {pageUser?.pictures?.banner == null ? (
                     <div className="w-full aspect-banner bg-base-200 rounded-xl"></div>
