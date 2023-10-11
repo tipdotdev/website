@@ -1,7 +1,7 @@
 export default function PlusIcon(props:any) {
     return (
         <>
-            <img src="/svg/plus.svg" className={props.className} />
+            <img src="/svg/plus.svg" alt="plus" className={props.className} />
         </>
     )
 }

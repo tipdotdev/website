@@ -37,7 +37,7 @@ export default function HomeStats() {
             </div>
 
             <p className="text-center w-1/2 text-zinc-400 mb-20">
-                We ❤️ transparency and endeavor to make all our statistics accessible to the public. This enables you to gauge our performance and determine if our platform suits your requirements. (also we are just starting out so go easy on us)
+                We ❤️ transparency and endeavor to make all our statistics accessible to the public. This enables you to gauge our performance and determine if our platform suits your requirements. (we are just starting out so go easy on us)
             </p>
 
             <img src="/svg/wave-light.svg" className="relative bottom-0 h-40 w-screen object-cover" />

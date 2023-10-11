@@ -31,6 +31,10 @@ module.exports = {
       },
       aspectRatio: {
         "banner": "16/3",
+      },
+      colors: {
+        "gold": "#fdd111",
+        "gold-active": "#caa70d"
       }
     },
   },

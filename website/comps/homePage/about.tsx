@@ -27,9 +27,16 @@ export default function HomeAbout() {
                 0% transaction fee on tips
             </h1>
 
+            <p className="text-md text-center mb-2 italic text-zinc-400">
+                Totally real (fake) reviews
+            </p>
+
             <div className="flex flex-row justify-center items-center gap-4 w-1/2">
                 <RatingSmall rating={ratings} />
             </div>
+
+            
+
         </div>
     )
 }
