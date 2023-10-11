@@ -84,7 +84,7 @@ export default function Navbar() {
                 </ul>
                 </div>
                 <a className="btn btn-ghost normal-case text-xl" href="/">
-                    <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />
+                    <img src="/images/webp/logo.webp" className="h-10 w-fit" />
                 </a>
             </div>
             <div className="navbar-center hidden lg:flex">

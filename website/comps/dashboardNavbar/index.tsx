@@ -15,7 +15,7 @@ export default function DashboardTopNav() {
         <div className="navbar w-full bg-base-100 mb-5 top-0 absolute px-32 py-5 z-[100]">
             <div className="navbar-start">
                 <a className="btn btn-ghost normal-case text-xl" href="/">
-                    <img src="/logo-no-bg-v3.png" className="h-10 w-fit" />
+                    <img src="/images/webp/logo.webp" className="h-10 w-fit" />
                     <div className="badge badge-warning badge-sm">BETA</div>
                 </a>
             </div>

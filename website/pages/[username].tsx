@@ -8,7 +8,30 @@ import TipPageFooter from "@/comps/userTipPage/footer";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Page() {
+export const getServerSideProps = (async (context:any) => {
+    
+    const username = context.query.username
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/${username}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+
+    let data = null
+
+    if (res.status == 200) {
+        data = await res.json()
+    }
+
+    return {
+        props: {
+            data
+        }
+    }
+})
+
+export default function Page(props:any) {
 
     // get the params
     const { username } = useRouter().query
@@ -18,6 +41,7 @@ export default function Page() {
 
     // get the stuff after the ? in the url
     const query = useRouter().asPath.split("?")[1]
+    const router = useRouter()
 
     const [viewer, setViewer] = useState(null as any)
     useEffect(() => {
@@ -25,26 +49,19 @@ export default function Page() {
     }, [user])
 
     const [pageUser, setPageUser] = useState(null as any)
+    const [isLoading, setIsLoading] = useState(true)
 
     // get the page data
-    const getData = async () => {
-        if (!username) return
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/${username}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        if (res.status == 200) {
-            const data = await res.json()
-
-            setPageUser(data.user)
-        } else {
-            window.location.href = "/404"
+    useEffect(() => {
+        if (!props.data) {
+            // redirect to 404
+            router.push("/404")
+            return
         }
-    }
+
+        setPageUser(props.data.user)
+        setIsLoading(false)
+    }, [props.data])
 
     // add a page view
     const addPageView = async () => {
@@ -63,12 +80,18 @@ export default function Page() {
     }
 
     useEffect(() => {
-        getData()
-    }, [username])
-
-    useEffect(() => {
         addPageView()
     }, [pageUser])
+
+    if (isLoading || !pageUser) {
+        return (
+            <main className={`flex min-h-screen flex-col justify-center items-center ${inter.className}`} data-theme="dracula">
+
+                <span className="loading loading-spinner loading-md"></span>
+
+            </main>
+        )
+    }
 
     return (
         <main className={`flex min-h-screen flex-col justify-center items-center ${inter.className}`} data-theme="dracula">
