@@ -1,8 +1,0 @@
-{
-    "id": "uid",
-    "created_at": "timestamp",
-    "updated_at": "timestamp",
-    "type": "string",
-    "supporter": "user object",
-    "supportee": "user object"
-}
