@@ -17,10 +17,11 @@
 - [ ] when stripe account is being created, add apple pay domain auth
 - [ ] track last logins, in the login or oauth callbacks by changing user.last_login value to now
 - [ ] stop saving user objects to redis, just need it in mongo
+- [ ] When a user tries to connect a new oauth to an existing account, check if the oauth is already connected to another account, if it is, tell them they cant do that, if it isnt, then connect it
 
 ## Website
 
-- [ ] Maybe change it so if you continue with email then it asks you for a username a step 1 of the onboarding. this way we can do that for all signup types !!! i like this
+- [x] ~~Maybe change it so if you continue with email then it asks you for a username a step 1 of the onboarding. this way we can do that for all signup types !!! i like this~~
 - [ ] maybe change from Turnstile to Recaptcha...
 - [ ] change account page on dashboard to have account stuff and move whats there rn to the profile page. like here we want to have password changes, email changes, linked account changes, account data such as acct id for support purposes, idk what else. also here is where username changes should be handled.
 - [ ] profile page should have where you can change all public data that is seen on their profile such as avatar, banner, name, ummm socials, website, etc.

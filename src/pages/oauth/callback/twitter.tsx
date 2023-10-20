@@ -45,7 +45,7 @@ export default function Page() {
             
         //     if (res.finishOnboarding) {
         //         // redirect to onboarding
-        //         router.push(`/onboarding/profile?oauth=true&&user=${JSON.stringify(res.user)}`)
+        //         router.push(`/onboarding/username?oauth=true&&user=${JSON.stringify(res.user)}`)
         //     } else {
         //         // redirect to dashboard
         //         router.push(`/dashboard`)

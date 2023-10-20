@@ -8,8 +8,8 @@ import { NotificationBell, NovuProvider, PopoverNotificationCenter } from "@novu
 import Avatar from "../avatar";
 import UserMenu from "../navbar/userMenu";
 
-export default function DashboardTopNav() {
-    const { isAuthLoading, isSignedIn, user, logout } = useUser()
+export default function DashboardTopNav(props:any) {
+    const { isAuthLoading, isSignedIn, user, logout } = props
 
     return (
         <div className="navbar w-full bg-base-100 mb-5 top-0 absolute px-32 py-5 z-[100]">

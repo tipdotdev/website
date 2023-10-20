@@ -7,17 +7,18 @@ import SEOHead from "@/comps/seohead";
 import useUser from "@/hooks/useUser";
 import { useRouter } from "next/router";
 import ErrorText from "@/comps/input/errorText";
+import SocialMediaInputModal from "@/comps/modals/socialMediaInputModal";
+import useModal from "@/hooks/useModal";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function page() {
 
-    const { token, isAuthLoading, isSignedIn } = useUser()
+    const { token, isAuthLoading, isSignedIn, user } = useUser()
     const router = useRouter()
+    const { openModal } = useModal()
 
-    const { oauth, user } = router.query
-
-    const [oauthData, setOauthData] = useState({} as any)
+    const { redirect_uri } = router.query
 
     useEffect(() => {
         if (isSignedIn == false && isAuthLoading == false) {
@@ -25,17 +26,8 @@ export default function page() {
         }
     }, [isSignedIn])
 
-    useEffect(() => {
-        console.log(oauth)
-        if (user && oauth) {
-            setOauthData(JSON.parse(user as string))
-            setName(JSON.parse(user as string).name)
-            setUsername(JSON.parse(user as string).login)
-        }
-    }, [user, oauth])
-
-    const [username, setUsername] = useState(oauthData.login || "")
-    const [name, setName] = useState(oauthData.name || "")
+    const [username, setUsername] = useState("")
+    const [name, setName] = useState("")
     const [about, setAbout] = useState("")
     const [website, setWebsite] = useState("")
     const [socials, setSocials] = useState({} as any)
@@ -45,21 +37,6 @@ export default function page() {
     const [error, setError] = useState({} as any)
     const [validUsername, setValidUsername] = useState(false)
 
-    const openModal = (social: string) => {
-        if (social == "twitter") {
-            const modal = document.getElementById("twit_modal") as any
-            modal?.showModal()
-        } else if (social == "github") {
-            const modal = document.getElementById("github_modal") as any
-            modal?.showModal()
-        } else if (social == "instagram") {
-            const modal = document.getElementById("insta_modal") as any
-            modal?.showModal()
-        } else if (social == "linkedin") {
-            const modal = document.getElementById("linkedin_modal") as any
-            modal?.showModal()
-        }
-    }
 
     const checkUsernameAvailability = async () => {
         if (username.length > 0) {
@@ -95,7 +72,12 @@ export default function page() {
         // check if they entered any data
         if (!name && !about && !website && !socials) {
             // we do this to make sure we dont get an api error from sending an empty object
-            window.location.href = "/onboarding/payout"
+            if (redirect_uri) {
+                window.location.href = redirect_uri as string
+            } else {
+                window.location.href = "/onboarding/payout"
+            }
+            
             setIsLoading(false)
             return
         }
@@ -106,14 +88,6 @@ export default function page() {
             bio: about,
             website: website,
             socials: socials,
-        }
-
-        if (oauth) {
-            // add username
-            data = {
-                ...data,
-                username: username,
-            }
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/update/me`, {
@@ -141,16 +115,24 @@ export default function page() {
             })
 
             if (res.status == 200 && res2.status == 200) {
+                if (redirect_uri) {
+                    window.location.href = redirect_uri as string
+                } else {
+                    window.location.href = "/onboarding/payout"
+                }
                 setIsLoading(false)
-                window.location.href = "/onboarding/payout"
             } else {
                 setIsLoading(false)
                 alert('error')
             }
         } else {
             if (res.status == 200) {
+                if (redirect_uri) {
+                    window.location.href = redirect_uri as string
+                } else {
+                    window.location.href = "/onboarding/payout"
+                }
                 setIsLoading(false)
-                window.location.href = "/onboarding/payout"
             } else {
                 setIsLoading(false)
                 alert('error')
@@ -175,11 +157,11 @@ export default function page() {
                         ">
                         <div className="flex flex-col items-center justify-center">
 
-                            {avatar || oauthData.avatar_url ? (
+                            {avatar || user?.pictures?.avatar ? (
                                 <div className="avatar">
                                     <div className="w-full rounded-full">
-                                        {oauthData.avatar_url ? (
-                                            <img src={oauthData.avatar_url}/>
+                                        {user?.pictures?.avatar ? (
+                                            <img src={user?.pictures?.avatar}/>
                                         ) : (
                                             <img src={URL.createObjectURL(avatar)}/>
                                         )}
@@ -198,39 +180,14 @@ export default function page() {
 
                     <p className="mt-5 font-code text-zinc-300">Add Avatar</p>
                 </div>
-
-                {oauth && (
-                    <div className="mt-10 -mb-5">
-                        <label className="label">
-                            <span className="label-text text-md font-code">Pick a username</span>
-                        </label>
-                        <input type="text" placeholder="Username" className="input input-bordered w-full max-w-sm" value={username}
-                            onChange={(e) => {
-                                if (e.target.value.length > 0) {
-                                    setUsername(e.target.value)
-                                }
-                            }}
-                        />
-
-                        {error.username && (
-                            <ErrorText text={error.username} />
-                        )}
-
-                        {validUsername && (
-                            <p className="text-sm text-green-500 mt-2">Username is available!</p>
-                        )}
-                    </div>
-                )}
                                 
                 <div className="mt-10">
                     <label className="label">
                         <span className="label-text text-md font-code">What's your name?</span>
                     </label>
-                    <input type="text" placeholder="Name" className="input input-bordered w-full max-w-sm" value={name}
+                    <input type="text" placeholder="John Doe" className="input input-bordered w-full max-w-sm" value={name}
                         onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setName(e.target.value)
-                            }
+                            setName(e.target.value)
                         }}
                     />
                 </div>
@@ -241,9 +198,7 @@ export default function page() {
                     </label>
                     <textarea maxLength={100} className="textarea textarea-bordered h-24 w-full max-w-sm" placeholder="Hey, welcome to my tip.dev page! Tips help me continue to make cool stuff!"
                         onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setAbout(e.target.value)
-                            }
+                            setAbout(e.target.value)
                         }}
                     />
                 </div>
@@ -254,9 +209,7 @@ export default function page() {
                     </label>
                     <input type="text" placeholder="https://tip.dev" className="input input-bordered w-full max-w-sm"
                         onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setWebsite(e.target.value)
-                            }
+                            setWebsite(e.target.value)
                         }}
                     />
                 </div>
@@ -333,7 +286,7 @@ export default function page() {
                     </div>
 
                     <button disabled={
-                        isLoading || !validUsername || username.length == 0
+                        isLoading
                     } className="btn btn-primary w-full mt-12 mb-12"
                         onClick={() => {
                             onboardProfile()
@@ -350,114 +303,37 @@ export default function page() {
             </div>
 
             {/* twitter modal */}
-            <dialog id="twit_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your Twitter Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdotdev" className="input input-bordered w-full mt-10"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, twitter: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="twitter"
+                socialName="Twitter"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* github modal */}
-            <dialog id="github_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your GitHub Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, github: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="github"
+                socialName="GitHub"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* instagram modal */}
-            <dialog id="insta_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your Instagram Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, instagram: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="instagram"
+                socialName="Instagram"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* linkedin modal */}
-            <dialog id="linkedin_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your LinkedIn Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
+            <SocialMediaInputModal
+                modalName="linkedin"
+                socialName="LinkedIn"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, linkedin: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
         </main>
     )
 }
-
-/*
-<label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-primary border-dashed rounded-full cursor-pointer
-                    hover:bg-base-200 mt-10
-                ">
-                    <div className="flex flex-col items-center justify-center">
-
-                        {avatar ? (
-                            <img src={URL.createObjectURL(avatar)} className="w-full h-full rounded-full" />
-                        ) : (
-                            <>
-                                <FaCamera className="text-4xl text-zinc-300" />
-                            </>
-                        )}
-
-                    </div>
-                    <input id="dropzone-file" type="file" className="hidden" onChange={(e) => {if (e.target.files) setAvatar(e.target.files[0])}} />
-                        
-                </label>
-
-                <p className="mt-5 font-code text-zinc-300">Add Avatar</p>
-                */

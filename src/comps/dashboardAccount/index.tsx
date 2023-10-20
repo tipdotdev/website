@@ -3,12 +3,18 @@ import { FaArrowRight, FaCamera, FaEye, FaEyeSlash, FaGithub, FaInstagram, FaLin
 import Avatar from "../avatar"
 import InfoTooltip from "../infoTooltip"
 import { TbDiscountCheckFilled } from "react-icons/tb"
+import ChangePasswordModal from "../modals/changePasswordModal"
+import DeleteAccountModal from "../modals/deleteAccountModal"
+import SocialMediaInputModal from "../modals/socialMediaInputModal"
+import useModal from "@/hooks/useModal"
 
 export default function DashboardAccount(props:any) {
 
     const user = props.user
     const token = props.token
     const logout = props.logout
+
+    const { openModal } = useModal()
 
     const [newAvatar, setNewAvatar] = useState(null as any)
     const [newBanner, setNewBanner] = useState(null as any)
@@ -30,27 +36,9 @@ export default function DashboardAccount(props:any) {
 
     const [confirmDeleteText, setConfirmDeleteText] = useState("")
 
-    const openModal = (social: string) => {
-        if (social == "twitter") {
-            const modal = document.getElementById("twit_modal") as any
-            modal?.showModal()
-        } else if (social == "github") {
-            const modal = document.getElementById("github_modal") as any
-            modal?.showModal()
-        } else if (social == "instagram") {
-            const modal = document.getElementById("insta_modal") as any
-            modal?.showModal()
-        } else if (social == "linkedin") {
-            const modal = document.getElementById("linkedin_modal") as any
-            modal?.showModal()
-        } else if (social == "delete") {
-            const modal = document.getElementById("delete_modal") as any
-            modal?.showModal()
-        } else if (social == "change_password") {
-            const modal = document.getElementById("change_password_modal") as any
-            modal?.showModal()
-        }
-    }
+    useEffect(() => {
+        console.log(socials)
+    }, [socials])
 
     const uploadAvatar = async () => {
         if (!newAvatar) return
@@ -425,173 +413,56 @@ export default function DashboardAccount(props:any) {
             </div>
 
             {/* twitter modal */}
-            <dialog id="twit_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your Twitter Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdotdev" className="input input-bordered w-full mt-10" value={socials.twitter}
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, twitter: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="twitter"
+                socialName="Twitter"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* github modal */}
-            <dialog id="github_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your GitHub Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10" value={socials.github}
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, github: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="github"
+                socialName="GitHub"
+                socials={socials}
+                setSocials={setSocials} 
+            />
 
             {/* instagram modal */}
-            <dialog id="insta_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your Instagram Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10" value={socials.instagram}
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, instagram: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="instagram"
+                socialName="Instagram"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* linkedin modal */}
-            <dialog id="linkedin_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-lg">Enter your LinkedIn Username</h3>
-                    <p className="text-sm text-zinc-300 mt-2">Do not include the @ symbol</p>
-
-                    <input type="text" placeholder="tipdev" className="input input-bordered w-full mt-10" value={socials.linkedin} 
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setSocials({ ...socials, linkedin: e.target.value })
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-primary w-full mt-5">Save</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <SocialMediaInputModal
+                modalName="linkedin"
+                socialName="LinkedIn"
+                socials={socials}
+                setSocials={setSocials}
+            />
 
             {/* delete confirm modal */}
-            <dialog id="delete_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-2xl">Confirm account deletion</h3>
-                    <p className="text-sm text-zinc-400 mt-2">This action is irreversible. All account data will be deleted permanatly. Some anonymous data will be persisted for buisness purposes.</p>
-                    
-                    <label className="label">
-                        <span className="label-text text-lg mt-10">Type "Delete my account" to continue</span>
-                    </label>
-                    <input type="text" placeholder="Delete my account" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setConfirmDeleteText(e.target.value)
-                            } 
-                        }}
-                    />
-
-                    <button className="btn btn-error w-full mt-10" disabled={confirmDeleteText !== "Delete my account"} onClick={() => {
-                        deleteAccount()
-                    }}>Delete Account</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <DeleteAccountModal
+                confirmDeleteText={confirmDeleteText}
+                setConfirmDeleteText={setConfirmDeleteText}
+                deleteAccount={deleteAccount}
+            />
 
             {/* Change password modal */}
-            <dialog id="change_password_modal" className="modal">
-                <form method="dialog" className="modal-box w-full">
-                    <h3 className="font-bold text-2xl">Change your password</h3>
-                    <p className="text-sm text-zinc-400 mt-2">Enter your current password and your new password.</p>
+            <ChangePasswordModal 
+                showPassword={showPassword}
+                showNewPassword={showNewPassword}
+                password={password}
+                newPassword={newPassword}
+                setPassword={setPassword}
+                setNewPassword={setNewPassword}
+                validPassword={validPassword}
+                setValidPassword={setValidPassword}
+            />
 
-                    <div className="join w-full mt-10">
-                        <input type={showPassword ? "text" : "password"} placeholder="Current Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
-                            onChange={(e) => {
-                                if (e.target.value.length > 0) {
-                                    setPassword(e.target.value)
-                                }
-                            }}
-                        />
-                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
-                            setShowPassword(!showPassword)
-                        }}>
-                            {!showPassword ? (
-                                <FaEye />
-                            ) : (
-                                <FaEyeSlash />
-                            )}
-                        </p> 
-                    </div>
-
-                    <div className="join w-full mt-6">
-                        <input type={showNewPassword ? "text" : "password"} placeholder="New Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
-                            onChange={(e) => {
-                                if (e.target.value.length > 0) {
-                                    setNewPassword(e.target.value)
-                                }
-                            }}
-                        />
-                        <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
-                            setShowNewPassword(!showNewPassword)
-                        }}>
-                            {!showNewPassword ? (
-                                <FaEye />
-                            ) : (
-                                <FaEyeSlash />
-                            )}
-                        </p> 
-                    </div>
-
-                    <button className="btn btn-primary w-full mt-10" disabled={password && newPassword && validPassword} onClick={() => {
-                        // change password
-                    }}>Change Password</button>
-
-                </form>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
         </div>
     )
 

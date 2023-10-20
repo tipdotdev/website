@@ -22,7 +22,7 @@ const useUser = () => {
                 setIsLoading(false)
             }
         }
-    })
+    }, [])
 
     // make a function to save the token to local storage
     const saveToken = (token:string) => {
@@ -43,6 +43,7 @@ const useUser = () => {
 
     const getUser = async () => {
         if (token !== null && token !== undefined && token !== "") {
+
             let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/user/me`, {
                 method: "GET",
                 headers: {
@@ -54,7 +55,32 @@ const useUser = () => {
                 let data = await req.json()
 
                 setUser(data.user)
+                setIsSignedIn(true)
+
+                if (data.user.needs_username || data.user.needs_payout) {
+
+                    const currentPath = window.location.pathname
+
+                    const onboardingPaths = [
+                        "/onboarding/username",
+                        "/onboarding/profile",
+                        "/onboarding/payout"
+                    ]
+
+                    if (data.user.needs_username && !onboardingPaths.includes(currentPath)) {
+                        window.location.href = "/onboarding/username"
+                        return
+                    }
+
+                    if (data.user.needs_payout && !onboardingPaths.includes(currentPath)) {
+                        window.location.href = "/onboarding/payout"
+                        return
+                    }
+
+                }
+
                 setIsLoading(false)
+                setIsSignedIn(true)
             }
         }
     }

@@ -5,8 +5,7 @@ import { GoogleAnalytics } from "nextjs-google-analytics";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      {/* <GoogleAnalytics trackPageViews /> */}
-      <script defer data-domain="tip.dev" src="https://analytics.tip.dev/js/script.js"></script>
+      <GoogleAnalytics trackPageViews />
       <Component {...pageProps} />
     </>
   )

@@ -34,7 +34,7 @@ export function SignupForm(props:any) {
 
     const [turnstileToken, setTurnstileToken] = useState("")
 
-    const [signupAvailable, setSignupAvailable] = useState(false)
+    const signupAvailable = useState(false)
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -175,12 +175,12 @@ export function SignupForm(props:any) {
     }, [password])
 
     useEffect(() => {
-        if (username != "" && password != "" && email != "" && agreeTerms && !isLoading && validUsername && validEmail && validPassword && turnstileToken != "") {
+        if (password != "" && email != "" && agreeTerms && !isLoading && validUsername && validEmail && validPassword && turnstileToken != "") {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
         }
-    }, [username, password, email, agreeTerms, isLoading, error, validUsername, validEmail, validPassword, turnstileToken])
+    }, [password, email, agreeTerms, isLoading, error, validUsername, validEmail, validPassword, turnstileToken])
 
     return (
         <div className="w-full max-w-sm mb-10">
@@ -222,9 +222,7 @@ export function SignupForm(props:any) {
                             <div className="">
                                 <input type="email" placeholder="Email" className="input input-bordered w-full"
                                     onChange={(e) => {
-                                        if (e.target.value.length > 0) {
-                                            setEmail(e.target.value)
-                                        }
+                                        setEmail(e.target.value)
                                     }}
                                 />
                                 {error.email && (
@@ -233,25 +231,10 @@ export function SignupForm(props:any) {
                             </div>
 
                             <div className="mt-2">
-                                <input type="text" placeholder="Username" className="input input-bordered w-full"
-                                    onChange={(e) => {
-                                        if (e.target.value.length > 0) {
-                                            setUsername(e.target.value)
-                                        }
-                                    }}
-                                />
-                                {error.username && (
-                                    <ErrorText text={error.username} />
-                                )}
-                            </div>
-
-                            <div className="mt-2">
                                 <div className="join w-full">
                                     <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
                                         onChange={(e) => {
-                                            if (e.target.value.length > 0) {
-                                                setPassword(e.target.value)
-                                            }
+                                            setPassword(e.target.value)
                                         }}
                                     />
                                     <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {

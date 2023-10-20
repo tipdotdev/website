@@ -24,7 +24,12 @@ export default function Page() {
 
             <SEOHead title="{$} | Goals" />
                     
-            <DashboardTopNav />
+            <DashboardTopNav
+                user={user}
+                logout={logout}
+                isAuthLoading={isAuthLoading}
+                isSignedIn={isSignedIn}
+            />
 
             <DashboardSidebar 
                 content={ <></> }

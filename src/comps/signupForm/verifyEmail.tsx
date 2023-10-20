@@ -41,7 +41,7 @@ export default function VerifyEmail(props:any) {
             setIsLoading(false)
 
             // redirect 
-            window.location.href = "/onboarding/profile"
+            window.location.href = "/onboarding/username"
             
         } else {
             const data = await req.json()
@@ -72,27 +72,6 @@ export default function VerifyEmail(props:any) {
             <p className="text-lg mt-2 text-zinc-400">We've sent you an email with a code. Enter it below to continue.</p>
 
             <form onSubmit={(e) => { e.preventDefault() }} className="form-control ">               
-                {/* <div className="mt-10">
-                    <input type="code" placeholder="Code" className="input input-bordered w-full"
-                        onChange={(e) => {
-                            if (e.target.value.length > 0) {
-                                setCode(e.target.value)
-                            }
-                        }}
-                    />
-                    {error.code && (
-                        <ErrorText text={error.code} />
-                    )}
-                </div> */}
-
-                {/* <div id="otp" className="flex flex-row text-center mt-5">
-                    <input className="mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="first" maxLength={1} /> 
-                    <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="second" maxLength={1} /> 
-                    <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="third" maxLength={1} /> 
-                    <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="fourth" maxLength={1} />
-                    <input className="ml-1 mr-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="fifth" maxLength={1} /> 
-                    <input className="ml-1 input input-bordered h-16 w-12 text-center text-2xl" type="text" id="sixth" maxLength={1} />
-                </div> */}
 
                 <div className="mt-10 text-white">
                     <OtpInput

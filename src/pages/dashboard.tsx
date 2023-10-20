@@ -11,22 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Page() {
 
-    const { token, isAuthLoading, isSignedIn, user } = useUser()
-
-    // useEffect(() => {
-    //     if (isSignedIn == false && user == null) {
-    //         window.location.href = "/signin"
-    //     }
-    // }, [isSignedIn])
-    // useEffect(() => {
-    //     if (user) {
-    //         if (user.emailVerified == false) {
-    //             window.location.href = "/onboarding/signup?verify=true"
-    //         } else if (user.stripe == null) {
-    //             window.location.href = "/onboarding/payout"
-    //         }
-    //     }
-    // })
+    const { token, isAuthLoading, isSignedIn, user, logout } = useUser()
 
 
     return (
@@ -34,7 +19,12 @@ export default function Page() {
 
             <SEOHead title="{$} | Dashboard" />
                     
-            <DashboardTopNav />
+            <DashboardTopNav
+                user={user}
+                logout={logout}
+                isAuthLoading={isAuthLoading}
+                isSignedIn={isSignedIn}
+            />
 
             <DashboardSidebar 
                 content={ <DashboardHome user={user} token={token} isAuthLoading={isAuthLoading} /> }

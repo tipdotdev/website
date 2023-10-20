@@ -163,9 +163,7 @@ export default function SigninForm() {
                     <div>
                         <input type="email" placeholder="Email" className="input input-bordered w-full"
                             onChange={(e) => {
-                                if (e.target.value.length > 0) {
-                                    setEmail(e.target.value)
-                                }
+                                setEmail(e.target.value)
                             }}
                         />
                         {error.email && (
@@ -177,9 +175,7 @@ export default function SigninForm() {
                         <div className="join w-full">
                             <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
                                 onChange={(e) => {
-                                    if (e.target.value.length > 0) {
-                                        setPassword(e.target.value)
-                                    }
+                                    setPassword(e.target.value)
                                 }}
                             />
                             <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {

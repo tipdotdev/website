@@ -2,6 +2,7 @@ import OnboardingNav from "@/comps/onboardingNavbar";
 import SEOHead from "@/comps/seohead";
 import useUser from "@/hooks/useUser";
 import { Inter } from "next/font/google";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaPaypal, FaPiggyBank, FaPlus, FaStripeS } from "react-icons/fa";
 
@@ -10,8 +11,12 @@ const inter = Inter({ subsets: ['latin'] })
 export default function page() {
 
     const { token, isAuthLoading, isSignedIn } = useUser()
+    const router = useRouter()
+
+    const { redirect_uri } = router.query
 
     useEffect(() => {
+        console.log(isSignedIn, isAuthLoading)
         if (isSignedIn == false && isAuthLoading == false) {
             window.location.href = "/signin"
         }
@@ -94,7 +99,7 @@ export default function page() {
                         <div className="flex flex-col mt-5 px-10">
                             <ul className="list-disc text-md font-code text-zinc-300">
                                 <li>Instant payout to your Stripe account</li>
-                                <li>0% fee on tips</li>
+                                <li>0% platform fee on tips</li>
                                 <li>Available in 40 countries</li>
                                 <li>More payment options for tippers</li>
                             </ul>
@@ -102,7 +107,7 @@ export default function page() {
 
                         {payoutMethod == "stripe" ? (
                             <div className="flex flex-row mt-5">
-                                <button disabled={isLoading} className="btn btn-neutral w-full"
+                                <button disabled={isLoading || currency == ""} className="btn btn-neutral w-full"
                                     onClick={() => connectStripe()}
                                 >
                                     {isLoading ? (
