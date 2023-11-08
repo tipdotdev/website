@@ -1,4 +1,4 @@
-export default function StausPageBadge() {
+export default function StausPageBadge(props:any) {
 
     return (
         <>

@@ -9,7 +9,7 @@ export default function DashboardFooter() {
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">
                         <div className="flex justify-start -ml-2 items-center gap-2">
-                            <StatusPageEmbed showText={true} />
+                            <StatusPageEmbed />
                         </div>
                         <p>© 2023 Tip.dev LLC. All rights reserved.</p>
                     </div>
