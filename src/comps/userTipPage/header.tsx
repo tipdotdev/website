@@ -24,7 +24,7 @@ export default function Header(props:any) {
                 
                 {isOwner ? (
                     <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4rem] sm:pl-44 pl-32">
-                        <button className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Edit Profile</button>
+                        <a className="btn btn-neutral rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center" href="/dashboard/profile">Edit Profile</a>
                     </div>
                 ) : (
                     <>
@@ -40,7 +40,19 @@ export default function Header(props:any) {
                             </div>
                         ) : (
                             <div className="flex flex-col w-full items-start object-cover sm:-mt-[5.8rem] -mt-[4rem] sm:pl-44 pl-32">
-                                <button className="btn btn-primary rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center">Follow</button>
+                                <button className={`btn ${
+                                    `
+                                        ${pageUser?.page?.accent == 'primary' && `btn-primary`}
+                                        ${pageUser?.page?.accent == 'red' && `bg-red-400 hover:bg-red-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'blue' && `bg-blue-400 hover:bg-blue-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'green' && `bg-green-400 hover:bg-green-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'yellow' && `bg-yellow-400 hover:bg-yellow-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'purple' && `bg-purple-400 hover:bg-purple-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'orange' && `bg-orange-400 hover:bg-orange-500 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'white' && `bg-white hover:bg-gray-400 text-zinc-800`}
+                                        ${pageUser?.page?.accent == 'gray' && `bg-gray-400 hover:bg-gray-500 text-zinc-800`}
+                                    `
+                                } rounded-full border-[6px] border-base-100 text-xl normal-case btn-lg justify-center`}>Follow</button>
                             </div>
                         )}
                     </>

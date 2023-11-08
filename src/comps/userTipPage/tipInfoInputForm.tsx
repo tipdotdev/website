@@ -19,14 +19,39 @@ export default function TipBoxInfoForm(props:any) {
     const email = props.email
     const setEmail = props.setEmail
     const validEmail = props.validEmail
+    const pageUser = props.pageUser
+
+    const accent = pageUser?.page?.accent
 
     return (
         <>
             <div className="flex flex-row items-center mt-5 w-full gap-2">
                 
-                <div className={`rounded-lg w-full p-4 cursor-pointer hover:border-primary transition-all ease-in-out duration-150 text-center
+                <div className={`rounded-lg w-full p-4 cursor-pointer ${accent ? (
+                    `
+                        ${accent == 'primary' && `hover:border-primary`}
+                        ${accent == 'red' && `hover:border-red-400`}
+                        ${accent == 'blue' && `hover:border-blue-400`}
+                        ${accent == 'green' && `hover:border-green-400`}
+                        ${accent == 'yellow' && `hover:border-yellow-400`}
+                        ${accent == 'purple' && `hover:border-purple-400`}
+                        ${accent == 'orange' && `hover:border-orange-400`}
+                        ${accent == 'white' && `hover:border-white`}
+                        ${accent == 'gray' && `hover:border-gray-400`}
+                    `
+                    ): ""} transition-all ease-in-out duration-150 text-center
                     ${tipType === "One-Time" ? (
-                        "border-2 border-primary bg-primary/20 text-primary"
+                        `
+                            ${accent == 'primary' && `border-2 border-primary bg-primary/20 text-primary`}
+                            ${accent == 'red' && `border-2 border-red-400 bg-red-400/20 text-red-400`}
+                            ${accent == 'blue' && `border-2 border-blue-400 bg-blue-400/20 text-blue-400`}
+                            ${accent == 'green' && `border-2 border-green-400 bg-green-400/20 text-green-400`}
+                            ${accent == 'yellow' && `border-2 border-yellow-400 bg-yellow-400/20 text-yellow-400`}
+                            ${accent == 'purple' && `border-2 border-purple-400 bg-purple-400/20 text-purple-400`}
+                            ${accent == 'orange' && `border-2 border-orange-400 bg-orange-400/20 text-orange-400`}
+                            ${accent == 'white' && `border-2 border-white bg-white/20 text-white`}
+                            ${accent == 'gray' && `border-2 border-gray-400 bg-gray-400/20 text-gray-400`}
+                        `
                     ) : (
                         "border-2 border-zinc-800 bg-base-100 text-zinc-400"
                     )}
@@ -102,7 +127,19 @@ export default function TipBoxInfoForm(props:any) {
                     maxLength={500}
                 />
 
-                <button className="btn btn-primary btn-lg  flex flex-row w-full mt-5 normal-case text-xl"
+                <button className={`btn ${accent ? (
+                    `
+                        ${accent == 'primary' && `btn-primary`}
+                        ${accent == 'red' && `bg-red-400 hover:bg-red-500 text-zinc-800`}
+                        ${accent == 'blue' && `bg-blue-400 hover:bg-blue-500 text-zinc-800`}
+                        ${accent == 'green' && `bg-green-400 hover:bg-green-500 text-zinc-800`}
+                        ${accent == 'yellow' && `bg-yellow-400 hover:bg-yellow-500 text-zinc-800`}
+                        ${accent == 'purple' && `bg-purple-400 hover:bg-purple-500 text-zinc-800`}
+                        ${accent == 'orange' && `bg-orange-400 hover:bg-orange-500 text-zinc-800`}
+                        ${accent == 'white' && `bg-white hover:bg-gray-400 text-zinc-800`}
+                        ${accent == 'gray' && `bg-gray-400 hover:bg-gray-500 text-zinc-800`}
+                    `
+                ): ""} btn-lg  flex flex-row w-full mt-5 normal-case text-xl`}
                     disabled={tipLoading || tipAmount < 5 || !email || !validEmail } onClick={() => {
                         continueFunc()
                     }}

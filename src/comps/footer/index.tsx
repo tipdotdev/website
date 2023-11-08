@@ -4,7 +4,7 @@ import StatusPageEmbed from "../statusPage";
 export default function Footer(props:any) {
     return (
         <>
-            <footer className="footer p-10 bg-base-200 text-base-content w-screen">
+            <footer className="footer p-10 bg-transparent text-base-content w-full border-t-[1px] border-zinc-500">
                 <nav>
                     <header className="footer-title">Product</header> 
                     <a className="link link-hover" href="">Overview</a> 
@@ -15,16 +15,16 @@ export default function Footer(props:any) {
                 </nav> 
                 <nav>
                     <header className="footer-title">Support</header> 
-                    <a className="link link-hover" href="/contact">Contact us</a> 
-                    <a className="link link-hover" href="">API Documentation</a> 
+                    <a className="link link-hover" target="_blank" href="mailto:hi@tip.dev">Contact us</a> 
+                    <a className="link link-hover" target="_blank" href="https://docs.tip.dev">Documentation</a> 
                     <a className="link link-hover" target="_blank" href="/discord">Discord server</a> 
-                    <a className="link link-hover" href="/blog">Blog</a> 
+                    <a className="link link-hover" target="_blank" href="https://status.tip.dev">Status</a>
+                    <a className="link link-hover" target="_blank" href="https://tipdev.featurebase.app/">Give us Feedback</a>
                 </nav> 
                 <nav>
                     <header className="footer-title">Company</header> 
                     <a className="link link-hover" href="">About us</a> 
                     <a className="link link-hover" href="/blog">Blog</a>
-                    <a className="link link-hover" href="">Contact</a> 
                     <a className="link link-hover" href="">Jobs</a> 
                     <a className="link link-hover" href="">Press kit</a>
                 </nav> 
@@ -37,7 +37,7 @@ export default function Footer(props:any) {
                     <a className="link link-hover" href="/policies/community">Community guidlines</a>
                 </nav>
             </footer>
-            <footer className="footer px-10 py-4 bg-base-200 text-base-content w-screen">
+            <footer className="footer px-10 py-4 bg-transparent text-base-content w-full">
                 <aside className="items-center grid-flow-col justify-center">
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">

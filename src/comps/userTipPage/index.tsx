@@ -30,7 +30,21 @@ export default function UserTipPage(props:any) {
                         <div className="flex flex-col">
                             <p className="text-3xl font-bold">{pageUser?.username}</p>
                             {/* <p className="text-md text-zinc-400">{pageUser?.name || null}</p> */}
-                            <a href={`https://tip.dev/${pageUser?.username}`} className="text-md mt-1 font-code link link-hover link-primary text-zinc-400">tip.dev/{pageUser?.username}</a>
+                            <a href={`https://tip.dev/${pageUser?.username}`} className={`text-md mt-1 font-code link link-hover ${
+
+                                `
+                                    ${pageUser?.page?.accent == 'primary' && `link-primary`}
+                                    ${pageUser?.page?.accent == 'red' && `hover:text-red-400`}
+                                    ${pageUser?.page?.accent == 'blue' && `hover:text-blue-400`}
+                                    ${pageUser?.page?.accent == 'green' && `hover:text-green-400`}
+                                    ${pageUser?.page?.accent == 'yellow' && `hover:text-yellow-400`}
+                                    ${pageUser?.page?.accent == 'purple' && `hover:text-purple-400`}
+                                    ${pageUser?.page?.accent == 'orange' && `hover:text-orange-400`}
+                                    ${pageUser?.page?.accent == 'white' && `hover:text-white`}
+                                    ${pageUser?.page?.accent == 'gray' && `hover:text-gray-400`}
+                                `
+
+                            } text-zinc-400`}>tip.dev/{pageUser?.username}</a>
                         </div>
                         
                         <div className="flex flex-col">

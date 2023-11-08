@@ -205,6 +205,7 @@ export default function TipBox(props:any) {
                     setEmail={setEmail}
                     email={email}
                     validEmail={validEmail}
+                    pageUser={pageUser}
                 />
             ) : step == 2 ? (
                 <Elements stripe={stripePromise} options={{

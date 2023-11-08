@@ -11,7 +11,7 @@ export default function CookieConsetPopup(props:any) {
             <div className="flex sm:flex-row flex-col justify-between items-center gap-2">
                 <div className="flex flex-col justify-center items-start">
                     <h2 className="font-semibold text-white -mb-2">🍪 Cookie Notice</h2>
-                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">We use cookies to ensure that we give you the best experience on our website. <a href="/policies/cookies" className="link link-primary">Read cookies policies</a>. </p>
+                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">This website uses cookies to ensure you have the best possible experience. <a href="/policies/cookies" className="link link-primary">Read cookie policy</a>. </p>
                 </div>
                 <button className="btn btn-ghost mt-2 sm:mt-0 normal-case" onClick={acceptCookies}>Accept</button>
             </div>

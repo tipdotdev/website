@@ -4,8 +4,8 @@ import DashboardSidebar from "@/comps/dashboardSidebar";
 import SEOHead from "@/comps/seohead";
 import { useEffect, useState } from "react";
 import DashboardFooter from "@/comps/dashboardFooter";
-import DashboardSubs from "@/comps/dashboardSubscribers";
 import useUser from "@/hooks/useUser";
+import DashboardProfile from "@/comps/dashboardProfile";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,7 +32,7 @@ export default function Page() {
             />
 
             <DashboardSidebar 
-                content={ <></> }
+                content={ <DashboardProfile user={user} token={token} logout={logout} /> }
                 user={ user }
             />
             
