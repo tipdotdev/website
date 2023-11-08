@@ -160,7 +160,7 @@ export default function page() {
                             {avatar || user?.pictures?.avatar ? (
                                 <div className="avatar">
                                     <div className="w-full rounded-full">
-                                        {user?.pictures?.avatar ? (
+                                        {user?.pictures?.avatar && !avatar ? (
                                             <img src={user?.pictures?.avatar}/>
                                         ) : (
                                             <img src={URL.createObjectURL(avatar)}/>

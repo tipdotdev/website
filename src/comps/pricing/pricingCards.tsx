@@ -29,7 +29,7 @@ export default function PricingCards() {
             
             <div className="flex flex-row justify-evenly items-center w-full gap-4">
 
-                <div className="flex flex-col justify-center items-center bg-base-200 rounded-lg px-10 py-8 w-full shadow-md shadow-black">
+                <div className="flex flex-col justify-center items-center bg-base-200 rounded-lg px-10 py-8 w-full">
 
                     <div className="flex flex-row gap-5 items-start w-full text-start">
 
@@ -73,7 +73,7 @@ export default function PricingCards() {
 
                 </div>
 
-                <div className="flex flex-col justify-center items-center bg-base-200 rounded-lg px-10 py-8 w-full border-2 border-gold shadow-md shadow-black">
+                <div className="flex flex-col justify-center items-center bg-base-200 rounded-lg px-10 py-8 w-full border-2 border-gold shadow">
 
                     <div className="flex flex-row gap-5 items-start w-full text-start">
 
@@ -101,7 +101,7 @@ export default function PricingCards() {
                                 <PlusIcon className="w-6" />
                             </div>
 
-                            <p className="text-lg text-zinc-300">
+                            <p className="text-lg text-zinc-400">
                                 For the active developer
                             </p>
                         </div>

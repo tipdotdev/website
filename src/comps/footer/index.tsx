@@ -33,8 +33,8 @@ export default function Footer(props:any) {
                     <a className="link link-hover" href="/policies/terms">Terms of service</a> 
                     <a className="link link-hover" href="/policies/privacy">Privacy policy</a> 
                     <a className="link link-hover" href="/policies/cookies">Cookie policy</a>
-                    <a className="link link-hover" href="">Content policy</a>
-                    <a className="link link-hover" href="">Community guidlines</a>
+                    <a className="link link-hover" href="/policies/content">Content policy</a>
+                    <a className="link link-hover" href="/policies/community">Community guidlines</a>
                 </nav>
             </footer>
             <footer className="footer px-10 py-4 bg-base-200 text-base-content w-screen">
@@ -42,9 +42,9 @@ export default function Footer(props:any) {
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">
                         <div className="flex justify-start -ml-2 items-center gap-2">
-                            <StatusPageEmbed showText={true} />
+                            <StatusPageEmbed />
                         </div>
-                        <p>© 2023 Tip.dev LLC. All rights reserved.</p>
+                        <p>© 2023 Tip LLC. All rights reserved.</p>
                     </div>
                 </aside> 
                 <nav className="md:place-self-center md:justify-self-end">

@@ -2,14 +2,13 @@ import SEOHead from '@/comps/seohead';
 import { getPostData } from '../../utils/posts';
 import { Inter } from 'next/font/google'
 import Navbar from '@/comps/navbar';
-import DashboardFooter from '@/comps/dashboardFooter';
 import Footer from '@/comps/footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export async function getStaticProps() {
     // Add the "await" keyword like this:
-    const postData = await getPostData('privacy');
+    const postData = await getPostData('community');
   
     return {
       props: {
@@ -24,7 +23,7 @@ export default function page(postData: any) {
 			className={`flex min-h-screen flex-col justify-center items-center ${inter.className} overflow-x-hidden`}
 	  		data-theme="dracula"
   		>	
-	  		<SEOHead title="tip.dev Privacy Policy" />
+	  		<SEOHead title="tip.dev Content Policy" />
             <Navbar />
 
             <div className="h-24"></div>

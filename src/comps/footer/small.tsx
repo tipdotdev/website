@@ -9,9 +9,9 @@ export default function SmallFooter(props:any) {
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">
                         <div className="flex justify-start -ml-2 items-center gap-2">
-                            <StatusPageEmbed showText={true} />
+                            <StatusPageEmbed />
                         </div>
-                        <p>© 2023 Tip.dev LLC. All rights reserved.</p>
+                        <p>© 2023 Tip LLC. All rights reserved.</p>
                     </div>
                 </aside> 
                 <nav className="md:place-self-center md:justify-self-end">

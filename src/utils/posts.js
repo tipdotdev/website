@@ -11,7 +11,7 @@ export async function getPostData(id) {
 
     let fullPath;
 
-    if (id == 'privacy' || id == 'terms' || id == 'cookies') {
+    if (id == 'privacy' || id == 'terms' || id == 'cookies' || id == 'content' || id == 'community') {
         fullPath = path.join(policyDirectory, `${id}.md`);
     } else {
         fullPath = path.join(postsDirectory, `${id}.md`);

@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import useUser from '@/hooks/useUser'
 import { FaAsterisk, FaCrosshairs, FaGithub, FaPlus } from 'react-icons/fa'
 import Image from 'next/image'
+import useModal from '@/hooks/useModal'
+import ErrorModal from '@/comps/modals/errorModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,46 +14,53 @@ export default function Page() {
 
     const router = useRouter()
     const { saveToken } = useUser()
+    const { openModal } = useModal()
 
-    const { code, state } = router.query
+    const { code, state, error } = router.query
+
+    const [cError, setError] = useState(null as any)
 
     useEffect(() => {
         if (code && state) {
-            // auth()
+            auth()
+        } else if (error) {
+            setError(error)
+            openModal('error')
         }
     }, [code, state])
 
     const auth = async () => {
-        // const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/oauth/callback/github`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         code: code,
-        //         state: state,
-        //     })
-        // })
+        const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/oauth/callback/twitter`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code: code,
+                state: state,
+            })
+        })
 
-        // const res = await req.json()
+        const res = await req.json()
 
-        // if (!req.ok) {
-        //     console.log(res)
-        //     // handle error
-        // } else {
+        if (!req.ok) {
+            setError(res.error)
+            openModal('error')
+            return
+        } else {
 
-        //     // save token
-        //     saveToken(res.token)
+            // // save token
+            // saveToken(res.token)
             
-        //     if (res.finishOnboarding) {
-        //         // redirect to onboarding
-        //         router.push(`/onboarding/username?oauth=true&&user=${JSON.stringify(res.user)}`)
-        //     } else {
-        //         // redirect to dashboard
-        //         router.push(`/dashboard`)
-        //     }
+            // if (res.finishOnboarding) {
+            //     // redirect to onboarding
+            //     router.push(`/onboarding/username?oauth=true&&user=${JSON.stringify(res.user)}`)
+            // } else {
+            //     // redirect to dashboard
+            //     router.push(`/dashboard`)
+            // }
 
-        // }
+        }
     }
 	
   	return (
@@ -74,7 +83,11 @@ export default function Page() {
             <p className="text-3xl font-semibold text-center mt-8">Linking Twitter account</p>
             <p className="text-sm text-center mt-2 text-zinc-400">This may take a second</p>
 
-
+            <ErrorModal 
+                error={cError || { message: 'An unknown error occured.' }}
+                buttonText="Go back"
+                buttonHref="/signin"
+            />
         
   		</main>
 	)

@@ -1,4 +1,4 @@
-import { FaCaretRight, FaDiscord, FaEnvelope, FaEye, FaEyeSlash, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaCaretRight, FaDiscord, FaEnvelope, FaEye, FaEyeSlash, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Toast from "../toast";
 import FomikTextInput from "../input/formikTextInput";
@@ -9,9 +9,13 @@ import Turnstile from "../turnstile";
 import GithubLoginButton from "../oauthButtons/github";
 import GoogleLoginButton from "../oauthButtons/google";
 import TwitterLoginButton from "../oauthButtons/twitter";
+import AppleLoginButton from "../oauthButtons/apple";
+import OAuthOptions from "../oauthButtons/optionsContainer";
 
 
 export default function SigninForm() {
+
+    const signinAvailable = false
 
     const [email, setEmail] = useState("" as any)
     const [password, setPassword] = useState("")
@@ -131,101 +135,119 @@ export default function SigninForm() {
     }, [email, password, validEmail, turnstileToken])
 
     return (
-        <div className="w-full max-w-sm">
 
-            <h1 className="text-4xl font-bold mt-12">Welcome back</h1>
+        <div className="w-full max-w-sm mb-10">
+            {signinAvailable ? (
+                <>
+                    <h1 className="text-4xl font-bold mt-12">Welcome back</h1>
 
-            <div className="mt-10">
-                <GithubLoginButton />
-            </div>
+                    <OAuthOptions />
 
-            <div className="mt-2">
-                <GoogleLoginButton />
-            </div>
+                    <div className="divider mb-10 mt-10">OR</div>
 
-            <div className="mt-2">
-                <TwitterLoginButton />
-            </div>
-
-            <div className="divider mb-10 mt-10">OR</div>
-
-            {!showEmailOption ? (
-                <button className="btn btn-neutral btn-block normal-case mb-4" onClick={() => {
-                    setShowEmailOption(true)
-                }}>
-                    <FaEnvelope className="mr-2 text-xl" />
-                    Continue with Email
-                </button>
-            ) : (
-
-                <form onSubmit={(e) => { e.preventDefault() }} className="form-control ">               
-
-                    <div>
-                        <input type="email" placeholder="Email" className="input input-bordered w-full"
-                            onChange={(e) => {
-                                setEmail(e.target.value)
-                            }}
-                        />
-                        {error.email && (
-                            <ErrorText text={error.email} />
-                        )}
-                    </div>
-
-                    <div className="mt-2">
-                        <div className="join w-full">
-                            <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
-                                onChange={(e) => {
-                                    setPassword(e.target.value)
-                                }}
-                            />
-                            <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
-                                setShowPassword(!showPassword)
-                            }}>
-                                {!showPassword ? (
-                                    <FaEye />
-                                ) : (
-                                    <FaEyeSlash />
-                                )}
-                            </p> 
-                        </div>
-                        {error.password && (
-                            <ErrorText text={error.password} />
-                        )}
-                    </div>
-
-                    <div className="mt-2">
-                        <a className="text-sm link text-[#949ca8] link-hover link-primary cursor-pointer" href={'/forgot-password'}>Forgot password</a>
-                    </div>
-
-                    <div className="mt-10 text-left">
-
-                        <Turnstile />
-
-                        <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4"
-                            onClick={() => {
-                                signin()
-                            }}
-                        >
-                            {isLoading ? (
-                                <span className="loading loading-spinner"></span>
-                            ) : (
-                                null
-                            )}
-                            Continue
+                    {!showEmailOption ? (
+                        <button className="btn btn-neutral btn-block normal-case mb-4" onClick={() => {
+                            setShowEmailOption(true)
+                        }}>
+                            <FaEnvelope className="mr-2 text-xl" />
+                            Continue with Email
                         </button>
+                    ) : (
 
-                        <a className="text-sm link-hover link-primary cursor-pointer" href={'/onboarding/signup'}>Don't have an account?</a>
+                        <form onSubmit={(e) => { e.preventDefault() }} className="form-control ">               
+
+                            <div>
+                                <input type="email" placeholder="Email" className="input input-bordered w-full"
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+                                    }}
+                                />
+                                {error.email && (
+                                    <ErrorText text={error.email} />
+                                )}
+                            </div>
+
+                            <div className="mt-2">
+                                <div className="join w-full">
+                                    <input type={showPassword ? "text" : "password"} placeholder="Password" className="input w-full input-bordered join-item border-r-0 rounded-r-none" 
+                                        onChange={(e) => {
+                                            setPassword(e.target.value)
+                                        }}
+                                    />
+                                    <p className="btn btn-ghost border-1 border-[#4e515a] border-l-0 rounded-lg rounded-l-none" onClick={() => {
+                                        setShowPassword(!showPassword)
+                                    }}>
+                                        {!showPassword ? (
+                                            <FaEye />
+                                        ) : (
+                                            <FaEyeSlash />
+                                        )}
+                                    </p> 
+                                </div>
+                                {error.password && (
+                                    <ErrorText text={error.password} />
+                                )}
+                            </div>
+
+                            <div className="mt-2">
+                                <a className="text-sm link text-[#949ca8] link-hover link-primary cursor-pointer" href={'/forgot-password'}>Forgot password</a>
+                            </div>
+
+                            <div className="mt-10 text-left">
+
+                                <Turnstile />
+
+                                <button disabled={isLoading || isDisabled} className="btn btn-primary w-full mb-4"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        signin()
+                                    }}
+                                >
+                                    {isLoading ? (
+                                        <span className="loading loading-spinner"></span>
+                                    ) : (
+                                        null
+                                    )}
+                                    Continue
+                                </button>
+
+                                <a className="text-sm link-hover link-primary cursor-pointer" href={'/onboarding/signup'}>Don't have an account?</a>
+                            </div>
+                        </form>
+                    )}
+
+                    {showToast && (
+                        <>
+                            {toastError && (
+                                <Toast type="error" text={toastErrorText} />
+                            )}
+                        </>
+                    )}
+                </>
+            ) : (
+                <div className="flex flex-col items-center justify-center">
+                        <img src="/svg/logo.svg" className="h-24 w-fit" />
+                        <h1 className="text-2xl font-medium mt-12 text-center">Signins are closed for now</h1>
+                        <p className="text-center mt-2 text-zinc-400">We're working on improving the platform, and will open up again soon.</p>
+
+                        <div className="divider mt-5 mb-5"></div>
+
+                        <div className="flex flex-col items-center justify-center">
+                            <p className="text-zinc-400">Connect with us to stay updated!</p>
+                            <div className="flex flex-row gap-2 mt-4">
+                                <a href="/discord" target="_blank" className="btn btn-primary text-xl">
+                                    <FaDiscord />
+                                </a>
+                                <a href="https://twitter.com/tipdotdev" target="_blank" className="btn btn-primary text-xl">
+                                    <FaTwitter/>
+                                </a>
+                                <a href="https://instagram.com/tipdotdev" target="_blank" className="btn btn-primary text-xl">
+                                    <FaInstagram/>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </form>
             )}
-
-            {showToast && (
-				<>
-					{toastError && (
-						<Toast type="error" text={toastErrorText} />
-					)}
-				</>
-			)}
         </div>
     )
 }

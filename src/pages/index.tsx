@@ -9,6 +9,7 @@ import HomeStats from '@/comps/homePage/stats'
 import HomeAbout from '@/comps/homePage/about'
 import ComingSoonNavbar from '@/comps/comingSoon/navbar'
 import SmallFooter from '@/comps/footer/small'
+import CookieConsetPopup from '@/comps/modals/cookieConsent'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,6 @@ export default function Home() {
 	  		data-theme="dracula"
   		>	
 	  		<SEOHead title="tip.dev | Coming Soon" />
-	  
 
 			{showComingSoon ? 
 

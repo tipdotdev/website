@@ -23,7 +23,7 @@ export default function page(postData: any) {
 			className={`flex min-h-screen flex-col justify-center items-center ${inter.className} overflow-x-hidden`}
 	  		data-theme="dracula"
   		>	
-	  		<SEOHead title="tip.dev" />
+	  		<SEOHead title="tip.dev Cookie Policy" />
             <Navbar />
 
             <div className="h-24"></div>

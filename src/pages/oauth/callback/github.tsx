@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import useUser from '@/hooks/useUser'
 import { FaAsterisk, FaCrosshairs, FaGithub, FaPlus } from 'react-icons/fa'
 import Image from 'next/image'
+import ErrorModal from '@/comps/modals/errorModal'
+import useModal from '@/hooks/useModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,8 +14,11 @@ export default function Page() {
 
     const router = useRouter()
     const { saveToken } = useUser()
+    const { openModal } = useModal()
 
     const { code, state } = router.query
+
+    const [error, setError] = useState(null as any)
 
     useEffect(() => {
         if (code && state) {
@@ -36,8 +41,9 @@ export default function Page() {
         const res = await req.json()
 
         if (!req.ok) {
-            console.log(res)
-            // handle error
+            setError(res.error)
+            openModal('error')
+            return
         } else {
 
             // save token
@@ -72,7 +78,11 @@ export default function Page() {
             <p className="text-3xl font-semibold text-center mt-8">Linking GitHub account</p>
             <p className="text-sm text-center mt-2 text-zinc-400">This may take a second</p>
 
-
+            <ErrorModal 
+                error={error || { message: ':(' }}
+                buttonText="Go back"
+                buttonHref="/signin"
+            />
         
   		</main>
 	)

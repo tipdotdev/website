@@ -1,4 +1,4 @@
-import { FaCaretRight, FaDiscord, FaEnvelope, FaEye, FaEyeSlash, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaCaretRight, FaDiscord, FaEnvelope, FaEye, FaEyeSlash, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Toast from "../toast";
 import FomikTextInput from "../input/formikTextInput";
@@ -9,6 +9,8 @@ import Turnstile from "@/comps/turnstile";
 import GithubLoginButton from "../oauthButtons/github";
 import GoogleLoginButton from "../oauthButtons/google";
 import TwitterLoginButton from "../oauthButtons/twitter";
+import AppleLoginButton from "../oauthButtons/apple";
+import OAuthOptions from "../oauthButtons/optionsContainer";
 
 export function SignupForm(props:any) {
 
@@ -30,11 +32,13 @@ export function SignupForm(props:any) {
     const [validUsername, setValidUsername] = useState(false)
     const [validPassword, setValidPassword] = useState(false)
 
+    const [passwordRules, setPasswordRules] = useState({} as any)
+
     const [error, setError] = useState({} as any)
 
     const [turnstileToken, setTurnstileToken] = useState("")
 
-    const signupAvailable = useState(false)
+    const signupAvailable = false
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -61,7 +65,6 @@ export function SignupForm(props:any) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                username: username,
                 password: password,
                 email: email,
                 cfTurnstileResponse: turnstileToken,
@@ -142,23 +145,53 @@ export function SignupForm(props:any) {
         // password must contain at least 1 number
         // it can contain special characters
 
-        if (password.length != 0) {
-            let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-            let valid = re.test(password);
+        // if (password.length != 0) {
+        //     // let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+        //     let valid = re.test(password);
 
-            if (valid) {
-                setValidPassword(true)
-                setError({
-                    ...error,
-                    password: null
-                })
-            } else {
-                setValidPassword(false)
-                setError({
-                    ...error,
-                    password: "Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number"
-                })
-            }
+        //     if (valid) {
+        //         setValidPassword(true)
+        //         setError({
+        //             ...error,
+        //             password: null
+        //         })
+        //     } else {
+        //         setValidPassword(false)
+        //         setError({
+        //             ...error,
+        //             password: "Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number"
+        //         })
+        //     }
+        // }
+
+        // validate each rule, and set the state
+        // if all rules are true, set validPassword to true
+
+        const length = password.length >= 8
+        const uppercase = /[A-Z]/.test(password)
+        const lowercase = /[a-z]/.test(password)
+        const number = /[0-9]/.test(password)
+
+        setPasswordRules({
+            length: length,
+            uppercase: uppercase,
+            lowercase: lowercase,
+            number: number,
+        })
+
+        if (length && uppercase && lowercase && number) {
+            setValidPassword(true)
+            setError({
+                ...error,
+                password: null
+            })
+        } else {
+            console.log("password is not valid")
+            setValidPassword(false)
+            setError({
+                ...error,
+                password: "Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number"
+            })
         }
     }
 
@@ -175,12 +208,12 @@ export function SignupForm(props:any) {
     }, [password])
 
     useEffect(() => {
-        if (password != "" && email != "" && agreeTerms && !isLoading && validUsername && validEmail && validPassword && turnstileToken != "") {
+        if (password != "" && email != "" && agreeTerms && !isLoading && validEmail && validPassword && turnstileToken != "") {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
         }
-    }, [password, email, agreeTerms, isLoading, error, validUsername, validEmail, validPassword, turnstileToken])
+    }, [password, email, agreeTerms, isLoading, error, validEmail, validPassword, turnstileToken])
 
     return (
         <div className="w-full max-w-sm mb-10">
@@ -189,17 +222,7 @@ export function SignupForm(props:any) {
                 <>
                     <h1 className="text-4xl font-bold mt-12">Sign up for tip.dev</h1>
 
-                    <div className="mt-10">
-                        <GithubLoginButton />
-                    </div>
-
-                    <div className="mt-2">
-                        <GoogleLoginButton />
-                    </div>
-
-                    <div className="mt-2">
-                        <TwitterLoginButton />
-                    </div>
+                    <OAuthOptions />
 
                     <div className="divider mb-10 mt-10">OR</div>
 
@@ -247,9 +270,25 @@ export function SignupForm(props:any) {
                                         )}
                                     </p>
                                 </div>
-                                {error.password && (
+                                
+                                <ul className="list-disc list-inside mt-3 gap-1 mb-5 transition-all ease-in-out duration-150">
+                                    <li className={`
+                                        ${passwordRules && passwordRules.length == false ? "text-zinc-400" : "text-success/70"}
+                                    `}>At least 8 characters</li>
+                                    <li className={`
+                                        ${passwordRules && passwordRules.uppercase == false ? "text-zinc-400" : "text-success/70"}
+                                    `}>At least 1 uppercase letter</li>
+                                    <li className={`
+                                        ${passwordRules && passwordRules.lowercase == false ? "text-zinc-400" : "text-success/70"}
+                                    `}>At least 1 lowercase letter</li>
+                                    <li className={`
+                                        ${passwordRules && passwordRules.number == false ? "text-zinc-400" : "text-success/70"}
+                                    `}>At least 1 number</li>
+                                </ul>
+
+                                {/* {error.password && (
                                     <ErrorText text={error.password} />
-                                )}
+                                )} */}
                             </div>
 
                             <div className="mt-2">
@@ -306,6 +345,24 @@ export function SignupForm(props:any) {
                 <div className="flex flex-col items-center justify-center">
                     <img src="/svg/logo.svg" className="h-24 w-fit" />
                     <h1 className="text-2xl font-medium mt-12 text-center">Signups are closed for now</h1>
+                    <p className="text-center mt-2 text-zinc-400">We're working on improving the platform, and will open up again soon.</p>
+
+                    <div className="divider mt-5 mb-5"></div>
+
+                    <div className="flex flex-col items-center justify-center">
+                        <p className="text-zinc-400">Connect with us to stay updated!</p>
+                        <div className="flex flex-row gap-2 mt-4">
+                            <a href="/discord" target="_blank" className="btn btn-primary text-xl">
+                                <FaDiscord />
+                            </a>
+                            <a href="https://twitter.com/tipdotdev" target="_blank" className="btn btn-primary text-xl">
+                                <FaTwitter/>
+                            </a>
+                            <a href="https://instagram.com/tipdotdev" target="_blank" className="btn btn-primary text-xl">
+                                <FaInstagram/>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

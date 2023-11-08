@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import useUser from '@/hooks/useUser'
 import { FaAsterisk, FaCrosshairs, FaGithub, FaPlus } from 'react-icons/fa'
 import Image from 'next/image'
+import ErrorModal from '@/comps/modals/errorModal'
+import useModal from '@/hooks/useModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,46 +14,63 @@ export default function Page() {
 
     const router = useRouter()
     const { saveToken } = useUser()
+    const { openModal } = useModal()
 
-    const { code, state } = router.query
+    // get the access token and state from the url after the #
+    const [access_token, setAccessToken] = useState<string | null>(null)
+    const [state, setState] = useState<string | null>(null)
+    const [error, setError] = useState(null as any)
 
     useEffect(() => {
-        if (code && state) {
-            // auth()
+        const url = window.location.href
+        const urlParams = new URLSearchParams(url)
+        const access_token = urlParams.get('access_token')
+        // the state is the first one, for some reason, the whole url is the key
+        const stateKey = urlParams.keys().next().value
+        const state = urlParams.get(stateKey)
+
+        setAccessToken(access_token)
+        setState(state)
+    }, [])
+
+    useEffect(() => {
+        if (access_token && state) {
+            auth()
         }
-    }, [code, state])
+    }, [access_token, state])
 
     const auth = async () => {
-        // const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/oauth/callback/github`, {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         code: code,
-        //         state: state,
-        //     })
-        // })
+        const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/oauth/callback/google`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                accessToken: access_token,
+                state: state,
+            })
+        })
 
-        // const res = await req.json()
+        const res = await req.json()
 
-        // if (!req.ok) {
-        //     console.log(res)
-        //     // handle error
-        // } else {
+        if (!req.ok) {
+            setError(res.error)
+            openModal('error')
+            return
+        } else {
 
-        //     // save token
-        //     saveToken(res.token)
+            // save token
+            saveToken(res.token)
             
-        //     if (res.finishOnboarding) {
-        //         // redirect to onboarding
-        //         router.push(`/onboarding/username?oauth=true&&user=${JSON.stringify(res.user)}`)
-        //     } else {
-        //         // redirect to dashboard
-        //         router.push(`/dashboard`)
-        //     }
+            if (res.finishOnboarding) {
+                // redirect to onboarding
+                router.push(`/onboarding/username?oauth=true&&user=${JSON.stringify(res.user)}`)
+            } else {
+                // redirect to dashboard
+                router.push(`/dashboard`)
+            }
 
-        // }
+        }
     }
 	
   	return (
@@ -74,7 +93,11 @@ export default function Page() {
             <p className="text-3xl font-semibold text-center mt-8">Linking Google account</p>
             <p className="text-sm text-center mt-2 text-zinc-400">This may take a second</p>
 
-
+            <ErrorModal 
+                error={error || { message: ':(' }}
+                buttonText="Go back"
+                buttonHref="/signin"
+            />
         
   		</main>
 	)
