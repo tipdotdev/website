@@ -4,7 +4,7 @@ import StatusPageEmbed from "../statusPage";
 export default function Footer(props:any) {
     return (
         <>
-            <footer className="footer p-10 bg-transparent text-base-content w-full border-t-[1px] border-zinc-500">
+            <footer className="footer p-10 bg-transparent text-base-content w-screen bg-base-200">
                 <nav>
                     <header className="footer-title">Product</header> 
                     <a className="link link-hover" href="">Overview</a> 
@@ -37,7 +37,7 @@ export default function Footer(props:any) {
                     <a className="link link-hover" href="/policies/community">Community guidlines</a>
                 </nav>
             </footer>
-            <footer className="footer px-10 py-4 bg-transparent text-base-content w-full">
+            <footer className="footer px-10 py-4 w-screen bg-base-200 text-base-content">
                 <aside className="items-center grid-flow-col justify-center">
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">
