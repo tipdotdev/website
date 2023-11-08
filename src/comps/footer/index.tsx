@@ -4,7 +4,7 @@ import StatusPageEmbed from "../statusPage";
 export default function Footer(props:any) {
     return (
         <>
-            <footer className="footer p-10 bg-transparent text-base-content w-screen bg-base-200">
+            <footer className="footer p-10 text-base-content w-screen bg-base-200">
                 <nav>
                     <header className="footer-title">Product</header> 
                     <a className="link link-hover" href="">Overview</a> 
