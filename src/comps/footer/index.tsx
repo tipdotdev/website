@@ -41,7 +41,7 @@ export default function Footer(props:any) {
                 <aside className="items-center grid-flow-col justify-center">
                     <img src="/svg/logo-white.svg" className="h-8 w-fit" />
                     <div className="flex flex-col ml-2 justify-center">
-                        <div className="flex justify-start -ml-2 items-center gap-2">
+                        <div className="flex justify-start -ml-[0.46em] items-center gap-2">
                             <StatusPageEmbed />
                         </div>
                         <p>© 2023 Tip LLC. All rights reserved.</p>
