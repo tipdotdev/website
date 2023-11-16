@@ -13,7 +13,8 @@ export default function CookieConsetPopup(props:any) {
                     <h2 className="font-semibold text-white -mb-2">🍪 Cookie Notice</h2>
                     <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">This website uses cookies to ensure you have the best possible experience. <a href="/policies/cookies" className="link link-primary">Read cookie policy</a>. </p>
                 </div>
-                <button className="btn btn-ghost mt-2 sm:mt-0 normal-case" onClick={acceptCookies}>Accept</button>
+                
+                <button className="btn btn-ghost mt-2 sm:mt-0 normal-case sm:w-fit w-full" onClick={acceptCookies}>Accept</button>
             </div>
             
         </section>
