@@ -5,7 +5,7 @@ export default function Toast(props: any) {
     
     if (props.type === "success") {
         return (
-            <div className="toast toast-center flex sm:w-fit w-full">
+            <div className="toast toast-end flex sm:w-fit w-full">
                 <div className="alert bg-success/20 text-success border-none backdrop-blur-md">
                     <FaCheck className="w-5 h-5 mr-2 sm:flex hidden" />
                     <span>{props.text}</span>
