@@ -54,11 +54,11 @@ export default function Page({ postData }: { postData: any }) {
 
             <div className="h-28"> </div>
             
-            <div className="flex flex-col text-left md:w-1/2 w-full mb-20">
+            <article className="flex flex-col text-left md:w-1/2 w-full mb-20">
 
                 <img src={postData.thumbnail} className="rounded-2xl w-full aspect-video" />
 
-                <p className="text-sm text-zinc-400 mt-4">Published on {readableDate} by {postData.author}</p>
+                <p className="text-sm text-zinc-400 mt-4">Published on {readableDate} by <a href={postData.author_link} target="_blank" className="link link-hover">{postData.author}</a></p>
 
                 <h1 className="text-4xl font-black mt-4">{postData.title}</h1>
 
@@ -66,11 +66,11 @@ export default function Page({ postData }: { postData: any }) {
 
                 <span className="divider mt-4"/>
 
-                <div className="prose prose-md mt-4"
+                <section className="prose prose-md mt-4"
                     dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
                 >
-                </div>
-            </div>
+                </section>
+            </article>
 
             <div className="flex flex-col items-center sm:w-1/2 w-full">
                 <BlogCTA />

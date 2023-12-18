@@ -2,37 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* width */
-/* ::-webkit-scrollbar {
-  width: 7px;
-} */
-
-/* Track */
-/* ::-webkit-scrollbar-track {
-  background: #272935;
-} */
-
-/* Handle */
-/* ::-webkit-scrollbar-thumb {
-  background: #1f2029;
-  border-radius: 18px;
-} */
-
-/* Handle on hover */
-/* ::-webkit-scrollbar-thumb:hover {
-  background: #191a20;
-} */
-/* 
-::-moz-selection { 
-  color: #303030;
-  background: #fe7ac700;
-} */
-
-/* ::selection {
-  color: #303030;
-  background: #fe7ac700;
-} */
-
 :root {
-  color-scheme: none;
+    color-scheme: none;
+}
+
+.star_bg {
+    animation: animateBg 50s linear infinite;
+}
+
+@keyframes animateBg {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+/* make sure the stars dont go past the parent container */
+.star_bg {
+    overflow: hidden;
+}
+
+body {
+    overflow-x: hidden;
 }

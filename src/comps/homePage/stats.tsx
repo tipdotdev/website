@@ -57,7 +57,7 @@ export default function HomeStats() {
     }, [])
 
     return (
-        <div className="flex flex-col min-h-[50vh] w-screen bg-base-200  items-center">
+        <div className="flex z-10 flex-col min-h-[50vh] w-screen bg-base-200  items-center">
 
             <p className="text-md text-center mb-2 mt-10 italic text-zinc-400">
                 Totally real (fake) reviews

@@ -5,6 +5,7 @@ slug: what-is-tipdev
 thumbnail: 'https://cdn.tip.dev/tipdev/blog/thumbnails/what-is-tipdev.png'
 description: "Learn what tip.dev is and who its for!"
 author: "Kyle Dickey"
+author_link: "https://tip.dev/dickey"
 published: false
 ---
 

@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--gradient-color-stops))',
+      },
       fontFamily: {
         code: ['JetBrains Mono', 'monospace'],
       },
@@ -24,10 +27,16 @@ module.exports = {
           // make the blob rotate 360 degrees
           '0%, 100%': { transform: 'rotate(0deg)' },
           '50%': { transform: 'rotate(360deg)' },
+        },
+        nod: {
+          '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(20deg)' },
+          '75%': { transform: 'rotate(-10deg)' },
         }
       },
       animation: {
         blob: 'blob 20s infinite',
+        nod: 'nod 2s infinite',
       },
       aspectRatio: {
         "banner": "16/3",

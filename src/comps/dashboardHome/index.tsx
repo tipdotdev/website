@@ -198,16 +198,17 @@ export default function DashboardHome(props:any) {
 
         // all we need o do is set the 5 most recent events
         const events:any = []
-
+        
         for (let i = 0; i < user?.incomeEvents?.length; i++) {
             let from = JSON.parse(user?.incomeEvents[i].metadata.tipper)
-
             events.push({
+                id: user?.incomeEvents[i].id,
                 amount: ((user?.incomeEvents[i].amount)/100).toLocaleString('en-US', { style: 'currency', currency: user?.currency || "USD", minimumFractionDigits: 0 }),
                 type: {
                     name: user?.incomeEvents[i].metadata.type,
                     color: "red"
                 },
+                message: user?.incomeEvents[i].metadata.message,
                 // calculate the date from a unix timestamp
                 date: user?.incomeEvents[i].created,
                 from: {
@@ -497,7 +498,8 @@ export default function DashboardHome(props:any) {
                                 <>
                                     {recentEvents.length == 0 ? (
                                         <div className="flex flex-row justify-center items-center text-center bg-base-200 rounded-xl w-full border-1 border-zinc-700 border py-10">
-                                            <FaHeartBroken className="text-xl font-nomal font-code text-zinc-400 mr-2" /> 
+                                            {/* <FaHeartBroken className="text-xl font-nomal font-code text-zinc-400 mr-2" />  */}
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-heart-broken" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /><path d="M12 6l-2 4l4 3l-2 4v3" /></svg>
                                             <h1 className="text-xl font-nomal font-code text-zinc-400">No Recent Events</h1>
                                         </div>
                                     ) : (
