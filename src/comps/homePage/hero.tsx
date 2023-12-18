@@ -118,7 +118,7 @@ export default function HomeHero() {
                 </div>
             </div>
 
-            <img src="/svg/wave-dark.svg" className="absolute bottom-0 h-40 z-[99] w-screen object-cover" />
+            <img src="/svg/wave-dark.svg" className="absolute bottom-0 h-40 z-[9] w-screen object-cover" />
 
             {showToast && (
                 <>
