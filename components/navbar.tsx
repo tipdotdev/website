@@ -4,10 +4,10 @@ import { Button } from "./ui/button";
 import DiscordIcon from "@/public/icons/discord-icon.svg";
 
 export default function Navbar({
-    active,
+    active = "",
     comingSoon
 }: {
-    active: "home" | "pricing" | "blog" | "signin";
+    active?: "home" | "pricing" | "blog" | "signin" | "";
     comingSoon?: boolean;
 }) {
     return (
@@ -64,7 +64,9 @@ export default function Navbar({
                     <>
                         <Link href="/auth/signin">
                             <p
-                                className={`text-md font-medium text-foreground/60 transition-all duration-200 ease-in-out hover:text-foreground`}
+                                className={`text-md font-medium transition-all duration-200 ease-in-out hover:text-foreground
+                                ${active === "signin" ? "text-foreground" : "text-foreground/60"}
+                                `}
                             >
                                 Sign In
                             </p>
