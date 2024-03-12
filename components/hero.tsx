@@ -9,7 +9,7 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
     const [email, setEmail] = useState("");
 
     const joinWaitlist = async () => {
-        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/news/enter`, {
+        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
