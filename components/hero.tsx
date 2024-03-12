@@ -4,11 +4,15 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { useState } from "react";
+import { set } from "zod";
+import Spinner from "./ui/spinner";
 
 export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
     const [email, setEmail] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const joinWaitlist = async () => {
+        setIsLoading(true);
         let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
             method: "POST",
             headers: {
@@ -25,6 +29,7 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
             const data = await req.json();
             toast.error(data.message);
         }
+        setIsLoading(false);
     };
 
     return (
@@ -47,6 +52,7 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
                             className="group border-none bg-transparent p-0  text-lg font-bold focus-visible:ring-0 focus-visible:ring-offset-0"
                             placeholder="Enter your email"
                             type="email"
+                            disabled={isLoading}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -54,8 +60,13 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
                             variant="default"
                             className="rounded-full font-bold"
                             onClick={joinWaitlist}
+                            disabled={isLoading}
                         >
-                            Join
+                            {isLoading ? (
+                                <Spinner className="h-4 w-4 fill-primary-foreground text-primary-foreground/20" />
+                            ) : (
+                                "Join Waitlist"
+                            )}
                         </Button>
                     </div>
                 ) : (
