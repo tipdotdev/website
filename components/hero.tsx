@@ -13,21 +13,25 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
 
     const joinWaitlist = async () => {
         setIsLoading(true);
-        let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email
-            })
-        });
-        if (req.status === 200) {
-            setEmail("");
-            toast.success("You have been added to the waitlist");
-        } else {
-            const data = await req.json();
-            toast.error(data.message);
+        try {
+            let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            });
+            if (req.status === 200) {
+                setEmail("");
+                toast.success("You have been added to the waitlist");
+            } else {
+                const data = await req.json();
+                toast.error(data.message);
+            }
+        } catch (e) {
+            toast.error("An error occurred");
         }
         setIsLoading(false);
     };
