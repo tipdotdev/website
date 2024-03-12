@@ -23,7 +23,7 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
             toast.success("You have been added to the waitlist");
         } else {
             const data = await req.json();
-            toast.error(data.error.message);
+            toast.error(data.message);
         }
     };
 
