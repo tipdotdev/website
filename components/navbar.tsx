@@ -37,7 +37,7 @@ export default function Navbar({
                         Blog
                     </p>
                 </Link>
-                <Link href="/docs">
+                <Link href="https://docs.tip.dev">
                     <p
                         className={`text-md font-medium text-foreground/60 transition-all duration-200 ease-in-out hover:text-foreground`}
                     >
