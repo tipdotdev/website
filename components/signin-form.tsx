@@ -44,11 +44,10 @@ export default function SigninForm() {
 
         try {
             const req = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/auth/magiclink`,
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
                 {
                     email: values.email,
-                    continue: "/dashboard",
-                    type: "signin"
+                    continue: "/dashboard"
                 },
                 {
                     headers: {
@@ -62,7 +61,7 @@ export default function SigninForm() {
                     description: req.data
                 });
             } else {
-                if (req.data.message !== "success") {
+                if (req.data.message !== "magic link sent") {
                     toast.error("An error occurred. Please try again later.", {
                         description: req.data
                     });
