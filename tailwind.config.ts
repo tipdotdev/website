@@ -24,7 +24,8 @@ const config = {
         extend: {
             fontFamily: {
                 sans: ["var(--font-sans)", ...fontFamily.sans],
-                serif: ["var(--font-serif)", ...fontFamily.serif]
+                serif: ["var(--font-serif)", ...fontFamily.serif],
+                mono: ["JetBrains Mono", "monospace"]
             },
             colors: {
                 border: "hsl(var(--border))",

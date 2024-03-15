@@ -40,7 +40,7 @@ export default function OnboardingForm({ type }: { type: "username" | "profile" 
     return null;
 }
 function UsernameForm({ router }: { router: any }) {
-    const { token } = useAuthStore.getState();
+    const { token, setUser } = useAuthStore.getState();
 
     const [isAvailable, setIsAvailable] = useState(false);
     const [isAvailableLoading, setIsAvailableLoading] = useState(false);
@@ -67,7 +67,7 @@ function UsernameForm({ router }: { router: any }) {
                 toast.error("An error occurred. Please try again later.");
                 return;
             }
-
+            setUser(req.data.data);
             toast.success("Updated username");
 
             router.push("/onboarding/profile");
@@ -91,7 +91,6 @@ function UsernameForm({ router }: { router: any }) {
                 const req = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/user/${username}/available`
                 );
-                console.log(req);
                 if (req.ok) {
                     setIsAvailable(true);
                 } else {
@@ -161,7 +160,7 @@ const socialsObject = z.object({
 });
 
 function ProfileForm({ router }: { router: any }) {
-    const { token } = useAuthStore.getState();
+    const { token, setUser } = useAuthStore.getState();
 
     const [isLoading, setIsLoading] = useState(false);
     const [socials, setSocials] = useState<z.infer<typeof socialsObject>[]>([]);
@@ -205,7 +204,7 @@ function ProfileForm({ router }: { router: any }) {
                 toast.error("An error occurred. Please try again later.");
                 return;
             }
-
+            setUser(req.data.data);
             toast.success("Updated profile");
             router.push("/onboarding/payout");
         } catch (err) {
@@ -321,9 +320,6 @@ function ProfileForm({ router }: { router: any }) {
 function PayoutForm() {
     const [selectedMethod, setSelectedMethod] = useState<"paypal" | "stripe" | "bank">("stripe");
 
-    useEffect(() => {
-        console.log(selectedMethod);
-    }, [selectedMethod]);
     return (
         <div className="mt-4 flex flex-col space-y-4">
             <PayoutOption
