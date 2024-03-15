@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,8 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import useAuthStore from "@/stores/auth-store";
 
 export default function DashboardNavbar() {
+    const { user } = useAuthStore.getState();
+
     return (
         <nav className="fixed top-1 flex w-[85%] items-center justify-between space-x-12 rounded-lg px-[0.3rem] py-[0.3rem] font-serif sm:top-3 ">
             <div className="ml-1 flex items-center space-x-2">
@@ -32,8 +37,8 @@ export default function DashboardNavbar() {
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <Avatar className="h-8 w-8 rounded-md">
-                            <AvatarImage src="https://dickey.gg/me.png" />
-                            <AvatarFallback className="rounded-md">CN</AvatarFallback>
+                            <AvatarImage src={user?.pictures.avatar} />
+                            <AvatarFallback className="rounded-md">TD</AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>

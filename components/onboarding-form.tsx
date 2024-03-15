@@ -21,109 +21,131 @@ import StripeIcon from "@/public/icons/stripe-icon.svg";
 import PayPalIcon from "@/public/icons/paypal-icon.svg";
 import BankIcon from "@/public/icons/bank-icon.svg";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import axios from "axios";
+import { toast } from "sonner";
+import useAuthStore from "@/stores/auth-store";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingForm({ type }: { type: "username" | "profile" | "payout" }) {
+    const router = useRouter();
+
     if (type === "username") {
-        return <UsernameForm />;
+        return <UsernameForm router={router} />;
     } else if (type === "profile") {
-        return <ProfileForm />;
+        return <ProfileForm router={router} />;
     } else if (type === "payout") {
         return <PayoutForm />;
     }
 
     return null;
 }
+function UsernameForm({ router }: { router: any }) {
+    const { token } = useAuthStore.getState();
 
-const usernameFormSchema = z.object({
-    username: z
-        .string()
-        .min(2, "Username is too short")
-        .max(20, "Username is too long")
-        .toLowerCase()
-        .trim()
-        // get rid of whitespace
-        .regex(/^[a-z0-9_]+$/)
-});
-
-function UsernameForm() {
     const [isAvailable, setIsAvailable] = useState(false);
     const [isAvailableLoading, setIsAvailableLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [username, setUsername] = useState("");
 
-    const usernameForm = useForm<z.infer<typeof usernameFormSchema>>({
-        resolver: zodResolver(usernameFormSchema),
-        defaultValues: {
-            username: ""
+    async function onSubmit() {
+        setIsLoading(true);
+
+        try {
+            const req = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/user/me/username`,
+                {
+                    username
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (req.status !== 200) {
+                toast.error("An error occurred. Please try again later.");
+                return;
+            }
+
+            toast.success("Updated username");
+
+            router.push("/onboarding/profile");
+        } catch (err) {
+            toast.error("An error occurred. Please try again later.");
+        } finally {
+            setIsLoading(false);
         }
-    });
-
-    function onSubmit(values: z.infer<typeof usernameFormSchema>) {
-        console.log(values);
     }
 
-    // when the user types in the username input, check if it's available
+    // on username change, check if it's available
     useEffect(() => {
-        if (usernameForm.formState.isDirty) {
-            console.log(usernameForm.getValues("username"));
-            setIsAvailableLoading(true);
-            setTimeout(() => {
-                setIsAvailableLoading(false);
-                setIsAvailable(Math.random() > 0.5);
-            }, 1000);
+        if (username === "") {
+            setIsAvailable(false);
+            return;
         }
-    }, [usernameForm.formState.isDirty, usernameForm.getValues("username")]);
+        setIsAvailableLoading(true);
+
+        async function checkUsernameAvailability() {
+            try {
+                const req = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/user/${username}/available`
+                );
+                console.log(req);
+                if (req.ok) {
+                    setIsAvailable(true);
+                } else {
+                    setIsAvailable(false);
+                }
+            } catch (err) {
+                toast.error("An error occurred. Please try again later.");
+            } finally {
+                setIsAvailableLoading(false);
+            }
+        }
+
+        checkUsernameAvailability();
+    }, [username]);
 
     return (
-        <Form {...usernameForm}>
-            <form onSubmit={usernameForm.handleSubmit(onSubmit)} className="w-full space-y-8">
-                <div className="space-y-2">
-                    <FormField
-                        control={usernameForm.control}
-                        name="username"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <div className="group flex items-center justify-between rounded-md border border-input bg-card px-3 shadow-sm focus-within:ring-1 focus-within:ring-ring">
-                                        <p className="text-sm text-muted-foreground">tip.dev/</p>
-                                        <input
-                                            {...field}
-                                            className="flex h-10 w-full rounded-md bg-transparent px-3 py-2 pl-1 text-sm focus:outline-none focus:ring-0 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
-                                            placeholder="you"
-                                            disabled={isLoading}
-                                        />
-                                        <div>
-                                            {isAvailableLoading ? (
-                                                <Spinner className="h-5 w-5 fill-muted-foreground text-muted-foreground/20" />
-                                            ) : (
-                                                <>
-                                                    {isAvailable ? (
-                                                        <CheckIcon className="h-5 w-5 text-green-500" />
-                                                    ) : (
-                                                        <XIcon className="h-5 w-5 text-red-500" />
-                                                    )}
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+        <form onSubmit={onSubmit} className="w-full space-y-8">
+            <div className="space-y-2">
+                <div className="group flex items-center justify-between rounded-md border border-input bg-card px-3 shadow-sm focus-within:ring-1 focus-within:ring-ring">
+                    <p className="text-sm text-muted-foreground">tip.dev/</p>
+                    <input
+                        className="flex h-10 w-full rounded-md bg-transparent px-3 py-2 pl-1 text-sm focus:outline-none focus:ring-0 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder="you"
+                        disabled={isLoading}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value.trim().toLowerCase())}
                     />
+                    <div>
+                        {isAvailableLoading ? (
+                            <Spinner className="h-5 w-5 fill-muted-foreground text-muted-foreground/20" />
+                        ) : (
+                            <>
+                                {isAvailable ? (
+                                    <CheckIcon className="h-5 w-5 text-green-500" />
+                                ) : (
+                                    <XIcon className="h-5 w-5 text-red-500" />
+                                )}
+                            </>
+                        )}
+                    </div>
                 </div>
-                <Button
-                    type="submit"
-                    className="w-full gap-2"
-                    disabled={!isAvailable || isLoading}
-                    onClick={() => setIsLoading(true)}
-                >
-                    {isLoading && (
-                        <Spinner className="fill-primary-foreground text-primary-foreground/20" />
-                    )}
-                    Continue
-                </Button>
-            </form>
-        </Form>
+            </div>
+            <Button
+                type="submit"
+                className="w-full gap-2"
+                disabled={!isAvailable || isLoading}
+                onClick={() => onSubmit()}
+            >
+                {isLoading && (
+                    <Spinner className="fill-primary-foreground text-primary-foreground/20" />
+                )}
+                Continue
+            </Button>
+        </form>
     );
 }
 
@@ -138,12 +160,14 @@ const socialsObject = z.object({
     url: z.string().url()
 });
 
-function ProfileForm() {
+function ProfileForm({ router }: { router: any }) {
+    const { token } = useAuthStore.getState();
+
     const [isLoading, setIsLoading] = useState(false);
     const [socials, setSocials] = useState<z.infer<typeof socialsObject>[]>([]);
 
     const profileForm = useForm<z.infer<typeof profileFormSchema>>({
-        resolver: zodResolver(usernameFormSchema),
+        resolver: zodResolver(profileFormSchema),
         defaultValues: {
             name: "",
             bio: "",
@@ -151,8 +175,44 @@ function ProfileForm() {
         }
     });
 
-    function onSubmit(values: z.infer<typeof profileFormSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof profileFormSchema>) {
+        setIsLoading(true);
+        if (values.name === "" && values.bio === "" && values.website === "") {
+            setIsLoading(false);
+            router.push("/onboarding/payout");
+            return;
+        }
+
+        try {
+            const req = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/user/me/update`,
+                {
+                    data: {
+                        name: values.name,
+                        bio: values.bio,
+                        website: values.website,
+                        socials: socials
+                    }
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (req.status !== 200) {
+                toast.error("An error occurred. Please try again later.");
+                return;
+            }
+
+            toast.success("Updated profile");
+            router.push("/onboarding/payout");
+        } catch (err) {
+            toast.error("An error occurred. Please try again later.");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -247,12 +307,7 @@ function ProfileForm() {
                         </div>
                     </div>
                 </div>
-                <Button
-                    type="submit"
-                    className="w-full gap-2"
-                    disabled={isLoading}
-                    onClick={() => setIsLoading(true)}
-                >
+                <Button type="submit" className="w-full gap-2" disabled={isLoading}>
                     {isLoading && (
                         <Spinner className="fill-primary-foreground text-primary-foreground/20" />
                     )}
@@ -265,6 +320,7 @@ function ProfileForm() {
 
 function PayoutForm() {
     const [selectedMethod, setSelectedMethod] = useState<"paypal" | "stripe" | "bank">("stripe");
+
     useEffect(() => {
         console.log(selectedMethod);
     }, [selectedMethod]);
@@ -289,6 +345,8 @@ function PayoutOption({
     selected: "paypal" | "stripe" | "bank";
     setSelected: any;
 }) {
+    const [isLoading, setIsLoading] = useState(false);
+
     return (
         <Card
             className={`${
@@ -326,7 +384,14 @@ function PayoutOption({
                 </CardDescription>
             </CardHeader>
             <CardContent className={selected === method ? "" : "hidden"}>
-                <Button className="w-full font-medium">
+                <Button
+                    className="w-full gap-2 font-medium"
+                    onClick={() => setIsLoading(true)}
+                    disabled={isLoading}
+                >
+                    {isLoading && (
+                        <Spinner className="fill-primary-foreground text-primary-foreground/20" />
+                    )}
                     {method === "paypal"
                         ? "Connect PayPal"
                         : method === "stripe"
