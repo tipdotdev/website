@@ -8,10 +8,19 @@ import useAuthStore from "@/stores/auth-store";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
+    return (
+        // You could have a loading skeleton as the `fallback` too
+        <Suspense>
+            <MagicAuth />
+        </Suspense>
+    );
+}
+
+function MagicAuth() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { setToken, setUser, toggleSignedIn } = useAuthStore();
