@@ -18,12 +18,13 @@ export default function Page() {
     const [email, setEmail] = useState<any>("");
     const [type, setType] = useState<"signin" | "signup" | "">("");
     const [continueTo, setContinueTo] = useState<any>("");
-    const [url, setUrl] = useState(new URLSearchParams(location.search));
+    const [url, setUrl] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (typeof location === undefined) return;
 
+        setUrl(new URL(location.href));
         setMLToken(url.get("token"));
         setEmail(url.get("email"));
         setType(url.get("type") === "signup" ? "signup" : "signin");
