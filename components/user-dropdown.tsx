@@ -8,7 +8,13 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { ArrowLeftCircleIcon, DollarSignIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+    ArrowLeftCircleIcon,
+    DollarSignIcon,
+    MenuIcon,
+    SettingsIcon,
+    UserIcon
+} from "lucide-react";
 import useAuthStore from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 
@@ -19,12 +25,15 @@ export default function UserDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar className="h-8 w-8 rounded-md">
-                    <AvatarImage src={user?.pictures.avatar} />
-                    <AvatarFallback className="rounded-md">TD</AvatarFallback>
-                </Avatar>
+                <div className="flex items-center justify-center gap-1 rounded-lg border border-muted-foreground/40 p-1 pr-2">
+                    <Avatar className="h-6 w-6 rounded-sm">
+                        <AvatarImage src={user?.pictures.avatar} />
+                        <AvatarFallback className="rounded-md">TD</AvatarFallback>
+                    </Avatar>
+                    <MenuIcon className="h-4 w-4 text-muted-foreground" />
+                </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-24">
+            <DropdownMenuContent>
                 <DropdownMenuLabel className="font-serif text-lg font-bold">
                     Hey, <span className="font-extrabold text-primary">{user?.username}</span>
                 </DropdownMenuLabel>
