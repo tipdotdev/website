@@ -15,10 +15,6 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
     const joinWaitlist = async () => {
         setIsLoading(true);
         try {
-            posthog.capture("join_waitlist", {
-                email: email
-            });
-
             let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
                 method: "POST",
                 headers: {
@@ -30,6 +26,9 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
             });
             if (req.status === 200) {
                 setEmail("");
+                posthog.capture("join_waitlist", {
+                    email: email
+                });
                 toast.success("You have been added to the waitlist");
             } else {
                 const data = await req.json();
