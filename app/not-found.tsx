@@ -13,7 +13,9 @@ export default function Home() {
         <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-24">
             <Card>
                 <CardHeader>
-                    <CardTitle>Are you lost?</CardTitle>
+                    <CardTitle className="font-serif text-3xl font-extrabold">
+                        Are you lost?
+                    </CardTitle>
                     <CardDescription>The page you are looking for does not exist.</CardDescription>
                 </CardHeader>
                 <CardContent>
