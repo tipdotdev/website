@@ -82,7 +82,9 @@ export default function SignupForm() {
             <CardHeader>
                 {magicLinkSent ? (
                     <>
-                        <CardTitle className="text-2xl">Magic Link Sent</CardTitle>
+                        <CardTitle className="font-serif text-3xl font-extrabold">
+                            Magic Link Sent
+                        </CardTitle>
                         <CardDescription>
                             Please check your{" "}
                             <a
@@ -98,7 +100,9 @@ export default function SignupForm() {
                     </>
                 ) : (
                     <>
-                        <CardTitle className="text-2xl">Welcome to tip.dev!</CardTitle>
+                        <CardTitle className="font-serif text-3xl font-extrabold">
+                            Welcome to tip.dev!
+                        </CardTitle>
                         <CardDescription>Please sign up to continue.</CardDescription>
                     </>
                 )}
