@@ -4,7 +4,7 @@ import { Nunito as FontSerif } from "next/font/google";
 import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import Providers from "@/components/providers";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -63,10 +63,10 @@ export default function RootLayout({
                     fontSerif.variable
                 )}
             >
-                <TooltipProvider>
+                <Providers>
                     {children}
                     <Toaster richColors />
-                </TooltipProvider>
+                </Providers>
             </body>
         </html>
     );

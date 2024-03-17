@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { set } from "zod";
 import Spinner from "./ui/spinner";
+import posthog from "posthog-js";
 
 export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
     const [email, setEmail] = useState("");
@@ -14,6 +15,10 @@ export default function Hero({ comingSoon }: { comingSoon?: boolean }) {
     const joinWaitlist = async () => {
         setIsLoading(true);
         try {
+            posthog.capture("join_waitlist", {
+                email: email
+            });
+
             let req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/enter`, {
                 method: "POST",
                 headers: {
