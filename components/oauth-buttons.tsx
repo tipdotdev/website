@@ -61,21 +61,23 @@ function GitHubOauthButton({
             }
         } catch (error) {
             toast.error("An error occurred while trying to sign in with GitHub");
+            setIsLoading(false);
+            setIsDisabled(false);
         }
     }
 
     return (
         <Button
-            className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/80"
+            className="bg-accent text-accent-foreground hover:bg-accent/80 w-full gap-2"
             onClick={() => {
                 onClick();
             }}
             disabled={isDisabled}
         >
             {isLoading ? (
-                <Spinner className="h-4 w-4 fill-accent-foreground text-accent-foreground/20" />
+                <Spinner className="fill-accent-foreground text-accent-foreground/20 h-4 w-4" />
             ) : (
-                <GitHubIcon className="h-4 w-4 fill-accent-foreground" />
+                <GitHubIcon className="fill-accent-foreground h-4 w-4" />
             )}
             Continue with GitHub
         </Button>
@@ -111,18 +113,20 @@ function GoogleOauthButton({
             }
         } catch (error) {
             toast.error("An error occurred while trying to sign in with Google");
+            setIsLoading(false);
+            setIsDisabled(false);
         }
     }
     return (
         <Button
-            className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/80"
+            className="bg-accent text-accent-foreground hover:bg-accent/80 w-full gap-2"
             onClick={() => {
                 onClick();
             }}
             disabled={isDisabled}
         >
             {isLoading ? (
-                <Spinner className="h-4 w-4 fill-accent-foreground text-accent-foreground/20" />
+                <Spinner className="fill-accent-foreground text-accent-foreground/20 h-4 w-4" />
             ) : (
                 <Image src="/images/webp/google-logo.webp" width={16} height={16} alt="Google" />
             )}
