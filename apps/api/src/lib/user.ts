@@ -7,30 +7,75 @@ import { unixNow } from "./time";
 import { validateUsernameFormat } from "./validate";
 
 // Get user by username
-async function getUserByUsername(username: string) {}
+async function getUserByUsername(
+    username: string,
+    includeEvents?: boolean
+): Promise<UserType | null> {
+    let user;
+    if (includeEvents) {
+        user = db.query.users.findFirst({
+            with: {
+                incomeEvents: true
+            },
+            where: eq(users.username, username)
+        });
+
+        if (user) {
+            return user as any;
+        }
+
+        return null;
+    }
+    user = await db.select().from(users).where(eq(users.username, username)).limit(1).execute();
+
+    if (user.length > 0) {
+        return user[0];
+    }
+
+    return null;
+}
 
 // get user by email
 async function getUserByEmail(email: string): Promise<UserType | null> {
     const user = await db.select().from(users).where(eq(users.email, email)).limit(1).execute();
     if (user.length > 0) {
         return user[0];
-    } else {
-        return null;
     }
+
+    return null;
 }
 
 // get user by id
-async function getUserById(user_id: string): Promise<UserType | null> {
+async function getUserById(user_id: string, includeEvents?: boolean): Promise<UserType | null> {
+    if (includeEvents) {
+        const user = db.query.users.findFirst({
+            with: {
+                incomeEvents: true
+            },
+            where: eq(users.user_id, user_id)
+        });
+
+        if (user) {
+            return user as any;
+        }
+
+        return null;
+    }
+
     const user = await db.select().from(users).where(eq(users.user_id, user_id)).limit(1).execute();
     if (user.length > 0) {
         return user[0];
-    } else {
-        return null;
     }
+
+    return null;
 }
 
 // update a users username
-async function updateUsername(user_id: string, username: string, user: UserType): Promise<UserType | null> {
+async function updateUsername(
+    user_id: string,
+    username: string,
+    user: UserType
+): Promise<UserType | null> {
     if (!validateUsernameFormat) {
         return null;
     }
@@ -61,7 +106,12 @@ async function updateUsername(user_id: string, username: string, user: UserType)
 
     // if the update was successful, return the updated user
     if (update) {
-        const updatedUser = await db.select().from(users).where(eq(users.user_id, user_id)).limit(1).execute();
+        const updatedUser = await db
+            .select()
+            .from(users)
+            .where(eq(users.user_id, user_id))
+            .limit(1)
+            .execute();
         if (updatedUser.length > 0) {
             return updatedUser[0];
         }
@@ -90,7 +140,12 @@ async function updateUser(user_id: string, data: any): Promise<UserType | null> 
     data.updated_at = now;
     const update = await db.update(users).set(data).where(eq(users.user_id, user_id)).execute();
     if (update) {
-        const user = await db.select().from(users).where(eq(users.user_id, user_id)).limit(1).execute();
+        const user = await db
+            .select()
+            .from(users)
+            .where(eq(users.user_id, user_id))
+            .limit(1)
+            .execute();
         if (user.length > 0) {
             return user[0];
         }

@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { bigint, boolean, json, jsonb, pgTable, varchar } from "drizzle-orm/pg-core";
+import { incomeEvents } from "./income_events";
 
 export const users = pgTable("users", {
     user_id: varchar("user_id", { length: 255 }).primaryKey().notNull(),
@@ -20,3 +22,7 @@ export const users = pgTable("users", {
     oauth_github: varchar("oauth_github", { length: 255 }).unique(),
     oauth_google: varchar("oauth_google", { length: 255 }).unique()
 });
+
+export const usersIncomeRelation = relations(users, ({ many }) => ({
+    incomeEvents: many(incomeEvents)
+}));

@@ -33,7 +33,7 @@ export default function RangePicker() {
 
     return (
         <Select>
-            <SelectTrigger className="h-fit w-fit gap-2 bg-transparent px-2 py-1 transition-all duration-150 ease-in-out hover:bg-accent">
+            <SelectTrigger className="hover:bg-accent h-fit w-fit gap-2 bg-transparent px-2 py-1 transition-all duration-150 ease-in-out">
                 <SelectValue placeholder={value || ranges[0].label} />
             </SelectTrigger>
             <SelectContent className="w-fit">

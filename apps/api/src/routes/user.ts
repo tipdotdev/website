@@ -1,7 +1,13 @@
 import { Elysia, t } from "elysia";
 import { BadRes, GoodRes } from "../types/response-type";
 import { verifyJWT } from "../lib/jwt";
-import { getUserById, quickCheckUsername, updateUser, updateUsername } from "../lib/user";
+import {
+    getUserById,
+    getUserByUsername,
+    quickCheckUsername,
+    updateUser,
+    updateUsername
+} from "../lib/user";
 
 const user = new Elysia({ prefix: "/user" });
 
@@ -10,8 +16,8 @@ user.get(
     "/me",
     async ({ bearer, set }) => {
         const jwtData: any = verifyJWT(bearer);
-
-        const user = await getUserById(jwtData.user_id);
+        // get the user with income events
+        const user = await getUserById(jwtData.user_id, true);
         if (!user) {
             set.status = 401;
             const response: BadRes = {
@@ -48,6 +54,28 @@ user.get(
         }
     }
 );
+
+// GET /user/:username
+user.get("/:username", async ({ params, set }) => {
+    const username = params.username;
+    const user = await getUserByUsername(username);
+
+    if (!user) {
+        set.status = 404;
+        const response: BadRes = {
+            message: "User not found",
+            code: 404
+        };
+        return response;
+    }
+
+    const response: GoodRes = {
+        message: "success",
+        data: user
+    };
+
+    return response;
+});
 
 // POST /user/me/username
 const updateUsernameSchema = t.Object({
