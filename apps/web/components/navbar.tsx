@@ -3,26 +3,32 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import DiscordIcon from "@/public/icons/discord-icon.svg";
 
+type Paths = "home" | "pricing" | "blog" | "signin" | "docs" | "";
+
 export default function Navbar({
     active = "",
     comingSoon
 }: {
-    active?: "home" | "pricing" | "blog" | "signin" | "";
+    active?: Paths;
     comingSoon?: boolean;
 }) {
+    const isActive = (path: Paths) => {
+        return active === path ? "text-foreground" : "text-foreground/60";
+    };
+
     return (
-        <nav className="fixed top-1 flex w-[98%] items-center justify-between space-x-12 rounded-lg border bg-muted px-[0.3rem] py-[0.3rem] font-serif sm:top-3 sm:w-1/2">
+        <nav className="bg-muted fixed top-1 flex w-[98%] items-center justify-between space-x-12 rounded-lg border px-[0.3rem] py-[0.3rem] font-serif sm:top-3 sm:w-1/2">
             <div className="ml-1 flex items-center space-x-2">
-                <Link href="/">
+                <Link href="/" className="flex flex-row items-center gap-2">
                     <Image src="/images/svg/logo.svg" alt="tip.dev" width={32} height={4} />
+                    <p className="text-md text-foreground/60 font-bold">tip.dev</p>
                 </Link>
-                <p className="text-md font-bold text-foreground/60">tip.dev</p>
             </div>
             <div className="hidden items-center space-x-4 sm:flex">
                 <Link href="/pricing">
                     <p
-                        className={`text-md font-medium transition-all duration-200 ease-in-out hover:text-foreground
-                        ${active === "pricing" ? "text-foreground" : "text-foreground/60"}
+                        className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                            ${isActive("pricing")}
                     `}
                     >
                         Pricing
@@ -30,8 +36,8 @@ export default function Navbar({
                 </Link>
                 <Link href="/blog">
                     <p
-                        className={`text-md font-medium transition-all duration-200 ease-in-out hover:text-foreground
-                        ${active === "blog" ? "text-foreground" : "text-foreground/60"}
+                        className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                        ${isActive("blog")}
                     `}
                     >
                         Blog
@@ -39,7 +45,9 @@ export default function Navbar({
                 </Link>
                 <Link href="https://docs.tip.dev">
                     <p
-                        className={`text-md font-medium text-foreground/60 transition-all duration-200 ease-in-out hover:text-foreground`}
+                        className={`text-md text-foreground/60 hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                            ${isActive("docs")}
+                            `}
                     >
                         Docs
                     </p>
@@ -64,8 +72,8 @@ export default function Navbar({
                     <>
                         <Link href="/auth/signin">
                             <p
-                                className={`text-md font-medium transition-all duration-200 ease-in-out hover:text-foreground
-                                ${active === "signin" ? "text-foreground" : "text-foreground/60"}
+                                className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                                ${isActive("signin")}
                                 `}
                             >
                                 Sign In
