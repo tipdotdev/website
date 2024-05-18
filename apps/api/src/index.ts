@@ -9,6 +9,7 @@ import { bearer } from "@elysiajs/bearer";
 import auth from "./routes/auth";
 import user from "./routes/user";
 import news from "./routes/news";
+import stripe from "./routes/stripe";
 
 // import types
 import type { GoodRes } from "./types/response-type";
@@ -27,6 +28,7 @@ app.get("/", () => <GoodRes>{ message: "hey there" });
 app.use(auth); // /auth/*
 app.use(user); // /user/*
 app.use(news); // /news/*
+app.use(stripe); // /stripe/*
 
 // listen
 app.listen(config.port, () => {
