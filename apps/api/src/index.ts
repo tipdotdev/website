@@ -24,7 +24,7 @@ app.use(bearer());
 // app.use(swagger({ documentation: { info: { title: "tip.dev API", version: "1.0.0" } } }));
 
 // routes
-app.get("/", () => <GoodRes>{ message: "hey there" });
+app.get("/", () => <GoodRes>{ message: "r u lost?" });
 app.use(auth); // /auth/*
 app.use(user); // /user/*
 app.use(news); // /news/*
