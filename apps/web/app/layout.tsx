@@ -1,10 +1,10 @@
-import type { Metadata, Viewport } from "next";
-import { Inter as FontSans } from "next/font/google";
-import { Nunito as FontSerif } from "next/font/google";
-import "@/styles/globals.css";
-import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/providers";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+import "@/styles/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata, Viewport } from "next";
+import { Inter as FontSans, Nunito as FontSerif } from "next/font/google";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -55,19 +55,21 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body
-                className={cn(
-                    "min-h-screen bg-background font-sans antialiased",
-                    fontSans.variable,
-                    fontSerif.variable
-                )}
-            >
-                <Providers>
-                    {children}
-                    <Toaster richColors />
-                </Providers>
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang="en">
+                <body
+                    className={cn(
+                        "bg-background min-h-screen font-sans antialiased",
+                        fontSans.variable,
+                        fontSerif.variable
+                    )}
+                >
+                    <Providers>
+                        {children}
+                        <Toaster richColors />
+                    </Providers>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }

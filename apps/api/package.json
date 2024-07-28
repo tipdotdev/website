@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/bun": "^1.0.0",
     "@types/jsonwebtoken": "^9.0.6",
-    "drizzle-kit": "^0.20.14"
+    "drizzle-kit": "^0.20.14",
+    "prettier-plugin-organize-imports": "^4.0.0"
   }
 }
