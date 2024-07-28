@@ -1,23 +1,22 @@
 "use client";
 
-import useAuthStore from "@/stores/auth-store";
-import Link from "next/link";
-import ms from "ms";
 import {
     DashboardContainer,
     DashboardGrid,
     DashboardGridItem
 } from "@/components/dashboard/dashboard-layout";
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import RangePicker from "@/components/dashboard/range-picker";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import useDashboardStore from "@/stores/dashboard-store";
-import { useEffect } from "react";
 import StatTrend from "@/components/dashboard/stat-trend";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import useDashboardStore from "@/stores/dashboard-store";
+import { useUser } from "@clerk/nextjs";
+import ms from "ms";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Page() {
-    const { user } = useAuthStore();
+    const { user } = useUser();
 
     const { setActiveTab } = useDashboardStore();
 
@@ -48,8 +47,8 @@ export default function Page() {
                         <p className="text-muted-foreground text-xs font-medium">
                             Joined{" "}
                             {ms(
-                                user?.created_at
-                                    ? Date.now() - new Date(user?.created_at).getTime()
+                                user?.createdAt
+                                    ? Date.now() - new Date(user?.createdAt).getTime()
                                     : 0,
                                 {
                                     long: false
@@ -60,8 +59,8 @@ export default function Page() {
                         <p className="text-muted-foreground text-xs font-medium">
                             Updated{" "}
                             {ms(
-                                user?.updated_at
-                                    ? Date.now() - new Date(user?.updated_at).getTime()
+                                user?.updatedAt
+                                    ? Date.now() - new Date(user?.updatedAt).getTime()
                                     : 0,
                                 {
                                     long: false

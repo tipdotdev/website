@@ -1,7 +1,7 @@
+import DiscordIcon from "@/public/icons/discord-icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import DiscordIcon from "@/public/icons/discord-icon.svg";
 
 type Paths = "home" | "pricing" | "blog" | "signin" | "docs" | "";
 
@@ -70,7 +70,7 @@ export default function Navbar({
                     </>
                 ) : (
                     <>
-                        <Link href="/auth/signin">
+                        <Link href="/sign-in">
                             <p
                                 className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
                                 ${isActive("signin")}
@@ -85,7 +85,7 @@ export default function Navbar({
                             className="h-fit py-[0.4rem] font-medium"
                             asChild
                         >
-                            <Link href="/auth/signup">Sign Up</Link>
+                            <Link href="/sign-up">Sign Up</Link>
                         </Button>
                     </>
                 )}
