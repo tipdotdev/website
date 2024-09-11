@@ -24,35 +24,37 @@ export default function Navbar({
                     <p className="text-md text-foreground/60 font-bold">tip.dev</p>
                 </Link>
             </div>
-            <div className="hidden items-center space-x-4 sm:flex">
-                <Link href="/pricing">
-                    <p
-                        className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
+            {!comingSoon && (
+                <div className="hidden items-center space-x-4 sm:flex">
+                    <Link href="/pricing">
+                        <p
+                            className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
                             ${isActive("pricing")}
                     `}
-                    >
-                        Pricing
-                    </p>
-                </Link>
-                <Link href="/blog">
-                    <p
-                        className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                        >
+                            Pricing
+                        </p>
+                    </Link>
+                    <Link href="/blog">
+                        <p
+                            className={`text-md hover:text-foreground font-medium transition-all duration-200 ease-in-out
                         ${isActive("blog")}
                     `}
-                    >
-                        Blog
-                    </p>
-                </Link>
-                <Link href="https://docs.tip.dev">
-                    <p
-                        className={`text-md text-foreground/60 hover:text-foreground font-medium transition-all duration-200 ease-in-out
+                        >
+                            Blog
+                        </p>
+                    </Link>
+                    <Link href="https://docs.tip.dev">
+                        <p
+                            className={`text-md text-foreground/60 hover:text-foreground font-medium transition-all duration-200 ease-in-out
                             ${isActive("docs")}
                             `}
-                    >
-                        Docs
-                    </p>
-                </Link>
-            </div>
+                        >
+                            Docs
+                        </p>
+                    </Link>
+                </div>
+            )}
             <div className="flex items-center space-x-4">
                 {comingSoon ? (
                     <>

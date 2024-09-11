@@ -1,34 +1,36 @@
 "use client";
 
-import type { UserType } from "@/types/user-type";
-import Image from "next/image";
-import { Button } from "../ui/button";
+import { useUser } from "@clerk/nextjs";
 import { ShieldQuestionIcon } from "lucide-react";
-import useAuthStore from "@/stores/auth-store";
+import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
-export default function UserPageHeader({ user }: { user: UserType }) {
-    const { user: me } = useAuthStore();
-    const isMe = me?.user_id === user.user_id;
+export default function UserPageHeader({ user }: { user: any }) {
+    const { user: me } = useUser();
+    const isMe = me?.id === user.id;
+
+    console.log(me);
 
     return (
         <div className="full flex w-full flex-col items-center">
             <img
-                src={user.pictures.banner}
+                src={user?.imageUrl}
                 className="aspect-banner w-full rounded-xl object-cover object-center"
+                alt="banner"
             />
             <div className="-mt-4 flex w-full items-center justify-between gap-4">
                 <div className="ml-4 flex items-center gap-4">
                     <Image
-                        src={user.pictures.avatar}
+                        src={user?.imageUrl || ""}
                         alt="avatar"
                         className="h-28 w-28 rounded-full border-4"
                         width={112}
                         height={112}
                     />
                     <div>
-                        <h1 className="font-serif text-3xl font-bold">{user.username}</h1>
-                        <p className="text-foreground/60 text-sm">tip.dev/{user.username}</p>
+                        <h1 className="font-serif text-3xl font-bold">{user?.username || ""}</h1>
+                        <p className="text-foreground/60 text-sm">tip.dev/{user?.username || ""}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-4">

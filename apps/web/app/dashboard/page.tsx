@@ -22,7 +22,7 @@ export default function Page() {
 
     useEffect(() => {
         setActiveTab("home");
-    }, []);
+    }, [setActiveTab]);
 
     return (
         <DashboardContainer>
