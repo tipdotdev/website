@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import defaultTheme from "tailwindcss/defaultTheme";
+import defaultTheme, { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
     darkMode: ["class"],
@@ -11,7 +11,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                mono: ["CommitMono", ...defaultTheme.fontFamily.mono]
+                mono: ["CommitMono", ...defaultTheme.fontFamily.mono],
+                serif: ["var(--font-serif)", ...fontFamily.serif]
             },
             colors: {
                 background: "hsl(var(--background))",
