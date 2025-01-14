@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+    :root {
+        /* Base backgrounds */
+        --background: 231 15% 18%; /* #282a36 Dracula background */
+        --foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Cards and popovers */
+        --card: 232 14% 31%; /* #44475a Dracula current line */
+        --card-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+        --popover: 232 14% 31%; /* #44475a Dracula current line */
+        --popover-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Primary colors */
+        --primary: 326 100% 74%; /* #ff79c6 Dracula pink */
+        --primary-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Secondary colors */
+        --secondary: 265 89% 78%; /* #bd93f9 Dracula purple */
+        --secondary-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Muted elements */
+        --muted: 232 14% 31%; /* #44475a Dracula current line */
+        --muted-foreground: 231 15% 65%; /* Dracula comment color */
+
+        /* Accent colors */
+        --accent: 135 94% 65%; /* #50fa7b Dracula green */
+        --accent-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Destructive actions */
+        --destructive: 0 100% 67%; /* #ff5555 Dracula red */
+        --destructive-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+
+        /* Borders and inputs */
+        --border: 232 14% 31%; /* #44475a Dracula current line */
+        --input: 232 14% 31%; /* #44475a Dracula current line */
+        --ring: 326 100% 74%; /* #ff79c6 Dracula pink */
+
+        /* Chart colors */
+        --chart-1: 326 100% 74%; /* #ff79c6 Dracula pink */
+        --chart-2: 135 94% 65%; /* #50fa7b Dracula green */
+        --chart-3: 265 89% 78%; /* #bd93f9 Dracula purple */
+        --chart-4: 31 100% 71%; /* #ffb86c Dracula orange */
+        --chart-5: 191 97% 77%; /* #8be9fd Dracula cyan */
+
+        /* Border radius */
+        --radius: 0.5rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
