@@ -1,14 +1,10 @@
-import Providers from "@/components/providers";
-import { Toaster } from "@/components/ui/sonner";
-import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import type { Metadata, Viewport } from "next";
-import { Inter as FontSans, Nunito as FontSerif } from "next/font/google";
+import type { Metadata } from "next";
+import { Geist as FontSans, Nunito as FontSerif } from "next/font/google";
 
 const fontSans = FontSans({
     subsets: ["latin"],
-    variable: "--font-sans"
+    variable: "--font-geist-sans"
 });
 
 const fontSerif = FontSerif({
@@ -16,37 +12,9 @@ const fontSerif = FontSerif({
     variable: "--font-serif"
 });
 
-export const viewport: Viewport = {
-    themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#fe7ac6" },
-        { media: "(prefers-color-scheme: dark)", color: "#fe7ac6" }
-    ]
-};
-
 export const metadata: Metadata = {
-    title: "tip.dev coming soon",
-    description:
-        "A platform for developers to get tipped from fans of their work. Embed a link anywhere, and get paid from almost everywhere. Coming soon.",
-    openGraph: {
-        type: "website",
-        locale: "en_US",
-        url: "https://tip.dev",
-        title: "tip.dev coming soon",
-        description:
-            "A platform for developers to get tipped from fans of their work. Embed a link anywhere, and get paid from almost everywhere. Coming soon.",
-        images: [
-            {
-                url: "https://tip.dev/images/png/og-image.png",
-                width: 1200,
-                height: 630,
-                alt: "tip.dev coming soon"
-            }
-        ]
-    },
-    robots: "noindex, nofollow",
-    referrer: "no-referrer-when-downgrade",
-    keywords:
-        "tip.dev, coming soon, tip, dev, tipdev, tip.dev coming soon, tip.dev, devs, developers, ko-fi, buymeacoffee, link in bio, money, freelance"
+    title: "tip.dev",
+    description: "tip.dev"
 };
 
 export default function RootLayout({
@@ -55,21 +23,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <ClerkProvider>
-            <html lang="en">
-                <body
-                    className={cn(
-                        "bg-background min-h-screen font-sans antialiased",
-                        fontSans.variable,
-                        fontSerif.variable
-                    )}
-                >
-                    <Providers>
-                        {children}
-                        <Toaster richColors />
-                    </Providers>
-                </body>
-            </html>
-        </ClerkProvider>
+        <html lang="en">
+            <body
+                className={`min-h-screen overflow-auto bg-background font-sans antialiased ${
+                    (fontSans.variable, fontSerif.variable)
+                }`}
+            >
+                {children}
+            </body>
+        </html>
     );
 }

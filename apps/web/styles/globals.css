@@ -2,36 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "CommitMono";
+    src: url("/fonts/commit-mono-vf.woff2") format("woff2");
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 @layer base {
     :root {
-        --background: 231 15% 18%;
-        --foreground: 60 33% 96%;
+        /* Base backgrounds */
+        --background: 231 15% 18%; /* #282a36 Dracula background */
+        --foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
-        --card: 233 16% 11%;
-        --card-foreground: 0 0% 98%;
+        /* Cards and popovers */
+        --card: 232 14% 31%; /* #44475a Dracula current line */
+        --card-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
+        --popover: 232 14% 31%; /* #44475a Dracula current line */
+        --popover-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
-        --popover: 240 10% 3.9%;
-        --popover-foreground: 0 0% 98%;
+        /* Primary colors */
+        --primary: 326 100% 74%; /* #ff79c6 Dracula pink */
+        --primary-foreground: 231 15% 18%; /* #282a36 Dracula background */
 
-        --primary: 326 100% 74%;
-        --primary-foreground: 330 26% 15%;
+        /* Secondary colors */
+        --secondary: 265 89% 78%; /* #bd93f9 Dracula purple */
+        --secondary-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
-        --secondary: 265 88% 78%;
-        --secondary-foreground: 268 19% 16%;
+        /* Muted elements */
+        --muted: 232 14% 31%; /* #44475a Dracula current line */
+        --muted-foreground: 231 15% 65%; /* Dracula comment color */
 
-        --muted: 233 16% 11%;
-        --muted-foreground: 240 5% 64.9%;
+        /* Accent colors */
+        --accent: 135 94% 65%; /* #50fa7b Dracula green */
+        --accent-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
-        --accent: 230 15% 30%;
-        --accent-foreground: 60 33% 96%;
+        /* Destructive actions */
+        --destructive: 0 100% 67%; /* #ff5555 Dracula red */
+        --destructive-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
-        --destructive: 0 100% 67%;
-        --destructive-foreground: 4 38% 14%;
+        /* Borders and inputs */
+        --border: 232 14% 31%; /* #44475a Dracula current line */
+        --input: 232 14% 31%; /* #44475a Dracula current line */
+        --ring: 326 100% 74%; /* #ff79c6 Dracula pink */
 
-        --border: 240 8% 23%;
-        --input: 233 16% 11%;
-        --ring: 326 100% 74%;
-        --radius: 0.75rem;
+        /* Chart colors */
+        --chart-1: 326 100% 74%; /* #ff79c6 Dracula pink */
+        --chart-2: 135 94% 65%; /* #50fa7b Dracula green */
+        --chart-3: 265 89% 78%; /* #bd93f9 Dracula purple */
+        --chart-4: 31 100% 71%; /* #ffb86c Dracula orange */
+        --chart-5: 191 97% 77%; /* #8be9fd Dracula cyan */
+
+        /* Border radius */
+        --radius: 0.5rem;
     }
 }
 
