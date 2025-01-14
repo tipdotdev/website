@@ -7,7 +7,7 @@ export default function Home() {
             <main className="z-10 flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
                 <div className="flex flex-col items-center justify-center">
                     <div className="flex flex-col items-center justify-center gap-4 text-center">
-                        <Badge className="mb-8 bg-purple-500/20 text-purple-300 hover:bg-purple-500/20">
+                        <Badge className="mb-8 bg-purple-500/20 font-mono text-purple-300 hover:bg-purple-500/20">
                             Coming Soon
                         </Badge>
                         <h1 className="font-serif text-3xl font-extrabold sm:text-5xl">
