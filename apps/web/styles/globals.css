@@ -38,7 +38,7 @@ body {
         --muted-foreground: 231 15% 65%; /* Dracula comment color */
 
         /* Accent colors */
-        --accent: 135 94% 65%; /* #50fa7b Dracula green */
+        --accent: 231 15% 25%; /* Slightly lighter than background */
         --accent-foreground: 60 30% 96%; /* #f8f8f2 Dracula foreground */
 
         /* Destructive actions */
@@ -58,7 +58,7 @@ body {
         --chart-5: 191 97% 77%; /* #8be9fd Dracula cyan */
 
         /* Border radius */
-        --radius: 0.5rem;
+        --radius: 0.75rem;
     }
 }
 
