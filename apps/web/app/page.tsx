@@ -1,4 +1,5 @@
 import FeaturesGrid from "@/components/features-grid";
+import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Badge } from "@/components/ui/badge";
 import { Particles } from "@/components/ui/particles";
@@ -38,6 +39,8 @@ export default function Home() {
 
             {/* Animated Features Section */}
             <FeaturesGrid />
+
+            <Footer />
         </div>
     );
 }

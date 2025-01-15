@@ -22,7 +22,7 @@ export default function FeaturesGrid() {
         {
             title: "Intuitive Dashboard",
             description:
-                "Monitor your success with our comprehensive analytics dashboard. Track earnings, viewer engagement, and growth trends all in one beautifully designed interface.",
+                "Monitor your success with our comprehensive analytics dashboard. Track earnings, engagement, and growth trends all in one beautifully designed interface.",
             Icon: BarChart,
             gradient: "from-blue-500/40 to-blue-500/0",
             size: "md:col-span-1 md:row-span-1"
@@ -38,7 +38,7 @@ export default function FeaturesGrid() {
         {
             title: "Open Source",
             description:
-                "Built by the community, for the community. Our codebase is fully open source, enabling transparency, trust, and collaborative improvement. Join us in shaping the future of creator monetization.",
+                "Built by the community, for the community. Our codebase is fully open source, enabling transparency, trust, and collaborative improvement. Join us in shaping the future of developer monetization.",
             Icon: GithubIcon,
             gradient: "from-orange-500/40 to-orange-500/0",
             size: "md:col-span-1 md:row-span-1"
